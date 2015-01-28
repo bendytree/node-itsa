@@ -23,6 +23,10 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [Returning a results object](#returning-a-results-object)
  - [Extending Itsa](#extending-itsa)
  - [Custom Error Messages](#custom-error-messages)
+ - [Modifiers and Default Values](#modifiers-and-default-values)
+     - [Default Values](#default-values)
+     - [Default Value Functions](#default-value-functions)
+     - [Modifiers](#modifiers)
  - [Alternative Libraries](#alternative-libraries)
  - [License](#license)
  - [Todo](#todo)
@@ -259,6 +263,82 @@ itsa.string().validate(42).describe() === "Expected a string, but found a number
 
 itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
 ```
+
+
+
+## Modifiers and Default Values
+
+In some cases, you may want to actually update, default, or otherwise change the data that is being validated.
+
+NOTE: Data changes can only be used within an object or array - otherwise itsa has no way of actually setting the new value.
+
+#### Default Values
+
+Sometimes you'll want to set a default value. If the original data is falsy, then your new value is used:
+
+``` js
+var validator = itsa.object({
+  color: itsa.default("red").string().any("red", "white", "blue")
+});
+
+var obj = {};
+validator.validate(obj).valid === true;
+obj.color === "red";
+```
+
+Keep in mind, order matters. So if you did `.string().default("red")` then the string validator would fail
+before the default had a chance to get set.
+
+
+#### Default Value Functions
+
+In other cases, you'll want to set a `live` value as a default. For example, if the object doesn't have
+a created date then you'd want to set one. In this case, you'd pass a function to `.default(...)` that
+would be called and would return the default value.
+
+``` js
+var validator = itsa.object({
+  created: itsa.default(function(){ return new Date(); }).date()
+});
+
+var obj = {};
+validator.validate(obj).valid === true;
+obj.created; //new Date()
+```
+
+#### Modifiers
+
+Default values (above) are only used if a value is falsy. You can use a general data changer to
+change a value in any situation. You might use this if you have an `updatedOn` field that always
+gets updated:
+
+``` js
+var validator = itsa.object({
+  updated: itsa.modify(function(val){ return new Date(); })
+});
+
+//updated on 1970
+var obj = { updated: new Date(0) };
+
+validator.validate(obj);
+obj.updated; //now
+```
+
+Instead of blindly overriding a value, you may want to change the data based on its current value.
+For example, maybe you want a chance to do some type conversion before you run your validators. Your
+updater function will receive the current value as the first parameter. NOTE: The context of your function
+is bound to the itsa instance.
+
+``` js
+var validator = itsa.object({
+  age: itsa.modify(function(val){ return parseInt(val); }).number()
+});
+
+var obj = { age: "18" };
+validator.validate(obj).valid === true;
+obj.age === 18;
+```
+
 
 
 ## Alternative Libraries
