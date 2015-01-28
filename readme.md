@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/bendytree/node-itsa.png)](https://travis-ci.org/bendytree/node-itsa)
 
 #itsa
 
@@ -5,8 +6,27 @@
 
 `itsa` is a JavaScript library designed to validate JavaScript objects.
 
-It is designed to expressive, composable, extensible, simple, and clean. There are no dependencies
-and no global variables. `itsa` is the only object exported by this library.
+It is designed to expressive, composable, extensible, simple, and clean. There are no dependencies,
+no global variables, no extending of native objects. `itsa` is the only object exported by this library.
+
+
+## Table of Contents
+
+ - [Installation](#installation)
+ - [How It Works](#how-it-works)
+ - [Required vs Optional](#required-vs-optional)
+ - [Short Circuiting](#short-circuiting)
+ - [Equality](#equality)
+ - [Custom Validators](#custom-validators)
+     - [Returning true or false](#returning-true-or-false)
+     - [Returning null or a string](#returning-null-or-a-string)
+     - [Returning a results object](#returning-a-results-object)
+ - [Extending Itsa](#extending-itsa)
+ - [Alternative Libraries](#alternative-libraries)
+ - [License](#license)
+ - [Todo](#todo)
+
+
 
 ## Installation
 
@@ -65,7 +85,7 @@ to show a descriptive error message, simply call `result.describe()` which will 
 describing the validation results.
 
 
-## Optional parameters
+## Required vs Optional
 
 If you want to make a property optional, then you could use the `itsa.any` to list all
 of the values that would be allowed.  Here's a simple example:
@@ -153,7 +173,7 @@ Of course, this example is contrived. You'd probably use a built-in validator
 to do this check.
 
 
-#### Returning a results `object`
+#### Returning a results object
 
 In most cases, returning an error message (above) does everything you need. Some validators
 like `any` or `object` need to return validation logs for chilren so they can return a results
@@ -174,6 +194,37 @@ methods:
     result.describe() === "Is not mod 7.";
 
 
+## Extending Itsa
+
+Using `.custom(...)` validators are great for special, one-off validations. If you find yourself using
+a custom validator quite a bit then you may want to extend the itsa object with your custom validator.
+
+This means you'll be able to call your validator like a first-class validator (ie. `itsa.number().myValidator()...`).
+
+To extend `itsa`, call `extend` with a hash of your new validators:
+
+    //extending itsa
+    itsa.extend({
+      mod: function builder(operand) {
+        return function checker(val) {
+          return val % operand === 0;
+        };
+      }
+    });
+
+    //using your new extension
+    itsa.number().mod(3).validate(7).valid === false;
+
+Extend uses the key in your hash as the name of the extension and the value as a validation builder function.
+
+Your validation builder should return another function that is the same thing as a custom validator. In other words
+it should be a function that receives the value (val) and returns a value indicating whether the value is valid. Like
+the custom validator, your return value can be a boolean, string, or results object. See the custom validator section
+for more information.
+
+NOTE: both the builder function and the checker are called with your `itsa` instance as the context. This gives you
+access to the itsa context (which is useful in advanced situations). If you need your context to be something else, then
+bind it yourself.
 
 
 ## Alternative Libraries

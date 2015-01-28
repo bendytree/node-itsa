@@ -18,23 +18,21 @@
     "verification",
     "javascript"
   ],
-  "dependencies": { },
+  "dependencies": {},
   "devDependencies": {
     "chai": "1.10.0",
     "mocha": "2.1.0"
   },
-  "author": {
-    "name": "Josh Wright",
-    "email": "josh@joshwright.com",
-    "url": "http://joshwright.com"
-  },
+  "author": "Josh Wright <josh@joshwright.com> (http://joshwright.com)",
   "scripts": {
     "test": "mocha"
   },
   "license": "MIT",
-  "readmeFilename": "readme.md",
   "bugs": {
     "url": "https://github.com/bendytree/node-itsa/issues"
   },
-  "homepage": "https://github.com/bendytree/node-itsa"
+  "homepage": "https://github.com/bendytree/node-itsa",
+  "directories": {
+    "test": "test"
+  }
 }
