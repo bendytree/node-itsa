@@ -375,7 +375,7 @@ HTML Form Validators
 
 ## License
 
-MIT
+[MIT](https://github.com/bendytree/node-itsa/blob/master/LICENSE)
 
 
 ## Todo
