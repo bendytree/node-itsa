@@ -15,9 +15,6 @@ no global variables, no extending of native objects. `itsa` is the only object e
  - [Installation](#installation)
  - [How It Works](#how-it-works)
  - [Required vs Optional](#required-vs-optional)
- - [Short Circuiting](#short-circuiting)
- - [Extending Itsa](#extending-itsa)
- - [Custom Error Messages](#custom-error-messages)
  - [Validate](#validate)
  - [Validators](#validators)
      - [any](#itsaanyvalidator--validator)
@@ -28,6 +25,9 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [object](#itsaobjectexample)
      - [string](#itsastring)
      - [update](#itsaupdatedefaultvalue)
+ - [Extending Itsa](#extending-itsa)
+ - [Custom Error Messages](#custom-error-messages)
+ - [Short Circuiting](#short-circuiting)
  - [Alternative Libraries](#alternative-libraries)
  - [License](#license)
  - [Todo](#todo)
@@ -107,68 +107,6 @@ result.valid === true;
 
 In this case, a string, number, or undefined would all be valid values.
 
-
-## Short Circuiting
-
-If you have multiple validations for a single field, then validation will stop when it
-runs into the first invalid result. For example:
-
-``` js
-var result = itsa.string().maxLength(5).validate(3);
-result.valid === false;
-result.logs.length === 1;
-result.logs[0].valid === false;
-result.logs[0].validator === "string";
-```
-
-
-
-
-## Extending Itsa
-
-Using `.custom(...)` validators are great for special, one-off validations. If you find yourself using
-a custom validator quite a bit then you may want to extend the itsa object with your custom validator.
-
-This means you'll be able to call your validator like a first-class validator (ie. `itsa.number().myValidator()...`).
-
-To extend `itsa`, call `extend` with a hash of your new validators:
-
-``` js
-//extending itsa
-itsa.extend({
-  mod: function builder(operand) {
-    return function checker(val) {
-      return val % operand === 0;
-    };
-  }
-});
-
-//using the new extension
-itsa.number().mod(3).validate(7).valid === false;
-```
-
-Extend uses the key in your hash as the name of the extension and the value as a validation builder function.
-
-Your validation builder should return another function that is the same thing as a custom validator. In other words
-it should be a function that receives the value (val) and returns a value indicating whether the value is valid. Like
-the custom validator, your return value can be a boolean, string, or results object. See the custom validator section
-for more information.
-
-NOTE: both the builder function and the checker are called with your `itsa` instance as the context. This gives you
-access to the itsa context (which is useful in advanced situations). If you need your context to be something else, then
-bind it yourself.
-
-
-## Custom Error Messages
-
-Each validator will automatically generate an appropriate error message, but you may like to customize
-those messages. You can customize the error message of any validator using `.msg(...)`:
-
-``` js
-itsa.string().validate(42).describe() === "Expected a string, but found a number";
-
-itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
-```
 
 
 
@@ -490,6 +428,74 @@ obj.age === 18;
 
 
 
+
+
+
+
+
+
+
+## Extending Itsa
+
+Using `.custom(...)` validators are great for special, one-off validations. If you find yourself using
+a custom validator quite a bit then you may want to extend the itsa object with your custom validator.
+
+This means you'll be able to call your validator like a first-class validator (ie. `itsa.number().myValidator()...`).
+
+To extend `itsa`, call `extend` with a hash of your new validators:
+
+``` js
+//extending itsa
+itsa.extend({
+  mod: function builder(operand) {
+    return function checker(val) {
+      return val % operand === 0;
+    };
+  }
+});
+
+//using the new extension
+itsa.number().mod(3).validate(7).valid === false;
+```
+
+Extend uses the key in your hash as the name of the extension and the value as a validation builder function.
+
+Your validation builder should return another function that is the same thing as a custom validator. In other words
+it should be a function that receives the value (val) and returns a value indicating whether the value is valid. Like
+the custom validator, your return value can be a boolean, string, or results object. See the custom validator section
+for more information.
+
+NOTE: both the builder function and the checker are called with your `itsa` instance as the context. This gives you
+access to the itsa context (which is useful in advanced situations). If you need your context to be something else, then
+bind it yourself.
+
+
+## Custom Error Messages
+
+Each validator will automatically generate an appropriate error message, but you may like to customize
+those messages. You can customize the error message of any validator using `.msg(...)`:
+
+``` js
+itsa.string().validate(42).describe() === "Expected a string, but found a number";
+
+itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
+```
+
+
+
+
+## Short Circuiting
+
+If you have multiple validations for a single field, then validation will stop when it
+runs into the first invalid result. For example:
+
+``` js
+var result = itsa.string().maxLength(5).validate(3);
+result.valid === false;
+result.logs.length === 1;
+result.logs[0].valid === false;
+result.logs[0].validator === "string";
+```
 
 
 
