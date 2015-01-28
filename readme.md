@@ -212,7 +212,7 @@ To extend `itsa`, call `extend` with a hash of your new validators:
       }
     });
 
-    //using your new extension
+    //using the new extension
     itsa.number().mod(3).validate(7).valid === false;
 
 Extend uses the key in your hash as the name of the extension and the value as a validation builder function.
