@@ -4,9 +4,9 @@
 
 *Pronounced "it's a".*
 
-`itsa` is a JavaScript library designed to validate JavaScript objects.
+`itsa` is a JavaScript library designed to validate JavaScript data.
 
-It is designed to expressive, composable, extensible, simple, and clean. There are no dependencies,
+The data can be primitives, objects, arrays, or any mixture therein. It is designed to expressive, composable, extensible, simple, and clean. There are no dependencies,
 no global variables, no extending of native objects. `itsa` is the only object exported by this library.
 
 
