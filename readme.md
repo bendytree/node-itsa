@@ -34,7 +34,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
 
 
 
-## Installation
+# Installation
 
 `itsa` has no dependencies and works on server or client via npm:
 
@@ -48,7 +48,9 @@ Right now, there's no `itsa.js` that you can drop in to your client side, so you
 Pull requests that automatically bundle `itsa.js` and `itsa.min.js` are welcome.
 
 
-## How It Works
+------------------------------------------------
+
+# How It Works
 
 Let's say you want to validate an object before you save it to your database.
 
@@ -94,7 +96,11 @@ to show a descriptive error message, simply call `result.describe()` which will 
 describing the validation results.
 
 
-## Required vs Optional
+
+
+------------------------------------------------
+
+# Required vs Optional
 
 If you want to make a property optional, then you could use the `itsa.any` to list all
 of the values that would be allowed.  Here's a simple example:
@@ -435,7 +441,7 @@ obj.age === 18;
 
 
 
-## Extending Itsa
+# Extending Itsa
 
 Using `.custom(...)` validators are great for special, one-off validations. If you find yourself using
 a custom validator quite a bit then you may want to extend the itsa object with your custom validator.
@@ -470,7 +476,7 @@ access to the itsa context (which is useful in advanced situations). If you need
 bind it yourself.
 
 
-## Custom Error Messages
+# Custom Error Messages
 
 Each validator will automatically generate an appropriate error message, but you may like to customize
 those messages. You can customize the error message of any validator using `.msg(...)`:
@@ -484,7 +490,7 @@ itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
 
 
 
-## Short Circuiting
+# Short Circuiting
 
 If you have multiple validations for a single field, then validation will stop when it
 runs into the first invalid result. For example:
@@ -501,7 +507,7 @@ result.logs[0].validator === "string";
 
 
 
-## Alternative Libraries
+# Alternative Libraries
 
 JavaScript Data Validators:
 
@@ -520,7 +526,7 @@ HTML Form Validators
  - [formvalidation/formvalidation](https://github.com/formvalidation/formvalidation) - "The best @jquery plugin to validate form fields."
 
 
-## License
+# License
 
 [MIT](https://github.com/bendytree/node-itsa/blob/master/LICENSE)
 
