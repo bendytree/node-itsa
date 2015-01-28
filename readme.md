@@ -23,10 +23,10 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [Returning a results object](#returning-a-results-object)
  - [Extending Itsa](#extending-itsa)
  - [Custom Error Messages](#custom-error-messages)
- - [Modifiers and Default Values](#modifiers-and-default-values)
+ - [Default Values and Updaters](#default-values-and-updaters)
      - [Default Values](#default-values)
      - [Default Value Functions](#default-value-functions)
-     - [Modifiers](#modifiers)
+     - [Updaters](#updaters)
  - [Validate](#validate)
  - [Alternative Libraries](#alternative-libraries)
  - [License](#license)
@@ -267,9 +267,9 @@ itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
 
 
 
-## Modifiers and Default Values
+## Default Values and Updaters
 
-In some cases, you may want to actually update, default, or otherwise change the data that is being validated.
+In some cases, you may want to actually set, update, default, or otherwise change the data that is being validated.
 
 NOTE: Data changes can only be used within an object or array - otherwise itsa has no way of actually setting the new value.
 
@@ -307,15 +307,15 @@ validator.validate(obj).valid === true;
 obj.created; //new Date()
 ```
 
-#### Modifiers
+#### Updaters
 
-Default values (above) are only used if a value is falsy. You can use a general data changer to
-change a value in any situation. You might use this if you have an `updatedOn` field that always
-gets updated:
+Default values (above) are only used if a value is falsy. You can use `.update(...)` to
+change a value regardless of the original value. You might use this if you have an `updated`
+field that always gets updated:
 
 ``` js
 var validator = itsa.object({
-  updated: itsa.modify(function(val){ return new Date(); })
+  updated: itsa.update(function(val){ return new Date(); })
 });
 
 //updated on 1970
@@ -332,7 +332,7 @@ is bound to the itsa instance.
 
 ``` js
 var validator = itsa.object({
-  age: itsa.modify(function(val){ return parseInt(val); }).number()
+  age: itsa.update(function(val){ return parseInt(val); }).number()
 });
 
 var obj = { age: "18" };
@@ -380,7 +380,6 @@ MIT
 
 ## Todo
 
- - default values
  - arrays
  - noOtherFields
  - unique
