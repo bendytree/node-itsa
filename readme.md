@@ -27,6 +27,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [Default Values](#default-values)
      - [Default Value Functions](#default-value-functions)
      - [Modifiers](#modifiers)
+ - [Validate](#validate)
  - [Alternative Libraries](#alternative-libraries)
  - [License](#license)
  - [Todo](#todo)
@@ -339,6 +340,18 @@ validator.validate(obj).valid === true;
 obj.age === 18;
 ```
 
+
+## Validate
+
+99% of the time, you'll pass a value to validate like `.validate(42)`.  Technically, the full capability
+of `validate` is:
+
+### validate(valueOrGetter[, setter])
+
+##### Arguments
+
+ - `valueOrGetter` - Required. The value to be validated (string, object, array, etc). If a function is given then it is executed and the return value of that function is validated.
+ - `setter` - Optional. A callback that is executed if the root value (to be validated) is changed using `default`, `modify`, etc. This callback exists for the sake of the internal api, but it is exposed since it may be useful.
 
 
 ## Alternative Libraries
