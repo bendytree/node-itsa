@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bendytree/node-itsa.png)](https://travis-ci.org/bendytree/node-itsa)
+[![Build Status](https://travis-ci.org/bendytree/node-itsa.svg?branch=master)](https://travis-ci.org/bendytree/node-itsa)
 
 #itsa
 
