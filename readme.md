@@ -35,8 +35,9 @@ no global variables, no extending of native objects. `itsa` is the only object e
 
     > npm install itsa --save
 
-    var itsa = require("itsa");
-
+``` js
+var itsa = require("itsa");
+```
 
 Right now, there's no `itsa.js` that you can drop in to your client side, so you should use browserify.
 Pull requests that automatically bundle `itsa.js` and `itsa.min.js` are welcome.
@@ -46,35 +47,37 @@ Pull requests that automatically bundle `itsa.js` and `itsa.min.js` are welcome.
 
 Let's say you want to validate an object before you save it to your database.
 
-    var userSchema = itsa.object({
-      firstname: itsa.string().maxLength(20),
-      lastname: itsa.string().maxLength(20),
-      age: itsa.any(itsa.number().between(18, 35), undefined),
-      address: itsa.object({
-        line1: itsa.string(),
-        line2: itsa.string(),
-        city: itsa.string(),
-        state: itsa.string().maxLength(2),
-        zip: itsa.string()
-      });
-    });
+``` js
+var userSchema = itsa.object({
+  firstname: itsa.string().maxLength(20),
+  lastname: itsa.string().maxLength(20),
+  age: itsa.any(itsa.number().between(18, 35), undefined),
+  address: itsa.object({
+    line1: itsa.string(),
+    line2: itsa.string(),
+    city: itsa.string(),
+    state: itsa.string().maxLength(2),
+    zip: itsa.string()
+  });
+});
 
-    var data = {
-      firstname: "Bob",
-      lastname: "Tables",
-      address: {
-        line1: "1000 Penny Lane",
-        line2: "Suite 201",
-        city: "Cityville",
-        state: "California",
-        zip: "90192"
-      }
-    };
+var data = {
+  firstname: "Bob",
+  lastname: "Tables",
+  address: {
+    line1: "1000 Penny Lane",
+    line2: "Suite 201",
+    city: "Cityville",
+    state: "California",
+    zip: "90192"
+  }
+};
 
-    var result = userSchema.validate(data);
+var result = userSchema.validate(data);
 
-    result.valid === false;
-    result.describe() === "address.state: length is 10, max is 2";
+result.valid === false;
+result.describe() === "address.state: length is 10, max is 2";
+```
 
 So you can define entire object graph with strings, numbers, arrays, objects, etc.
 
@@ -91,9 +94,11 @@ describing the validation results.
 If you want to make a property optional, then you could use the `itsa.any` to list all
 of the values that would be allowed.  Here's a simple example:
 
-    var result = itsa.any(itsa.string(), undefined, itsa.number()).validate(42);
+``` js
+var result = itsa.any(itsa.string(), undefined, itsa.number()).validate(42);
 
-    result.valid === true;
+result.valid === true;
+```
 
 In this case, a string, number, or undefined would all be valid values.
 
@@ -103,42 +108,50 @@ In this case, a string, number, or undefined would all be valid values.
 If you have multiple validations for a single field, then validation will stop when it
 runs into the first invalid result. For example:
 
-    var result = itsa.string().maxLength(5).validate(3);
-    result.valid === false;
-    result.logs.length === 1;
-    result.logs[0].valid === false;
-    result.logs[0].validator === "string";
+``` js
+var result = itsa.string().maxLength(5).validate(3);
+result.valid === false;
+result.logs.length === 1;
+result.logs[0].valid === false;
+result.logs[0].validator === "string";
+```
 
 
 ## Equality
 
 `itsa.equal(...)` will run a strict equality test (===). For example:
 
-    itsa.equal(42).validate(42).valid === true;
-    itsa.equal(null).validate(false).valid === false;
+``` js
+itsa.equal(42).validate(42).valid === true;
+itsa.equal(null).validate(false).valid === false;
+```
 
 This is especially helpful when used with the `object` or `any` validators:
 
-    var validator = itsa.any(itsa.equal("red"), itsa.equal("blue"));
-    validator.validate("red").valid === true;
+``` js
+var validator = itsa.any(itsa.equal("red"), itsa.equal("blue"));
+validator.validate("red").valid === true;
 
-    var validator = itsa.object({
-      type: itsa.equal("db.user")
-    });
-    validator.validate({type:"db.product"}).valid === false;
+var validator = itsa.object({
+  type: itsa.equal("db.user")
+});
+validator.validate({type:"db.product"}).valid === false;
+```
 
 For convenience, the `object`, `array`, and `any` validators can
 receive primitive objects and will automatically convert them to
 a `.equal(...)` validator. Here is the same example using the primitive
 version of equality:
 
-    var validator = itsa.any("red", "blue");
-    validator.validate("red").valid === true;
+``` js
+var validator = itsa.any("red", "blue");
+validator.validate("red").valid === true;
 
-    var validator = itsa.object({
-      type: "db.user"
-    });
-    validator.validate({type:"db.product"}).valid === false;
+var validator = itsa.object({
+  type: "db.user"
+});
+validator.validate({type:"db.product"}).valid === false;
+```
 
 
 ## Custom Validators
@@ -153,22 +166,26 @@ in one of three different ways:
 If you return `true` then the data is considered valid. `false` means invalid.
 If the data is invalid, then a generic error message is used.
 
-    var isMod7 = function(val){ return val % 7 === 0; }
-    var result = itsa.custom(isMod7).validate(11);
-    result.valid === false;
-    result.describe() === "Custom validator failed.";
+``` js
+var isMod7 = function(val){ return val % 7 === 0; }
+var result = itsa.custom(isMod7).validate(11);
+result.valid === false;
+result.describe() === "Custom validator failed.";
+```
 
 #### Returning null or a string
 
 Instead of returning a boolean, you can return a string that is the validation
 error message, or you can return `null` if there is no error.
 
-    var startsWithDb = function(val){
-      return val.indexOf("db.") === 0 ? null : "Value does not begin with `db.`";
-    }
-    var result = itsa.custom(startsWithDb).validate("cart_item");
-    result.valid === false;
-    result.describe() === "Value does not begin with `db.`";
+``` js
+var startsWithDb = function(val){
+  return val.indexOf("db.") === 0 ? null : "Value does not begin with `db.`";
+}
+var result = itsa.custom(startsWithDb).validate("cart_item");
+result.valid === false;
+result.describe() === "Value does not begin with `db.`";
+```
 
 Of course, this example is contrived. You'd probably use a built-in validator
 to do this check.
@@ -182,17 +199,19 @@ object. A results object is a plain object with two fields `valid` and `logs`.  
 is actually run within the context of the `itsa` instance, so you have access to some helper
 methods:
 
-    var isMod7 = function(val){
-      var valid = val % 7 === 0;
-      var message = valid ? "Mod check succeeded." : "Is not mod 7.";
-      return {
-        valid: valid,
-        logs: [this._buildLog("isMod7", message, valid)]
-      };
-    }
-    var result = itsa.custom(isMod7).validate(11);
-    result.valid === false;
-    result.describe() === "Is not mod 7.";
+``` js
+var isMod7 = function(val){
+  var valid = val % 7 === 0;
+  var message = valid ? "Mod check succeeded." : "Is not mod 7.";
+  return {
+    valid: valid,
+    logs: [this._buildLog("isMod7", message, valid)]
+  };
+}
+var result = itsa.custom(isMod7).validate(11);
+result.valid === false;
+result.describe() === "Is not mod 7.";
+```
 
 
 ## Extending Itsa
@@ -204,17 +223,19 @@ This means you'll be able to call your validator like a first-class validator (i
 
 To extend `itsa`, call `extend` with a hash of your new validators:
 
-    //extending itsa
-    itsa.extend({
-      mod: function builder(operand) {
-        return function checker(val) {
-          return val % operand === 0;
-        };
-      }
-    });
+``` js
+//extending itsa
+itsa.extend({
+  mod: function builder(operand) {
+    return function checker(val) {
+      return val % operand === 0;
+    };
+  }
+});
 
-    //using the new extension
-    itsa.number().mod(3).validate(7).valid === false;
+//using the new extension
+itsa.number().mod(3).validate(7).valid === false;
+```
 
 Extend uses the key in your hash as the name of the extension and the value as a validation builder function.
 
@@ -233,9 +254,11 @@ bind it yourself.
 Each validator will automatically generate an appropriate error message, but you may like to customize
 those messages. You can customize the error message of any validator using `.msg(...)`:
 
-    itsa.string().validate(42).describe() === "Expected a string, but found a number";
+``` js
+itsa.string().validate(42).describe() === "Expected a string, but found a number";
 
-    itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
+itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
+```
 
 
 ## Alternative Libraries
