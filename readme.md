@@ -253,7 +253,6 @@ MIT
 
 ## Todo
 
- - extensions using function style?
  - custom error messages
  - default values
  - arrays
