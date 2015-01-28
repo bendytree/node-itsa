@@ -22,6 +22,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [Returning null or a string](#returning-null-or-a-string)
      - [Returning a results object](#returning-a-results-object)
  - [Extending Itsa](#extending-itsa)
+ - [Custom Error Messages](#custom-error-messages)
  - [Alternative Libraries](#alternative-libraries)
  - [License](#license)
  - [Todo](#todo)
@@ -227,6 +228,16 @@ access to the itsa context (which is useful in advanced situations). If you need
 bind it yourself.
 
 
+## Custom Error Messages
+
+Each validator will automatically generate an appropriate error message, but you may like to customize
+those messages. You can customize the error message of any validator using `.msg(...)`:
+
+    itsa.string().validate(42).describe() === "Expected a string, but found a number";
+
+    itsa.string().msg("boomsies").validate(42).describe() === "boomsies";
+
+
 ## Alternative Libraries
 
 JavaScript Data Validators:
@@ -253,7 +264,6 @@ MIT
 
 ## Todo
 
- - custom error messages
  - default values
  - arrays
  - noOtherFields
