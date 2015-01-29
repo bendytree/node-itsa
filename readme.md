@@ -29,9 +29,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [integer](#itsainteger)
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
+     - [nan](#itsanan)
+     - [null](#itsanull)
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
      - [string](#itsastring)
+     - [undefined](#itsaundefined)
      - [update](#itsaupdatedefaultvalue)
  - [Extending Itsa](#extending-itsa)
  - [Custom Error Messages](#custom-error-messages)
@@ -573,6 +576,58 @@ If you omit a max value number then an error will be thrown.
 
 
 
+
+
+----------------------------------------------------------------------
+
+### itsa.nan()
+
+Valid only if the value is `NaN` (using the isNaN check).
+
+If you want to allow all falsy values, use the `.falsy()` validator. If you want to
+validate positive or negative infinity, use the `.equal(...)` validator.
+
+##### Examples
+
+``` js
+itsa.nan().validate(NaN).valid === true;
+itsa.nan().validate(parseInt("red")).valid === true;
+itsa.nan().validate(1/0).valid === false; //+Infinity
+itsa.nan().validate(0).valid === false;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.null()
+
+Valid only if the value is strictly equal to `null`.
+
+If you want to allow all falsy values, use the `.falsy()` validator. If you want to
+validate `undefined` then use the `.undefined()` validator.
+
+##### Examples
+
+``` js
+itsa.null().validate(null).valid === true;
+itsa.null().validate(0).valid === false;
+itsa.null().validate({}).valid === false;
+itsa.null().validate(NaN).valid === false;
+itsa.null().validate(undefined).valid === false;
+itsa.null().validate().valid === false;
+```
+
+
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.number()
@@ -670,6 +725,36 @@ itsa.string().validate("").valid === true;
 itsa.string().validate("abc").valid === true;
 itsa.string().validate(null).valid === false;
 ```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.undefined()
+
+Valid only if the value is strictly equal to `undefined`.
+
+If you want to allow all falsy values, use the `.falsy()` validator. If you want to
+validate `null` then use the `.null()` validator. You may also find it helpful to
+use `itsa.any(null, undefined)`.
+
+##### Examples
+
+``` js
+itsa.undefined().validate(undefined).valid === true;
+itsa.undefined().validate(0).valid === false;
+itsa.undefined().validate({}).valid === false;
+itsa.undefined().validate(NaN).valid === false;
+itsa.undefined().validate(null).valid === false;
+itsa.undefined().validate().valid === false;
+```
+
+
+
 
 
 
