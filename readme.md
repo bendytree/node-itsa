@@ -29,8 +29,10 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [false](#itsafalse)
      - [falsy](#itsafalsy)
      - [integer](#itsainteger)
+     - [len](#itsalenexactorminmax)
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
+     - [minLength](#itsaminlengthmin)
      - [nan](#itsanan)
      - [notEmpty](#itsanotempty)
      - [null](#itsanull)
@@ -610,23 +612,152 @@ itsa.matches(/99/).validate(99).valid === true;
 
 ----------------------------------------------------------------------
 
+### itsa.len(exactOrMin, max)
+
+NOTE: I wish this was called `.length(...)` but you can redefine the `length` property of a constructor.
+
+This validator requires your data to meet one of the following conditions:
+
+ - if no arguments are given, then `.length != 0`
+ - if `exactOrMin` is given but not `max`, then length must match exactly: `.length === exactOrMin`
+ - if both `exactOrMin` and `max` are given, then `.length >= exactOrMin && .length <= max` (so both numbers are inclusive)
+
+You may otherwise find `.minLength(...)` or `.maxLength(...)` useful.
+
+##### Arguments
+
+ - `exactOrMin` - Optional. number. (see above)
+ - `max` - Optional. number. (see above)
+
+##### No Length Given
+
+If no length is given, then the validator is successful if the length is a truthy value.
+
+``` js
+itsa.len().validate([]).valid === false;
+itsa.len().validate([42]).valid === true;
+itsa.len().validate({}).valid === false;
+itsa.len().validate({a:1}).valid === false;
+itsa.len().validate({length:1}).valid === true;
+itsa.len().validate("").valid === false;
+itsa.len().validate("red").valid === true;
+itsa.len().validate(null).valid === false;
+```
+
+##### `exactOrMin` Given
+
+If only `exactOrMin` is given, then the validator checks if the length field
+matches `exactOrMin`.
+
+``` js
+//strings
+itsa.len(3).validate("red").valid === true;
+itsa.len(3).validate("blue").valid === false;
+itsa.len(3).validate("").valid === false;
+
+//arrays
+itsa.len(2).validate([]).valid === false;
+itsa.len(2).validate([5]).valid === false;
+itsa.len(2).validate([5,6]).valid === true;
+itsa.len(2).validate([5,6,7]).valid === false;
+
+//objects
+itsa.len(1).validate({a:3}).valid === false;
+itsa.len(1).validate({length:1}).valid === true;
+
+//other
+itsa.len(4).validate(null).valid === false;
+```
+
+
+##### `exactOrMin` and `max` Given
+
+If only `exactOrMin` and `max` are given, then the validator checks if the length field
+is between the two values (inclusively).
+
+``` js
+//strings
+itsa.len(3,5).validate("").valid === false;
+itsa.len(3,5).validate("red").valid === true;
+itsa.len(3,5).validate("blue").valid === true;
+itsa.len(3,5).validate("green").valid === true;
+itsa.len(3,5).validate("yellow").valid === false;
+
+//arrays
+itsa.len(2,3).validate([]).valid === false;
+itsa.len(2,3).validate([5]).valid === false;
+itsa.len(2,3).validate([5,6]).valid === true;
+itsa.len(2,3).validate([5,6,7]).valid === true;
+itsa.len(2,3).validate([5,6,7,9]).valid === false;
+
+//objects
+itsa.len(3,4).validate({length:4}).valid === true;
+
+//other
+itsa.len(0,100).validate(null).valid === false;
+```
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.minLength(min)
+
+This validation succeeds if your data has a length property and that length is >= the given min.
+
+If you omit a min value number then an error will be thrown.
+
+If you need the length to be within a range, use the `.len(...)` validator.
+
+##### Arguments
+
+ - `min` - Required. number. The minimum length allowed
+
+##### Examples
+
+``` js
+//valid
+itsa.minLength(3).validate([7,42,1,2]).valid === true;
+itsa.minLength(3).validate("blue").valid === true;
+itsa.minLength(3).validate({length:5}).valid === true;
+
+//invalid
+itsa.minLength(3).validate(null).valid === false;
+itsa.minLength(3).validate([7,42]).valid === false;
+itsa.minLength(3).validate({length:1}).valid === false;
+```
+
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.maxLength(max)
 
 This validation succeeds if your data has a length property and that length is <= the given max.
 
 If you omit a max value number then an error will be thrown.
 
+If you need the length to be within a range, use the `.len(...)` validator.
+
 ##### Arguments
 
- - `max` - a number to compare the length against
+ - `max` - Required. number. The maximum length allowed
 
 ##### Examples
 
-    itsa.maxLength(3).validate("blue").valid === false;
-    itsa.maxLength(3).validate([7,42]).valid === true;
-    itsa.maxLength(3).validate({length:1}).valid === true;
-    itsa.maxLength(3).validate(null).valid === false;
+``` js
+//valid
+itsa.maxLength(3).validate([7,42]).valid === true;
+itsa.maxLength(3).validate({length:1}).valid === true;
 
+//invalid
+itsa.maxLength(3).validate([7,42,1,2]).valid === false;
+itsa.maxLength(3).validate("blue").valid === false;
+itsa.maxLength(3).validate(null).valid === false;
+```
 
 
 
