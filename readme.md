@@ -28,6 +28,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [custom](#itsacustomvalidatorfunction)
      - [date](#itsadate)
      - [default](#itsadefaultdefaultvalue)
+     - [email](#itsaemail)
      - [empty](#itsaempty)
      - [endsWith](#itsaendswithvalue)
      - [equal](#itsaequalexamplevalue)
@@ -528,6 +529,30 @@ obj.created; //new Date()
 ```
 
 To change data regardless of the original value, use `.update()`.
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.email()
+
+Valid for a string that is a valid email address.
+
+NOTE: There are many ways to validate an email address. If you have your own validation in mind, use the `itsa.matches(...)` validator.
+
+##### Example
+
+``` js
+itsa.email().validate("bob@example.com").valid === true;
+itsa.email().validate(" bob@example.com").valid === false;
+itsa.email().validate("bob@example.com ").valid === false;
+itsa.email().validate("Bob <bob@example.com>").valid === false;
+```
+
 
 
 
