@@ -18,11 +18,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
  - [Validate](#validate)
  - [Validators](#validators)
      - [any](#itsaanyvalidator--validator)
+     - [array](#itsaarrayexample-allowextraitems)
      - [custom](#itsacustomvalidatorfunction)
      - [default](#itsadefaultdefaultvalue)
      - [equal](#itsaequalexamplevalue)
      - [maxLength](#itsamaxlengthmax)
-     - [object](#itsaobjectexample)
+     - [object](#itsaobjectexample-allowextrafields)
      - [string](#itsastring)
      - [update](#itsaupdatedefaultvalue)
  - [Extending Itsa](#extending-itsa)
@@ -406,15 +407,12 @@ The object validator succeeds when the data is an actual JavaScript object `{}`.
 Technically, dates, arrays, Strings and even null are all JavaScript objects, but those types will not
 pass this validation. Only a hash (ie `{}` or `new Object()`) is considered an object here.
 
-You can optionally pass an object where the values are validators to run against the keys. You can
-nest objects and arrays within objects and arrays.
-
 ##### Arguments
 
  - `example` - Optional. A hash where the keys are the keys to verify and the values are `itsa` validators, function validators, or primitives for equality checks.
  - `allowExtraFields` - Optional. Defaults to true when no example is given. Defaults to false if example is given. See below.
 
-##### Examples
+##### Example
 
 ``` js
 //simple object tests
@@ -423,6 +421,11 @@ itsa.object().validate([]).valid === false;
 itsa.object().validate(null).valid === false;
 itsa.object().validate(new Date()).valid === false;
 ```
+
+##### Validating Fields
+
+You can optionally pass an object where the values are validators to run against the keys. You can
+nest objects and arrays within objects and arrays.
 
 ``` js
 //validating object keys
@@ -443,6 +446,11 @@ validation will fail.
 
 If you want to allow any extra fields that you didn't define in your example, then pass `true` as the
 second parameter to `itsa.object(..., true)` which means `allowExtraFields`.
+
+``` js
+itsa.object({name:itsa.string()}).validate({name:"Bob", color:"red"}).valid === false;
+itsa.object({name:itsa.string()}, true).validate({name:"Bob", color:"red"}).valid === true;
+```
 
 
 ----------------------------------------------------------------------
