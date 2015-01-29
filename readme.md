@@ -23,9 +23,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [boolean](#itsaboolean)
      - [custom](#itsacustomvalidatorfunction)
      - [default](#itsadefaultdefaultvalue)
+     - [empty](#itsaempty)
      - [equal](#itsaequalexamplevalue)
+     - [integer](#itsainteger)
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
+     - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
      - [string](#itsastring)
      - [update](#itsaupdatedefaultvalue)
@@ -414,6 +417,7 @@ itsa.empty().validate("Bob").valid === false;
 
 
 
+
 ----------------------------------------------------------------------
 
 ### itsa.equal(exampleValue)
@@ -458,6 +462,36 @@ var validator = itsa.object({
   type: "db.user"
 });
 validator.validate({type:"db.product"}).valid === false;
+```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.integer()
+
+Valid for numbers with no decimal.
+
+Also invalid for `NaN`, `Number.NEGATIVE_INFINITY`, and `Number.POSITIVE_INFINITY`.
+
+##### Examples
+
+``` js
+itsa.integer().validate(3).valid === true;
+itsa.integer().validate(-344).valid === true;
+itsa.integer().validate(0).valid === true;
+itsa.integer().validate(3.0).valid === true;
+itsa.integer().validate(3.5).valid === false;
+itsa.integer().validate(null).valid === false;
+itsa.integer().validate("3").valid === false;
+itsa.integer().validate([]).valid === false;
+itsa.integer().validate(NaN).valid === false;
+itsa.integer().validate(Number.NEGATIVE_INFINITY).valid === false;
+itsa.integer().validate(Number.POSITIVE_INFINITY).valid === false;
 ```
 
 
@@ -509,6 +543,36 @@ If you omit a max value number then an error will be thrown.
     itsa.maxLength(3).validate([7,42]).valid === true;
     itsa.maxLength(3).validate({length:1}).valid === true;
     itsa.maxLength(3).validate(null).valid === false;
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.number()
+
+Valid for any JavaScript number except `NaN`, `Number.NEGATIVE_INFINITY`, and `Number.POSITIVE_INFINITY`. If you
+want to include those values, use the `.typeof(...)` validator.
+
+##### Examples
+
+``` js
+itsa.number().validate(3).valid === true;
+itsa.number().validate(-344).valid === true;
+itsa.number().validate(0).valid === true;
+itsa.number().validate(3.0).valid === true;
+itsa.number().validate(3.5).valid === true;
+itsa.number().validate(null).valid === false;
+itsa.number().validate("3").valid === false;
+itsa.number().validate([]).valid === false;
+itsa.number().validate(NaN).valid === false;
+itsa.number().validate(Number.NEGATIVE_INFINITY).valid === false;
+itsa.number().validate(Number.POSITIVE_INFINITY).valid === false;
+```
+
 
 
 
