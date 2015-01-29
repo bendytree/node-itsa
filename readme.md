@@ -102,16 +102,17 @@ describing the validation results.
 
 # Required vs Optional
 
-If you want to make a property optional, then you could use the `itsa.any` to list all
-of the values that would be allowed.  Here's a simple example:
+If you want to make a property optional, then you should use the `itsa.any` to list all
+of the values that are valid.  Here's a simple example that shows the difference:
 
 ``` js
-var result = itsa.any(itsa.string(), undefined, itsa.number()).validate(42);
+//only a string is valid
+itsa.string().validate(null).valid === false;
 
-result.valid === true;
+//
+itsa.any(itsa.string(), null).validate(null).valid === true;
 ```
 
-In this case, a string, number, or undefined would all be valid values.
 
 
 

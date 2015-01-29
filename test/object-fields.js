@@ -51,4 +51,6 @@ describe('object fields', function(){
     assert.equal(result.logs[1].validator, "string", "`validator` should be `object`.");
   });
 
+
+
 });
