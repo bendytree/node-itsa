@@ -275,6 +275,24 @@ If you care about the number of items in an array, use the `itsa.maxLength(...)`
 
 
 
+
+----------------------------------------------------------------------
+
+### itsa.boolean()
+
+This succeeds when the data is a JavaScript boolean - `true` or `false`.
+
+``` js
+itsa.boolean().validate(true).valid === true;
+itsa.boolean().validate(false).valid === true;
+itsa.boolean().validate(1).valid === false;
+itsa.boolean().validate(0).valid === false;
+```
+
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.custom(validatorFunction)
