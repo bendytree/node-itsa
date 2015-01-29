@@ -32,6 +32,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
      - [nan](#itsanan)
+     - [notEmpty](#itsanotempty)
      - [null](#itsanull)
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
@@ -650,6 +651,31 @@ itsa.nan().validate(NaN).valid === true;
 itsa.nan().validate(parseInt("red")).valid === true;
 itsa.nan().validate(1/0).valid === false; //+Infinity
 itsa.nan().validate(0).valid === false;
+```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.notEmpty()
+
+Valid for arrays with at least one item, objects with at least one key, or strings with length > 0. Any other value is invalid.
+
+##### Examples
+
+``` js
+itsa.notEmpty().validate([42]).valid === true;
+itsa.notEmpty().validate({name:"Bob"}).valid === true;
+itsa.notEmpty().validate("red").valid === true;
+itsa.notEmpty().validate([]).valid === false;
+itsa.notEmpty().validate({}).valid === false;
+itsa.notEmpty().validate("").valid === false;
+itsa.notEmpty().validate(true).valid === false;
+itsa.notEmpty().validate(1).valid === false;
 ```
 
 
