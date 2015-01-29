@@ -20,6 +20,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [any](#itsaanyvalidator--validator)
      - [array](#itsaarrayexample-allowextraitems)
      - [arrayOf](#itsaarrayofexample)
+     - [boolean](#itsaboolean)
      - [custom](#itsacustomvalidatorfunction)
      - [default](#itsadefaultdefaultvalue)
      - [equal](#itsaequalexamplevalue)
