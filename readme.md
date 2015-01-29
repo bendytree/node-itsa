@@ -23,6 +23,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [custom](#itsacustomvalidatorfunction)
      - [default](#itsadefaultdefaultvalue)
      - [equal](#itsaequalexamplevalue)
+     - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
      - [object](#itsaobjectexample-allowextrafields)
      - [string](#itsastring)
@@ -411,6 +412,32 @@ var validator = itsa.object({
   type: "db.user"
 });
 validator.validate({type:"db.product"}).valid === false;
+```
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.matches(regexp)
+
+Succeeds if the regexp matches the given value using `rx.test`. Non string values
+can be compared against according to JavaScripts implicit type conversion.
+
+
+##### Arguments
+
+ - `regexp` - Required. A JavaScript regular expression.
+
+##### Examples
+
+``` js
+itsa.matches(/.at/).validate("hat").valid === true;
+itsa.matches(/.at/).validate("HAT").valid === false;
+itsa.matches(/.at/i).validate("HAT").valid === true;
+itsa.matches(/.at/).validate("hut").valid === false;
+itsa.matches(/99/).validate(99).valid === true;
 ```
 
 
