@@ -26,6 +26,8 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [default](#itsadefaultdefaultvalue)
      - [empty](#itsaempty)
      - [equal](#itsaequalexamplevalue)
+     - [false](#itsafalse)
+     - [falsy](#itsafalsy)
      - [integer](#itsainteger)
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
@@ -34,11 +36,14 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
      - [string](#itsastring)
+     - [true](#itsatrue)
+     - [truthy](#itsatruthy)
      - [undefined](#itsaundefined)
      - [update](#itsaupdatedefaultvalue)
  - [Extending Itsa](#extending-itsa)
  - [Custom Error Messages](#custom-error-messages)
  - [Short Circuiting](#short-circuiting)
+ - [Pull Requests](#pull-requests)
  - [Alternative Libraries](#alternative-libraries)
  - [License](#license)
  - [Todo](#todo)
@@ -524,6 +529,57 @@ itsa.integer().validate(Number.POSITIVE_INFINITY).valid === false;
 
 
 
+
+
+
+----------------------------------------------------------------------
+
+### itsa.false()
+
+Valid strictly when the value is the JavaScript boolean `false`. To validate falsy values, use the `.falsy()` validator.
+
+##### Examples
+
+``` js
+itsa.false().validate(false).valid === true;
+itsa.false().validate(0).valid === false;
+itsa.false().validate(undefined).valid === false;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.falsy()
+
+Valid for values who are "falsy". In other words, values who evaluate to false when converted to
+a boolean via JavaScript's implicit type casting.  Other validators of interest include `itsa.false()`,
+`itsa.undefined()`, `itsa.null()`, `itsa.any(false, undefined, null)`, etc.
+
+##### Examples
+
+``` js
+itsa.falsy().validate(false).valid === true;
+itsa.falsy().validate(0).valid === true;
+itsa.falsy().validate(undefined).valid === true;
+itsa.falsy().validate(null).valid === true;
+itsa.falsy().validate(true).valid === false;
+itsa.falsy().validate(1).valid === false;
+itsa.falsy().validate([]).valid === false;
+```
+
+
+
+
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.matches(regexp)
@@ -732,6 +788,56 @@ itsa.string().validate(null).valid === false;
 
 
 
+
+
+----------------------------------------------------------------------
+
+### itsa.true()
+
+Valid strictly when the value is the JavaScript boolean `true`. To validate truthy values, use the `.truthy()` validator.
+
+##### Examples
+
+``` js
+itsa.true().validate(true).valid === true;
+itsa.true().validate(1).valid === false;
+itsa.true().validate("red").valid === false;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.truthy()
+
+Valid for values who are "truthy". In other words, values who evaluate to `true` when converted to
+a boolean via JavaScript's implicit type casting.
+
+##### Examples
+
+``` js
+itsa.truthy().validate(true).valid === true;
+itsa.truthy().validate(1).valid === true;
+itsa.truthy().validate("red").valid === true;
+itsa.truthy().validate([]).valid === true;
+itsa.truthy().validate(false).valid === false;
+itsa.truthy().validate(0).valid === false;
+itsa.truthy().validate(null).valid === false;
+itsa.truthy().validate(undefined).valid === false;
+```
+
+
+
+
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.undefined()
@@ -871,6 +977,32 @@ result.logs[0].valid === false;
 result.logs[0].validator === "string";
 ```
 
+
+
+
+
+
+# Pull Requests
+
+Pull requests are welcome for:
+
+ - bugs
+ - new validators that would be commonly useful
+ - features that make sense
+ - readme typos, clarity
+
+For code changes, please include appropritate tests. You can run tests by cloning the repo,
+run `npm install`, and then `npm test`.
+
+##### New Validators
+
+To add a new validator:
+
+ - Explain the new validator to the readme and to the table of contents
+ - Create a new test in `/test` that verifies the behavior
+ - Create the new validator in `/lib/validators`. `matches.js` is a good example.
+ - Register the validator to `/lib/index.js`
+ - Make sure tests are successful
 
 
 
