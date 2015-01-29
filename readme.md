@@ -20,6 +20,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [any](#itsaanyvalidator--validator)
      - [array](#itsaarrayexample-allowextraitems)
      - [arrayOf](#itsaarrayofexample)
+     - [between](#itsabetween)
      - [boolean](#itsaboolean)
      - [custom](#itsacustomvalidatorfunction)
      - [date](#itsadate)
@@ -29,7 +30,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [false](#itsafalse)
      - [falsy](#itsafalsy)
      - [integer](#itsainteger)
-     - [len](#itsalenexactorminmax)
+     - [len](#itsalenexactormin-max)
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
      - [minLength](#itsaminlengthmin)
@@ -38,10 +39,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [null](#itsanull)
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
+     - [over](#itsaover)
      - [string](#itsastring)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
      - [undefined](#itsaundefined)
+     - [under](#itsaunder)
      - [update](#itsaupdatedefaultvalue)
  - [Extending Itsa](#extending-itsa)
  - [Custom Error Messages](#custom-error-messages)
@@ -286,6 +289,51 @@ itsa.arrayOf(itsa.string()).validate(["red", 42]).valid === false;
 ```
 
 If you care about the number of items in an array, use the `itsa.maxLength(...)` validator, etc.
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.between(min, max[, inclusive])
+
+Validate whether your data is between the `min` and `max` value using the `<` and `>` operators.
+
+By default, the check is "exclusive" meaning the actual min and max values are not considered valid. You
+can change this by passing `true` for the third argument.
+
+##### Arguments
+
+ - `min` - Required. The minimum allowed value (minimum excluded).
+ - `max` - Required. The maximum allowed value (maximum excluded).
+ ` `inclusive` - Optional. Boolean. Default is `false`. Pass `true` to do an inclusive check.
+
+##### Exclusive Example
+
+``` js
+itsa.between(3, 5).validate(4).value === true;
+itsa.between(3, 5).validate(3).value === false;
+itsa.between(3, 5).validate(5).value === false;
+itsa.between("a", "c").validate("b").value === true;
+itsa.between("a", "c").validate("c").value === false;
+itsa.between(new Date(1300000000000), new Date(1500000000000)).validate(new Date(1400000000000)).value === true;
+itsa.between(new Date(1300000000000), new Date(1500000000000)).validate(new Date(1300000000000)).value === false;
+```
+
+##### Inclusive Example
+
+``` js
+itsa.between(3, 5, true).validate(3).value === true;
+itsa.between(3, 5, true).validate(5).value === true;
+itsa.between("a", "c", true).validate("c").value === true;
+itsa.between(new Date(1300000000000), new Date(1500000000000), true).validate(new Date(1300000000000)).value === true;
+```
+
+
 
 
 
@@ -614,7 +662,7 @@ itsa.matches(/99/).validate(99).valid === true;
 
 ### itsa.len(exactOrMin, max)
 
-NOTE: I wish this was called `.length(...)` but you can redefine the `length` property of a constructor.
+NOTE: I wish this was called `.length(...)` but `length` cannot be set on a constructor.
 
 This validator requires your data to meet one of the following conditions:
 
@@ -923,6 +971,48 @@ itsa.object({name:itsa.string()}, true).validate({name:"Bob", color:"red"}).vali
 ```
 
 
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.over(value [, inclusive])
+
+Valid when the data is more than (`>`) the value.
+
+By default, the comparison is not inclusive, but you can pass `true` as the second value to do an inclusive (`>=`) comparison instead.
+
+If you need to do a range check, use the `.between(...)` validator.
+
+##### Arguments
+
+ - `value` - Required. The minimum number, date, string, etc allow (not inclusive)
+ - `inclusive` - Optional. Default `false`. `true` makes the comparison check inclusive.
+
+##### Examples
+
+``` js
+//exclusive
+itsa.over(5).validate(8).valid === true;
+itsa.over(5).validate(5).valid === false;
+itsa.over(new Date(1222563421430)).validate(new Date()).valid === true;
+itsa.over("b").validate("c").valid === true;
+itsa.over("b").validate("a").valid === false;
+
+//inclusive
+itsa.over(5, true).validate(5).valid === true;
+itsa.over("a", true).validate("a").valid === true;
+```
+
+
+
+
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.string()
@@ -1016,6 +1106,41 @@ itsa.undefined().validate(null).valid === false;
 itsa.undefined().validate().valid === false;
 ```
 
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.under(value [, inclusive])
+
+Valid when the data is less than (`<`) the value.
+
+By default, the comparison is not inclusive, but you can pass `true` as the second value to do an inclusive (`<=`) comparison instead.
+
+If you need to do a range check, use the `.between(...)` validator.
+
+##### Arguments
+
+ - `value` - Required. The max number, date, string, etc allow (not inclusive)
+ - `inclusive` - Optional. Default `false`. `true` makes the comparison check inclusive.
+
+##### Examples
+
+``` js
+//exclusive
+itsa.under(5).validate(3).valid === true;
+itsa.under(5).validate(5).valid === false;
+itsa.under(new Date()).validate(new Date(1222563421430)).valid === true;
+itsa.under("b").validate("a").valid === true;
+itsa.under("b").validate("c").valid === false;
+
+//inclusive
+itsa.under(5, true).validate(5).valid === true;
+itsa.under("a", true).validate("a").valid === true;
+```
 
 
 
