@@ -22,6 +22,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [arrayOf](#itsaarrayofexample)
      - [boolean](#itsaboolean)
      - [custom](#itsacustomvalidatorfunction)
+     - [date](#itsadate)
      - [default](#itsadefaultdefaultvalue)
      - [empty](#itsaempty)
      - [equal](#itsaequalexamplevalue)
@@ -335,6 +336,28 @@ result.describe() === "Value does not begin with `db.`";
 
 Of course, this example is contrived. You'd probably use a built-in validator
 to do this check.
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.date()
+
+Valid when data is a JavaScript date and is not an "Invalid Date" Date object.
+
+``` js
+itsa.date().validate(new Date()).valid === true;
+itsa.date().validate(new Date(1524644932046)).valid === true;
+itsa.date().validate(new Date("red")).valid === false;
+itsa.date().validate(1524644932046).valid === false;
+itsa.date().validate(null).valid === false;
+```
+
+
 
 
 
