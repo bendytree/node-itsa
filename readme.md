@@ -19,6 +19,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
  - [Validators](#validators)
      - [any](#itsaanyvalidator--validator)
      - [array](#itsaarrayexample-allowextraitems)
+     - [arrayOf](#itsaarrayofexample)
      - [custom](#itsacustomvalidatorfunction)
      - [default](#itsadefaultdefaultvalue)
      - [equal](#itsaequalexamplevalue)
@@ -195,7 +196,9 @@ itsa.any(itsa.string().maxLength(3), undefined, null);
 
 ### itsa.array([example[, allowExtraItems]])
 
-This validator succeeds when the data is a JavaScript array.
+Like the `.arrayOf` validator, this succeeds when the data is a JavaScript array. You may
+optionally validate the arrays items according to their index.
+
 
 ``` js
 itsa.array().validate([]).valid === true;
@@ -213,6 +216,8 @@ You can optionally validate the items within an array by passing an "example" ar
 data's array will be validated according to its index. For example, the first validator will be run against
 the first item in the array, etc.
 
+NOTE: If each array item should have the same validation then use the `itsa.arrayOf` validator (below).
+
 ``` js
 itsa.array([itsa.string()]).validate(["red"]).valid === true;
 itsa.array([itsa.string()]).validate([]).valid === false;
@@ -229,6 +234,43 @@ To allow extra items, pass `true` as the second parameter.
 itsa.array([itsa.string()]).validate(["red", 42]).valid === false;
 itsa.array([itsa.string()], true).validate(["red", 42]).valid === true;
 ```
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.arrayOf(example)
+
+Like the `.array` validator, this succeeds when the data is a JavaScript array. You can additionally
+validate each item by passing in a validator.
+
+
+``` js
+itsa.array().validate([]).valid === true;
+itsa.array().validate({}).valid === false;
+```
+
+##### Arguments
+
+ - `example` - Optional. An itsa validator, function, or primitive equality check that will be run against each item in the array.
+
+##### Item Validation
+
+To validate the items of the array, pass in a validator.
+
+NOTE: If array items are different and should be validated by their index, then use the `itsa.array` validator (above).
+
+``` js
+itsa.arrayOf(itsa.string()).validate(["red", "blue"]).valid === true;
+itsa.arrayOf(itsa.string()).validate([]).valid === true;
+itsa.arrayOf(itsa.string()).validate(["red", 42]).valid === false;
+```
+
+If you care about the number of items in an array, use the `itsa.maxLength(...)` validator, etc.
+
+
 
 
 
