@@ -119,16 +119,37 @@ In this case, a string, number, or undefined would all be valid values.
 
 # Validate
 
-99% of the time, you'll pass a value to validate like `.validate(42)`.  Technically, the full capability
-of `validate` is:
+#### validate(value) -> result
 
-### validate(valueOrGetter[, setter])
+Once you've built up your fancy validator, just call validate with your value.
 
-##### Arguments
+It will return a result object that has `valid` set to true or false. You can also
+call `result.describe()` to get a string that describes the reason for failure.
 
- - `valueOrGetter` - Required. The value to be validated (string, object, array, etc). If a function is given then it is executed and the return value of that function is validated.
- - `setter` - Optional. A callback that is executed if the root value (to be validated) is changed using `default`, `modify`, etc. This callback exists for the sake of the internal api, but it is exposed since it may be useful.
+``` js
+ var validator = itsa.string().maxLength(5);
+ var result = validator.validate("Bob was here");
+ result.valid === false;
+ result.describe() === "Length is 12, max is 5";
+```
 
+#### Using a Getter
+
+You can also pass a function to `.validate(...)` instead of your actual value. Why would
+you want to do that? I don't know, but it's useful within the api. Your function will be
+called (possibly multiple times) and the return value is the data that is validated.
+
+
+#### Result Logs
+
+If `result.valid` and `result.describe()` aren't enough for you, then you can also
+use `result.logs` to get a list of the validation results. Validation results have the
+following properties:
+
+ - `path` - A string. Blank for your root object. For validators within an object or an array it will show where the data is located within your root object.
+ - `validator` - A string. The name of the validator that was executed.
+ - `message` - A string. The success or failure message describing the outcome of this validation.
+ - `valid` - A boolean. `true` when the specific validator succeeded. `false` when it failed.
 
 
 
