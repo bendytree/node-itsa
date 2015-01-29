@@ -52,5 +52,18 @@ describe('object fields', function(){
   });
 
 
+  /* EXTRA FIELDS */
+
+  it('if example object is not given, extra fields are allowed', function(){
+    assert.equal(itsa.object().validate({name:"bacon"}).valid, true);
+  });
+
+  it('if example object is given, extra fields are not allowed', function(){
+    assert.equal(itsa.object({}).validate({name:"bacon"}).valid, false);
+  });
+
+  it('if example object is given, extra fields can be allowed by passing true as second argument (allowExtraFields)', function(){
+    assert.equal(itsa.object({}, true).validate({name:"bacon"}).valid, true);
+  });
 
 });

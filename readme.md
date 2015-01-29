@@ -189,6 +189,48 @@ itsa.any(itsa.string().maxLength(3), undefined, null);
 
 
 
+
+----------------------------------------------------------------------
+
+### itsa.array([example[, allowExtraItems]])
+
+This validator succeeds when the data is a JavaScript array.
+
+``` js
+itsa.array().validate([]).valid === true;
+itsa.array().validate({}).valid === false;
+```
+
+##### Arguments
+
+ - `example` - Optional. Array. Must be an array of zero or more validators if given.
+ - `allowExtraItems` - Optional. Boolean. Default is true if no example is given. Default is false if example is given. See below.
+
+##### Item Validation
+
+You can optionally validate the items within an array by passing an "example" array. Each item in your
+data's array will be validated according to its index. For example, the first validator will be run against
+the first item in the array, etc.
+
+``` js
+itsa.array([itsa.string()]).validate(["red"]).valid === true;
+itsa.array([itsa.string()]).validate([]).valid === false;
+itsa.array([itsa.string()]).validate([42]).valid === false;
+```
+
+##### Allowing Extra Items
+
+If there are more items in your real array compared to your example array, then this is considered invalid.
+
+To allow extra items, pass `true` as the second parameter.
+
+``` js
+itsa.array([itsa.string()]).validate(["red", 42]).valid === false;
+itsa.array([itsa.string()], true).validate(["red", 42]).valid === true;
+```
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.custom(validatorFunction)
@@ -357,7 +399,7 @@ If you omit a max value number then an error will be thrown.
 
 ----------------------------------------------------------------------
 
-### itsa.object(example)
+### itsa.object(example, allowExtraFields)
 
 The object validator succeeds when the data is an actual JavaScript object `{}`.
 
@@ -369,7 +411,8 @@ nest objects and arrays within objects and arrays.
 
 ##### Arguments
 
- - `example` - Optiona. A hash where the keys are the keys to verify and the values are `itsa` validators, function validators, or primitives for equality checks.
+ - `example` - Optional. A hash where the keys are the keys to verify and the values are `itsa` validators, function validators, or primitives for equality checks.
+ - `allowExtraFields` - Optional. Defaults to true when no example is given. Defaults to false if example is given. See below.
 
 ##### Examples
 
@@ -392,6 +435,14 @@ validator.validate({
 }).valid === true;
 ```
 
+##### Allowing Extra Fields
+
+If you validate fields (by passing an example object), then any extra fields will be considered invalid.
+In other words, if you only validate a `name` field but the data also contains an `email` field then
+validation will fail.
+
+If you want to allow any extra fields that you didn't define in your example, then pass `true` as the
+second parameter to `itsa.object(..., true)` which means `allowExtraFields`.
 
 
 ----------------------------------------------------------------------

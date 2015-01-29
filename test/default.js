@@ -61,7 +61,7 @@ describe('default', function(){
   });
 
   it('works on nested fields of an object', function(){
-    var obj = { color: null };
+    var obj = { border: null };
     var validator = itsa.object({
       border: itsa.default({}).object({
         color: itsa.default("yellow")
