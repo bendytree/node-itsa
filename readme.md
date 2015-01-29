@@ -17,10 +17,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
  - [Required vs Optional](#required-vs-optional)
  - [Validate](#validate)
  - [Validators](#validators)
+     - [after](#itsaaftervalue--inclusive)
      - [any](#itsaanyvalidator--validator)
      - [array](#itsaarrayexample-allowextraitems)
      - [arrayOf](#itsaarrayofexample)
-     - [between](#itsabetween)
+     - [before](#itsabeforevalue--inclusive)
+     - [between](#itsabetweenmin-max-inclusive)
      - [boolean](#itsaboolean)
      - [custom](#itsacustomvalidatorfunction)
      - [date](#itsadate)
@@ -39,14 +41,15 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [null](#itsanull)
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
-     - [over](#itsaover)
+     - [over](#itsaovervalue--inclusive)
      - [string](#itsastring)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
      - [undefined](#itsaundefined)
-     - [under](#itsaunder)
+     - [under](#itsaundervalue--inclusive)
      - [update](#itsaupdatedefaultvalue)
  - [Extending Itsa](#extending-itsa)
+ - [Aliasing Validators](#aliasing-validators)
  - [Custom Error Messages](#custom-error-messages)
  - [Short Circuiting](#short-circuiting)
  - [Pull Requests](#pull-requests)
@@ -181,6 +184,18 @@ following properties:
 
 # Validators
 
+
+
+
+### itsa.after(value[, inclusive])
+
+An alias for [itsa.over(...)](#itsaovervalue--inclusive).
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.any(validator [, validator])
 
 Checks each validator in order and stops once it finds a validator that succeeds. If none
@@ -289,6 +304,19 @@ itsa.arrayOf(itsa.string()).validate(["red", 42]).valid === false;
 ```
 
 If you care about the number of items in an array, use the `itsa.maxLength(...)` validator, etc.
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.before(value[, inclusive])
+
+An alias for [itsa.under(...)](#itsaundervalue--inclusive).
 
 
 
@@ -1230,6 +1258,37 @@ for more information.
 NOTE: both the builder function and the checker are called with your `itsa` instance as the context. This gives you
 access to the itsa context (which is useful in advanced situations). If you need your context to be something else, then
 bind it yourself.
+
+
+
+
+
+
+
+# Aliasing Validators
+
+If you find a validator name appaulling, then you can create an alias
+by calling `itsa.alias`.
+
+#### itsa.alias(oldName, newName)
+
+ - `oldName` - Required. String. The built in name of the validator.
+ - `newName` - Required. String. The new name for the validator.
+
+##### Example
+
+``` js
+itsa.alias("integer", "int");
+itsa.int().validate(3).valid === true;
+```
+
+
+
+
+
+
+
+
 
 
 # Custom Error Messages
