@@ -24,10 +24,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [before](#itsabeforevalue--inclusive)
      - [between](#itsabetweenmin-max-inclusive)
      - [boolean](#itsaboolean)
+     - [contains](#itsacontainsvalue)
      - [custom](#itsacustomvalidatorfunction)
      - [date](#itsadate)
      - [default](#itsadefaultdefaultvalue)
      - [empty](#itsaempty)
+     - [endsWith](#itsaendswithvalue)
      - [equal](#itsaequalexamplevalue)
      - [false](#itsafalse)
      - [falsy](#itsafalsy)
@@ -42,6 +44,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
      - [over](#itsaovervalue--inclusive)
+     - [startsWith](#itsastartswithvalue)
      - [string](#itsastring)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
@@ -386,6 +389,35 @@ For a weaker test, consider `itsa.falsy()` or `itsa.truthy()`.
 
 
 
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.contains(value)
+
+Performs an `indexOf` check on strings and arrays to see if the given value is found.
+
+##### Arguments
+
+ - `value` - Required. The value (string or array item) that should be found within your data
+
+##### Examples
+
+``` js
+itsa.contains("red").validate("redbird").valid === true;
+itsa.contains(42).validate([42, 43]).valid === true;
+itsa.contains("blue").validate("redbird").valid === false;
+itsa.contains(99).validate([42, 43]).valid === false;
+```
+
+
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.custom(validatorFunction)
@@ -520,6 +552,33 @@ itsa.empty().validate(undefined).valid === false;
 itsa.empty().validate([42]).valid === false;
 itsa.empty().validate({name:"Bob"}).valid === false;
 itsa.empty().validate("Bob").valid === false;
+```
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.endsWith(value)
+
+Performs an `indexOf` check on strings and arrays to see if the given value is found at the very end.
+
+##### Arguments
+
+ - `value` - Required. The value (string or array item) that should be found at the end of your data.
+
+##### Examples
+
+``` js
+itsa.endsWith("red").validate("bigred").valid === true;
+itsa.endsWith(42).validate([5, 42]).valid === true;
+itsa.endsWith("red").validate("redbird").valid === false;
+itsa.endsWith(5).validate([5, 42]).valid === false;
 ```
 
 
@@ -1032,6 +1091,34 @@ itsa.over("b").validate("a").valid === false;
 //inclusive
 itsa.over(5, true).validate(5).valid === true;
 itsa.over("a", true).validate("a").valid === true;
+```
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.startsWith(value)
+
+Performs an `indexOf` check on strings and arrays to see if the given value is found at the very beginning.
+
+##### Arguments
+
+ - `value` - Required. The value (string or array item) that should be found at the beginning of your data.
+
+##### Examples
+
+``` js
+itsa.startsWith("red").validate("redbird").valid === true;
+itsa.startsWith(42).validate([42, 5]).valid === true;
+itsa.startsWith("red").validate("bigred").valid === false;
+itsa.startsWith(42).validate([5, 42]).valid === false;
+itsa.startsWith(null).validate(null).valid === false;
 ```
 
 
