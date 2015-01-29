@@ -290,6 +290,7 @@ itsa.boolean().validate(1).valid === false;
 itsa.boolean().validate(0).valid === false;
 ```
 
+For a weaker test, consider `itsa.falsy()` or `itsa.truthy()`.
 
 
 
@@ -382,6 +383,32 @@ obj.created; //new Date()
 ```
 
 To change data regardless of the original value, use `.update()`.
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.empty()
+
+Valid for empty arrays, objects with no keys, or strings with length 0. Any other value is invalid.
+
+##### Examples
+
+``` js
+itsa.empty().validate([]).valid === true;
+itsa.empty().validate({}).valid === true;
+itsa.empty().validate("").valid === true;
+itsa.empty().validate(null).valid === false;
+itsa.empty().validate(undefined).valid === false;
+itsa.empty().validate([42]).valid === false;
+itsa.empty().validate({name:"Bob"}).valid === false;
+itsa.empty().validate("Bob").valid === false;
+```
+
 
 
 
