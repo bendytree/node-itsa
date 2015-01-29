@@ -18,6 +18,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
  - [Validate](#validate)
  - [Validators](#validators)
      - [after](#itsaaftervalue--inclusive)
+     - [alphanumeric](#itsaalphanumeric)
      - [any](#itsaanyvalidator--validator)
      - [array](#itsaarrayexample-allowextraitems)
      - [arrayOf](#itsaarrayofexample)
@@ -34,8 +35,11 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [equal](#itsaequalexamplevalue)
      - [false](#itsafalse)
      - [falsy](#itsafalsy)
+     - [hex](#itsahex)
      - [integer](#itsainteger)
+     - [json](#itsajson)
      - [len](#itsalenexactormin-max)
+     - [lowercase](#itsalowercase)
      - [matches](#itsamatchesregexp)
      - [maxLength](#itsamaxlengthmax)
      - [minLength](#itsaminlengthmin)
@@ -52,6 +56,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
      - [update](#itsaupdatedefaultvalue)
+     - [uppercase](#itsauppercase)
  - [Extending Itsa](#extending-itsa)
  - [Aliasing Validators](#aliasing-validators)
  - [Custom Error Messages](#custom-error-messages)
@@ -194,6 +199,29 @@ following properties:
 ### itsa.after(value[, inclusive])
 
 An alias for [itsa.over(...)](#itsaovervalue--inclusive).
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.alphanumeric()
+
+Valid for a string or number that only contains 0-9, a-z, A-Z characters.
+
+If you care about case, use the `.lowercase()` or `.uppercase()` validator as well.
+
+##### Example
+
+``` js
+itsa.alphanumeric().validate("ABCabcXYZxyz123").valid === true;
+itsa.alphanumeric().validate(34).valid === true;
+itsa.alphanumeric().validate("abc-def").valid === false;
+```
+
 
 
 
@@ -666,6 +694,28 @@ validator.validate({type:"db.product"}).valid === false;
 
 ----------------------------------------------------------------------
 
+### itsa.hex()
+
+Valid for a string or number that only contains 0-9, a-f, A-F characters.
+
+If you care about case, use the `.lowercase()` or `.uppercase()` validator as well.
+
+##### Example
+
+``` js
+itsa.hex().validate("faC8").valid === true;
+itsa.hex().validate(34).valid === true;
+itsa.hex().validate("aabbxyz").valid === false;
+```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.integer()
 
 Valid for numbers with no decimal.
@@ -734,6 +784,27 @@ itsa.falsy().validate(null).valid === true;
 itsa.falsy().validate(true).valid === false;
 itsa.falsy().validate(1).valid === false;
 itsa.falsy().validate([]).valid === false;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.json()
+
+Valid for strings that can be parsed as JSON using `JSON.parse()`.
+
+##### Examples
+
+``` js
+itsa.json().validate("{}").valid === true;
+itsa.json().validate("[42]").valid === true;
+itsa.json().validate("[sdf").valid === false;
 ```
 
 
@@ -856,6 +927,31 @@ itsa.len(3,4).validate({length:4}).valid === true;
 //other
 itsa.len(0,100).validate(null).valid === false;
 ```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.lowercase()
+
+Validates that a string does not contain uppercase characters A-Z.
+
+No changes are made to the original string, only validation.
+
+##### Example
+
+``` js
+itsa.lowercase().validate("abcdefg").valid === true;
+itsa.lowercase().validate("a-b.c").valid === true;
+itsa.lowercase().validate(34).valid === false;
+itsa.lowercase().validate("abcABC").valid === false;
+```
+
+
 
 
 
@@ -1324,6 +1420,29 @@ var validator = itsa.object({
 var obj = { age: "18" };
 validator.validate(obj).valid === true;
 obj.age === 18;
+```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.uppercase()
+
+Validates that a string does not contain lowercase characters a-z.
+
+No changes are made to the original string, only validation.
+
+##### Example
+
+``` js
+itsa.uppercase().validate("ABCDEFG").valid === true;
+itsa.uppercase().validate("A-B.C").valid === true;
+itsa.uppercase().validate(34).valid === false;
+itsa.uppercase().validate("abcABC").valid === false;
 ```
 
 
