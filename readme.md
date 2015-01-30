@@ -51,11 +51,11 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [over](#itsaovervalue--inclusive)
      - [startsWith](#itsastartswithvalue)
      - [string](#itsastring)
+     - [to](#itsatovalueorgetter)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
-     - [update](#itsaupdatedefaultvalue)
      - [uppercase](#itsauppercase)
  - [Extending Itsa](#extending-itsa)
  - [Aliasing Validators](#aliasing-validators)
@@ -1270,6 +1270,62 @@ itsa.string().validate(null).valid === false;
 
 
 
+----------------------------------------------------------------------
+
+### itsa.to(valueOrGetter)
+
+Use `.to(...)` to change a value.
+
+NOTE: `to` can only be used within a parent object (like an object or array), otherwise there is no way to set the new value
+
+All itsa validators that change a value begin with either "default" or "to".
+
+##### Arguments
+
+ - `valueOrGetter` - Required. The new value or a function that returns the new value.
+
+If you provide a function, then it will receive the current value and should return the new value. If you
+wish to leave the value unchanged, then return the same value you receive. In other words, returning `undefined`
+will set the value to `undefined`.
+
+##### Setting A Brand New Value
+
+You might use this if you have an `updated` field that should always have the latest date:
+
+``` js
+var currentDate = function(val){ return new Date(); };
+var validator = itsa.object({
+  updated: itsa.to(currentDate)
+});
+
+var obj = { updated: new Date(0) };
+obj.updated; //1970
+validator.validate(obj);
+obj.updated; //now
+```
+
+##### Changing The Original Data
+
+Instead of blindly overriding a value, you may want to change the data based on its current value.
+For example, maybe you want a chance to do some type conversion before you run your validators. Your
+updater function will receive the current value as the first parameter.
+
+``` js
+var int = function(val){ return parseInt(val); };
+var validator = itsa.object({
+  age: itsa.to(int).number()
+});
+
+var obj = { age: "18" };
+validator.validate(obj).valid === true;
+obj.age === 18;
+```
+
+
+
+
+
+
 
 
 
@@ -1376,50 +1432,6 @@ itsa.under("b").validate("c").valid === false;
 //inclusive
 itsa.under(5, true).validate(5).valid === true;
 itsa.under("a", true).validate("a").valid === true;
-```
-
-
-
-
-
-
-----------------------------------------------------------------------
-
-### itsa.update(defaultValue)
-
-Use `.update(...)` to give yourself the opportunity to change a value, even if the original
-value was not falsy.
-
-##### Setting A Brand New Value
-
-You might use this if you have an `updated` field that always gets updated:
-
-``` js
-var validator = itsa.object({
-  updated: itsa.update(function(val){ return new Date(); })
-});
-
-//updated on 1970
-var obj = { updated: new Date(0) };
-
-validator.validate(obj);
-obj.updated; //now
-```
-
-##### Changing The Original Data
-
-Instead of blindly overriding a value, you may want to change the data based on its current value.
-For example, maybe you want a chance to do some type conversion before you run your validators. Your
-updater function will receive the current value as the first parameter.
-
-``` js
-var validator = itsa.object({
-  age: itsa.update(function(val){ return parseInt(val); }).number()
-});
-
-var obj = { age: "18" };
-validator.validate(obj).valid === true;
-obj.age === 18;
 ```
 
 

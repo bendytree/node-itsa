@@ -64,7 +64,7 @@ describe('array', function(){
 
   it('update values can be used in arrays', function(){
     var arr = [];
-    var result = itsa.array([itsa.update("red").string()]).validate(arr);
+    var result = itsa.array([itsa.to("red").string()]).validate(arr);
     assert.equal(result.valid, true, "valid");
     assert.equal(arr.length, 1, "array length");
     assert.equal(arr[0], "red", "red");
