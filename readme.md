@@ -204,7 +204,7 @@ An alias for [itsa.over(...)](#itsaovervalue--inclusive).
 
 
 
- 
+
 
 
 ----------------------------------------------------------------------
@@ -520,8 +520,13 @@ itsa.date().validate(null).valid === false;
 
 In some cases, you may want to actually set, update, default, or otherwise change the data that is being validated.
 
+`default` lets you set a value if the original value was falsy.
+
 NOTE: Data changes (like `default` and `update`) can only be used within an object or array - otherwise itsa has no way of actually setting the new value.
 
+##### Arguments
+
+ - `defaultValue` - Required. The value to become the new value if the original is falsy. If your defaultValue is a function, then it will be evaluated and the result is the new value.
 
 ##### Default Value Functions
 
@@ -558,6 +563,32 @@ obj.created; //new Date()
 ```
 
 To change data regardless of the original value, use `.update()`.
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.defaultNow()
+
+Similar to `default`, this sets a value to `new Date()` if the original value is falsy.
+
+##### Examples
+
+```js
+var validator = itsa.object({
+  created: itsa.defaultNow().date()
+});
+
+var obj = {};
+validator.validate(obj);
+obj.created; //new Date()
+```
 
 
 
@@ -1329,6 +1360,30 @@ obj.age === 18;
 
 
 
+----------------------------------------------------------------------
+
+### itsa.toNow()
+
+Similar to `to` and `defaultNow`, this *always* sets a value to `new Date()`.
+
+##### Examples
+
+```js
+var validator = itsa.object({
+  updated: itsa.toNow().date()
+});
+
+var obj = {updated:"yesterday"};
+validator.validate(obj);
+obj.updated; //new Date()
+```
+
+
+
+
+
+
+
 
 ----------------------------------------------------------------------
 
@@ -1521,10 +1576,17 @@ itsa.uppercase().validate("abcABC").valid === false;
 
 # Extending Itsa
 
-Using `.custom(...)` validators are great for special, one-off validations. If you find yourself using
-a custom validator quite a bit then you may want to extend the itsa object with your custom validator.
+Using `.custom(...)` validators are great for special, one-off validations.
+
+Using `.to(...)` is a great way to do one-off data updates.
+
+If you find yourself using `custom` or `to` quite a bit, then you may want to extend the itsa object with your custom validator.
 
 This means you'll be able to call your validator like a first-class validator (ie. `itsa.number().myValidator()...`).
+
+Your validator will be able to return an error message and/or update the original value.
+
+##### Validator Example
 
 To extend `itsa`, call `extend` with a hash of your new validators:
 
@@ -1554,6 +1616,33 @@ access to the itsa context (which is useful in advanced situations). If you need
 bind it yourself.
 
 
+##### Updater Example
+
+Similarly, you can also add an extension that is able to update the original value.
+
+The second parameter passed to your checker function is a setter function. Keep in mind, this setter
+may be undefined if your validator is used without a parent object or array.  To update the value, just
+call the setter function with your new value.
+
+``` js
+//extending itsa
+itsa.extend({
+  randomFloat: function builder() {
+    return function checker(val, setter) {
+      if (!setter) { throw "Setters cannot be used without an object or array parent."; }
+      setter(Math.random());
+    };
+  }
+});
+
+//using the new extension
+var obj = {};
+var validator = itsa.object({
+  foo: itsa.randomFloat()
+});
+validator.validate(obj);
+obj.foo === 0.8437536523;
+```
 
 
 
