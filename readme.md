@@ -62,6 +62,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [toInteger](#itsatointegerradix)
      - [toLowercase](#itsatolowercase)
      - [toNow](#itsatonow)
+     - [toString](#itsatostring)
      - [toTrimmed](#itsatotrimmed)
      - [toUppercase](#itsatouppercase)
      - [default](#itsadefaultdefaultvalue)
@@ -1619,6 +1620,41 @@ var validator = itsa.object({
 var obj = {updated:"yesterday"};
 validator.validate(obj);
 obj.updated; //new Date()
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.toString()
+
+Replaces the original value with a toString version of the value. Conversion never fails or causes invalidation
+ because `String(data)` is used.
+
+##### Examples
+
+```js
+var convert = function (val) {
+  var obj = {val:val};
+  itsa.object({
+    val: itsa.toString()
+  }).validate(obj);
+  return obj.val;
+};
+
+convert("Bob") === "Bob";
+convert(42) === "42";
+convert() === "undefined";
+convert(undefined) === "undefined";
+convert(null) === "null";
+convert([]) === "";
+convert([1,2]) === "1,2";
+convert({a:1}) === "[object Object]";
 ```
 
 
