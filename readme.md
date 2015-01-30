@@ -58,6 +58,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [uppercase](#itsauppercase)
  - [Updaters](#updaters)
      - [to](#itsatovalueorgetter)
+     - [toDate](#itsatodate)
      - [toFloat](#itsatofloat)
      - [toInteger](#itsatointegerradix)
      - [toLowercase](#itsatolowercase)
