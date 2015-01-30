@@ -2041,9 +2041,8 @@ HTML Form Validators
 
 ## Todo
 
- - arrays
- - noOtherFields
- - unique
- - types (dates, numbers, boolean, etc)
-
+ - pre bundle
+ - npm publish?
+ - toRandom
+ - functions
 
