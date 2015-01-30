@@ -1499,6 +1499,63 @@ obj.age === 18;
 
 ----------------------------------------------------------------------
 
+### itsa.toDate()
+
+Tries to convert your data into a date using `new Date(data)`. If the resulting date is valid, then it will replace your original data. Otherwise
+the validator will fail.
+
+Additionally, falsy values are automatically considered invalid dates as well as arrays. For example `new Date(null)` evaluates to 1970, but here it would be considered invalid.
+Similarly, `new Date([1])` is technically considered `new Date("1")`, but here it is invalid because it is an array.
+
+WARNING: Parsing dates is [inconsistent](http://dygraphs.com/date-formats.html). Your best option is to parse the date yourself using a `.to` validator.
+
+##### Examples
+
+```js
+var obj = {started:"2012/03/13"};
+itsa.object({ started: itsa.toDate() }).validate(obj).valid === true;
+obj.started === new Date("2012/03/13");
+```
+
+```js
+var obj = {started:"today"};
+itsa.object({ started: itsa.toDate() }).validate(obj).valid === false;
+obj.started === "today";
+```
+
+##### MomentJS Example
+
+Your best option for parsing dates is [`momentjs`](http://momentjs.com/docs/#/parsing/). Here's how:
+
+```js
+var moment = require("moment");
+var toDate = function(val, setter){
+  if (!setter) { throw "Cannot set a value outside of an object or array."; }
+
+  var date = moment.parse(val, "YYYY/MM/DD");
+  if (date.isValid()){
+    setter(date.toDate());
+  }else{
+    return "Unable to convert to a date.";
+  }
+};
+
+var obj = { started:"2012/03/13" };
+itsa.object({
+  val: itsa.to(toDate)
+}).validate(obj).valid === true;
+obj.val === new Date("2012/03/13");
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.toFloat()
 
 Tries to convert the data to an float, using `parseFloat`. If the result would be `NaN` then the validation will fail and the value will be unchanged.
