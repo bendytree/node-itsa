@@ -58,6 +58,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [uppercase](#itsauppercase)
  - [Updaters](#updaters)
      - [to](#itsatovalueorgetter)
+     - [toInteger](#itsatointegerradix)
      - [toLowercase](#itsatolowercase)
      - [toNow](#itsatonow)
      - [toTrimmed](#itsatotrimmed)
@@ -1429,6 +1430,13 @@ user.created // is new Date()
 As always, order matters. For example, you'd probably want to trim a string before you validate it, so you should
 call `itsa.toTrimmed().email()...`.
 
+Also, updaters like `to` or `default` are not transactional. In other words, `itsa` will update values as it is
+validating your data. It has to do this since validations may depend on updated data. If you want an "all or nothing"
+approach then consider cloning your data before the validation.
+
+
+
+
 ----------------------------------------------------------------------
 
 ### itsa.to(valueOrGetter)
@@ -1478,6 +1486,49 @@ var validator = itsa.object({
 var obj = { age: "18" };
 validator.validate(obj).valid === true;
 obj.age === 18;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.toInteger(radix)
+
+Tries to convert the data to an integer, using `parseInt`. If the result is `NaN` then the validation will fail and the value will be unchanged.
+
+NOTE: If you omit the radix, older versions of `parseInt` would guess the radix. `itsa.toInteger` will default to radix 10 unless you specify otherwise.
+
+##### Arguments
+
+ - `radix` - Optional. Default is 10. The base of the number to be parsed.
+
+##### Success Example
+
+```js
+var validator = itsa.object({
+  age: itsa.toInteger()
+});
+
+var obj = {age:"08"};
+validator.validate(obj).valid === true;
+obj.age === 8;
+```
+
+##### Failure Example
+
+```js
+var validator = itsa.object({
+  age: itsa.toInteger()
+});
+
+var obj = {age:"young"};
+validator.validate(obj).valid === false;
+obj.age === "young";
 ```
 
 
