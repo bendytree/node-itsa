@@ -8,7 +8,7 @@ describe('to-string', function(){
     var convert = function (val) {
       var obj = {val:val};
       itsa.object({
-        val: itsa.toString()
+        val: itsa.toString().toString() //called twice to make sure `prototype.toString` isn't a problem
       }).validate(obj);
       return obj.val;
     };
