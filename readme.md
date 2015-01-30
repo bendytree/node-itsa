@@ -94,7 +94,7 @@ var itsa = require("itsa");
 If you need it client side and don't use browserify, then use `dist/itsa.js` for development (it has source maps) and
 use `dist/itsa.min.js` for production.
 
-    > itsa.min.js - 24K minified, 5K GZIPPED
+    > itsa.min.js - 24K minified, 5K gzipped
 
 
 ------------------------------------------------
