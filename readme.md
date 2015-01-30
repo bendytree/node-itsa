@@ -81,7 +81,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
 
 # Installation
 
-`itsa` has no dependencies and works on server or client via npm:
+`itsa` has no dependencies and works on via npm:
 
     > npm install itsa --save
 
@@ -89,8 +89,12 @@ no global variables, no extending of native objects. `itsa` is the only object e
 var itsa = require("itsa");
 ```
 
-Right now, there's no `itsa.js` that you can drop in to your client side, so you should use browserify.
-Pull requests that automatically bundle `itsa.js` and `itsa.min.js` are welcome.
+#### Without NPM or Browserify
+
+If you need it client side and don't use browserify, then use `dist/itsa.js` for development (it has source maps) and
+use `dist/itsa.min.js` for production.
+
+    > itsa.min.js - 24K minified, 5K GZIPPED
 
 
 ------------------------------------------------

@@ -20,12 +20,15 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "browserify": "^8.1.1",
     "chai": "1.10.0",
-    "mocha": "2.1.0"
+    "mocha": "2.1.0",
+    "uglify-js": "^2.4.16"
   },
   "author": "Josh Wright <josh@joshwright.com> (http://joshwright.com)",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha"
+    "test": "./node_modules/mocha/bin/mocha",
+    "bundle": "./node_modules/.bin/browserify index.js -d --s itsa -o dist/itsa.js; ./node_modules/.bin/uglifyjs dist/itsa.js -c > dist/itsa.min.js; du -h dist/itsa.min.js; echo \"GZIP:\"; gzip -c dist/itsa.min.js | wc -c;"
   },
   "license": "MIT",
   "bugs": {
