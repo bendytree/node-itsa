@@ -28,7 +28,6 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [contains](#itsacontainsvalue)
      - [custom](#itsacustomvalidatorfunction)
      - [date](#itsadate)
-     - [default](#itsadefaultdefaultvalue)
      - [email](#itsaemail)
      - [empty](#itsaempty)
      - [endsWith](#itsaendswithvalue)
@@ -51,13 +50,17 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [over](#itsaovervalue--inclusive)
      - [startsWith](#itsastartswithvalue)
      - [string](#itsastring)
-     - [to](#itsatovalueorgetter)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
      - [unique](#itsauniquegetter)
      - [uppercase](#itsauppercase)
+ - [Updaters](#updaters)
+     - [to](#itsatovalueorgetter)
+     - [toNow](#itsatonow)
+     - [default](#itsadefaultdefaultvalue)
+     - [defaultNow](#itsadefaultnow)
  - [Extending Itsa](#extending-itsa)
  - [Aliasing Validators](#aliasing-validators)
  - [Custom Error Messages](#custom-error-messages)
@@ -193,7 +196,6 @@ following properties:
 
 
 # Validators
-
 
 
 
@@ -504,90 +506,6 @@ itsa.date().validate(new Date(1524644932046)).valid === true;
 itsa.date().validate(new Date("red")).valid === false;
 itsa.date().validate(1524644932046).valid === false;
 itsa.date().validate(null).valid === false;
-```
-
-
-
-
-
-
-
-
-
-----------------------------------------------------------------------
-
-### itsa.default(defaultValue)
-
-In some cases, you may want to actually set, update, default, or otherwise change the data that is being validated.
-
-`default` lets you set a value if the original value was falsy.
-
-NOTE: Data changes (like `default` and `update`) can only be used within an object or array - otherwise itsa has no way of actually setting the new value.
-
-##### Arguments
-
- - `defaultValue` - Required. The value to become the new value if the original is falsy. If your defaultValue is a function, then it will be evaluated and the result is the new value.
-
-##### Default Value Functions
-
-Sometimes you'll want to set a default value. If the original data is falsy, then your new value is used:
-
-``` js
-var validator = itsa.object({
-  color: itsa.default("red").string().any("red", "white", "blue")
-});
-
-var obj = {};
-validator.validate(obj).valid === true;
-obj.color === "red";
-```
-
-Keep in mind, order matters. So if you did `.string().default("red")` then the string validator would fail
-before the default had a chance to get set.
-
-
-##### Default Value Functions
-
-In other cases, you'll want to set a `live` value as a default. For example, if the object doesn't have
-a created date then you'd want to set one. In this case, you'd pass a function to `.default(...)` that
-would be called and would return the default value.
-
-``` js
-var validator = itsa.object({
-  created: itsa.default(function(){ return new Date(); }).date()
-});
-
-var obj = {};
-validator.validate(obj).valid === true;
-obj.created; //new Date()
-```
-
-To change data regardless of the original value, use `.update()`.
-
-
-
-
-
-
-
-
-
-----------------------------------------------------------------------
-
-### itsa.defaultNow()
-
-Similar to `default`, this sets a value to `new Date()` if the original value is falsy.
-
-##### Examples
-
-```js
-var validator = itsa.object({
-  created: itsa.defaultNow().date()
-});
-
-var obj = {};
-validator.validate(obj);
-obj.created; //new Date()
 ```
 
 
@@ -1302,87 +1220,6 @@ itsa.string().validate(null).valid === false;
 
 
 
-----------------------------------------------------------------------
-
-### itsa.to(valueOrGetter)
-
-Use `.to(...)` to change a value.
-
-NOTE: `to` can only be used within a parent object (like an object or array), otherwise there is no way to set the new value
-
-All itsa validators that change a value begin with either "default" or "to".
-
-##### Arguments
-
- - `valueOrGetter` - Required. The new value or a function that returns the new value.
-
-If you provide a function, then it will receive the current value and should return the new value. If you
-wish to leave the value unchanged, then return the same value you receive. In other words, returning `undefined`
-will set the value to `undefined`.
-
-##### Setting A Brand New Value
-
-You might use this if you have an `updated` field that should always have the latest date:
-
-``` js
-var currentDate = function(val){ return new Date(); };
-var validator = itsa.object({
-  updated: itsa.to(currentDate)
-});
-
-var obj = { updated: new Date(0) };
-obj.updated; //1970
-validator.validate(obj);
-obj.updated; //now
-```
-
-##### Changing The Original Data
-
-Instead of blindly overriding a value, you may want to change the data based on its current value.
-For example, maybe you want a chance to do some type conversion before you run your validators. Your
-updater function will receive the current value as the first parameter.
-
-``` js
-var int = function(val){ return parseInt(val); };
-var validator = itsa.object({
-  age: itsa.to(int).number()
-});
-
-var obj = { age: "18" };
-validator.validate(obj).valid === true;
-obj.age === 18;
-```
-
-
-
-
-
-
-
-
-----------------------------------------------------------------------
-
-### itsa.toNow()
-
-Similar to `to` and `defaultNow`, this *always* sets a value to `new Date()`.
-
-##### Examples
-
-```js
-var validator = itsa.object({
-  updated: itsa.toNow().date()
-});
-
-var obj = {updated:"yesterday"};
-validator.validate(obj);
-obj.updated; //new Date()
-```
-
-
-
-
-
-
 
 
 ----------------------------------------------------------------------
@@ -1564,6 +1401,267 @@ itsa.uppercase().validate("abcABC").valid === false;
 ```
 
 
+
+
+# Updaters
+
+In some cases, you may want to actually set, update, default, or otherwise change the data that is being validated.
+
+`to` lets you modify the original value while `default` lets you define a value if the original was falsy.
+
+NOTE: changed data must be inside a parent object or array, otherwise there is no way to set the new value
+
+```js
+//DO NOT DO THIS (IT WON'T WORK)
+itsa.defaultNow().validate("test");
+
+//This works!
+var user = {};
+itsa.object({
+  created: itsa.defaultNow()
+}).validate(user);
+user.created // is new Date()
+```
+
+As always, order matters. For example, you'd probably want to trim a string before you validate it, so you should
+call `itsa.toTrimmed().email()...`.
+
+----------------------------------------------------------------------
+
+### itsa.to(valueOrGetter)
+
+Use `.to(...)` to change a value.
+
+NOTE: `to` can only be used within a parent object
+
+All itsa validators that change a value begin with either "default" or "to".
+
+##### Arguments
+
+ - `valueOrGetter` - Required. The new value or a function that returns the new value.
+
+If you provide a function, then it will receive the current value and should return the new value. If you
+wish to leave the value unchanged, then return the same value you receive. In other words, returning `undefined`
+will set the value to `undefined`.
+
+##### Setting A Brand New Value
+
+You might use this if you have an `updated` field that should always have the latest date:
+
+``` js
+var currentDate = function(val){ return new Date(); };
+var validator = itsa.object({
+  updated: itsa.to(currentDate)
+});
+
+var obj = { updated: new Date(0) };
+obj.updated; //1970
+validator.validate(obj);
+obj.updated; //now
+```
+
+##### Changing The Original Data
+
+Instead of blindly overriding a value, you may want to change the data based on its current value.
+For example, maybe you want a chance to do some type conversion before you run your validators. Your
+updater function will receive the current value as the first parameter.
+
+``` js
+var int = function(val){ return parseInt(val); };
+var validator = itsa.object({
+  age: itsa.to(int).number()
+});
+
+var obj = { age: "18" };
+validator.validate(obj).valid === true;
+obj.age === 18;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.toLowercase()
+
+If the data is a string, then it will be forced to lowercase. No validation is done.
+
+NOTE: if you wish to validate a string's case, use `.lowercase(...)`.
+
+##### Example
+
+```js
+var validator = itsa.object({
+  username: itsa.string().toLowercase()
+});
+
+var obj = {username:"Bob"};
+validator.validate(obj).valid === true;
+obj.username === "bob";
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.toNow()
+
+Similar to `to` and `defaultNow`, this *always* sets a value to `new Date()`.
+
+##### Examples
+
+```js
+var validator = itsa.object({
+  updated: itsa.toNow().date()
+});
+
+var obj = {updated:"yesterday"};
+validator.validate(obj);
+obj.updated; //new Date()
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.toTrimmed()
+
+If the data is a string, then leading and trailing whitespace will be trimmed using `String.prototype.trim()`.
+
+##### Example
+
+```js
+var validator = itsa.object({
+  email: itsa.toTrimmed().email()
+});
+
+var obj = {email:" bob@example.com  "};
+validator.validate(obj).valid === true;
+obj.email === "bob@example.com";
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.toUppercase()
+
+If the data is a string, then it will be forced to uppercase. No validation is done.
+
+NOTE: if you wish to validate a string's case, use `.uppercase(...)`.
+
+##### Example
+
+```js
+var validator = itsa.object({
+  employeeNumber: itsa.string().toUppercase()
+});
+
+var obj = {employeeNumber:"bobb8463"};
+validator.validate(obj).valid === true;
+obj.employeeNumber === "BOBB8463";
+```
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.default(defaultValue)
+
+`default` lets you set a value, but only if the original value was falsy.
+
+NOTE: Data changes (like `default` and `to`) can only be used within an object or array - otherwise itsa has no way of actually setting the new value.
+
+##### Arguments
+
+ - `defaultValue` - Required. The value to become the new value if the original is falsy. If your defaultValue is a function, then it will be evaluated and the result is the new value.
+
+##### Default Value Functions
+
+Sometimes you'll want to set a default value. If the original data is falsy, then your new value is used:
+
+``` js
+var validator = itsa.object({
+  color: itsa.default("red").string().any("red", "white", "blue")
+});
+
+var obj = {};
+validator.validate(obj).valid === true;
+obj.color === "red";
+```
+
+Keep in mind, order matters. So if you did `.string().default("red")` then the string validator would fail
+before the default had a chance to get set.
+
+
+##### Default Value Functions
+
+In other cases, you'll want to set a `live` value as a default. For example, if the object doesn't have
+a created date then you'd want to set one. In this case, you'd pass a function to `.default(...)` that
+would be called and would return the default value.
+
+``` js
+var validator = itsa.object({
+  created: itsa.default(function(){ return new Date(); }).date()
+});
+
+var obj = {};
+validator.validate(obj).valid === true;
+obj.created; //new Date()
+```
+
+To change data regardless of the original value, use `.update()`.
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.defaultNow()
+
+Similar to `default`, this sets a value to `new Date()` if the original value is falsy.
+
+##### Examples
+
+```js
+var validator = itsa.object({
+  created: itsa.defaultNow().date()
+});
+
+var obj = {};
+validator.validate(obj);
+obj.created; //new Date()
+```
 
 
 
