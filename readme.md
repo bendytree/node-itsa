@@ -56,6 +56,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [truthy](#itsatruthy)
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
+     - [unique](#itsauniquegetter)
      - [uppercase](#itsauppercase)
  - [Extending Itsa](#extending-itsa)
  - [Aliasing Validators](#aliasing-validators)
@@ -1434,6 +1435,56 @@ itsa.under(5, true).validate(5).valid === true;
 itsa.under("a", true).validate("a").valid === true;
 ```
 
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.unique(getter)
+
+Valid only for arrays, objects, or strings where each item (or field value, or character) is unique according to a strict
+equality test (`===`).
+
+##### Arguments
+
+ - `getter` - Optional. A function that recieves the item and should return the value that should be compared by uniqueness. If a value is given other than a function, then it is used to pluck the value to be evaluated.
+
+##### Example
+
+``` js
+//Array
+itsa.unique().validate([]).valid === true;
+itsa.unique().validate([1,2,3]).valid === true;
+itsa.unique().validate([1,2,2]).valid === false;
+
+//Object
+itsa.unique().validate({}).valid === true;
+itsa.unique().validate({a:1,b:2,c:3}).valid === true;
+itsa.unique().validate({a:1,b:2,c:2}).valid === false;
+
+//String
+itsa.unique().validate("").valid === true;
+itsa.unique().validate("abc").valid === true;
+itsa.unique().validate("aab").valid === false;
+
+```
+
+##### Getter Example
+
+``` js
+itsa.unique(function(obj){ return obj.id; }).validate([{id:11},{id:12}]).valid === true;
+itsa.unique(function(obj){ return obj.id; }).validate([{id:11},{id:11}]).valid === false;
+```
+
+##### Pluck Example
+
+``` js
+itsa.unique("id").validate([{id:11},{id:12}]).valid === true;
+itsa.unique("id").validate([{id:11},{id:11}]).valid === false;
+```
 
 
 
