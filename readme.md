@@ -58,6 +58,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [uppercase](#itsauppercase)
  - [Updaters](#updaters)
      - [to](#itsatovalueorgetter)
+     - [toFloat](#itsatofloat)
      - [toInteger](#itsatointegerradix)
      - [toLowercase](#itsatolowercase)
      - [toNow](#itsatonow)
@@ -1497,11 +1498,48 @@ obj.age === 18;
 
 ----------------------------------------------------------------------
 
+### itsa.toFloat()
+
+Tries to convert the data to an float, using `parseFloat`. If the result would be `NaN` then the validation will fail and the value will be unchanged.
+
+##### Success Example
+
+```js
+var validator = itsa.object({
+  age: itsa.toFloat()
+});
+
+var obj = {gpa:"3.5"};
+validator.validate(obj).valid === true;
+obj.gpa === 3.5;
+```
+
+##### Failure Example
+
+```js
+var validator = itsa.object({
+  gpa: itsa.toFloat()
+});
+
+var obj = {gpa:"B"};
+validator.validate(obj).valid === false;
+obj.gpa === "B";
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.toInteger(radix)
 
 Tries to convert the data to an integer, using `parseInt`. If the result is `NaN` then the validation will fail and the value will be unchanged.
 
-NOTE: If you omit the radix, older versions of `parseInt` would guess the radix. `itsa.toInteger` will default to radix 10 unless you specify otherwise.
+NOTE: If you omit the radix, it defaults to 10. Older versions of `parseInt` would guess the radix, but that is not allowed here.
 
 ##### Arguments
 
