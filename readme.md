@@ -10,7 +10,7 @@ The data can be primitives, objects, arrays, or any mixture therein. It is desig
 no global variables, no extending of native objects. `itsa` is the only object exported by this library.
 
 
-## Table of Contents
+## Table of Contents 
 
  - [Installation](#installation)
  - [How It Works](#how-it-works)

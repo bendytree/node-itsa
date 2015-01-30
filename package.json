@@ -28,8 +28,8 @@
   "author": "Josh Wright <josh@joshwright.com> (http://joshwright.com)",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "bundle": "./node_modules/.bin/browserify index.js -d --s itsa -o dist/itsa.js; ./node_modules/.bin/uglifyjs dist/itsa.js -c > dist/itsa.min.js; du -h dist/itsa.min.js; echo \"GZIP:\"; gzip -c dist/itsa.min.js | wc -c;",
-    "release": "npm run bundle; git add ./dist; git commit -am \"updated distribution bundles\"; npm version patch; git push origin master; npm publish"
+    "bundle": "./bin/bundle.sh",
+    "release": "./bin/release.sh"
   },
   "license": "MIT",
   "bugs": {
