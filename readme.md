@@ -6,21 +6,31 @@
 
 `itsa` is a JavaScript library designed to validate JavaScript data. It is composable and extensible. There are no dependencies, no global variables, and no extending of native objects.
 
+###### Simple Example
+
 ```js
-  var itsa = require("itsa");
+var itsa = require("itsa");
 
-  var userDefinition = itsa.object({
-    name: itsa.string().notEmpty(),
-    age: itsa.any(
-      itsa.undefined(),
-      itsa.number().between(18, 200)
-    ),
-    email: itsa.email()
-  });
+itsa.object().validate([]).valid === false;
+```
 
-  var result = userDefinition.validate({ name: "Bob" });
-  result.valid === false;
-  result.describe() === "email: Not an email address.";
+###### Advanced Example
+
+```js
+var itsa = require("itsa");
+
+var userDefinition = itsa.object({
+  name: itsa.string().notEmpty(),
+  age: itsa.any(
+    itsa.undefined(),
+    itsa.number().between(18, 200)
+  ),
+  email: itsa.email()
+});
+
+var result = userDefinition.validate({ name: "Bob" });
+result.valid === false;
+result.describe() === "email: Not an email address.";
 ```
 
 
@@ -93,7 +103,6 @@
  - [Alternative Libraries](#alternative-libraries)
  - [Testing](#testing)
  - [License](#license)
- - [Todo](#todo)
 
 
 
