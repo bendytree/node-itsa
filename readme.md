@@ -20,7 +20,7 @@ itsa.object().validate([]).valid === false;
 var itsa = require("itsa");
 
 var userDefinition = itsa.object({
-  name: itsa.string().notEmpty(),
+  name: String,
   age: itsa.any(
     itsa.undefined(),
     itsa.number().between(18, 200)
@@ -82,6 +82,7 @@ result.describe() === "colors: Cannot be empty.";
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
      - [typeof](#itsatypeoftype)
+     - [Type Classes](#Type Classes)
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
      - [unique](#itsauniquegetter)
@@ -1419,6 +1420,33 @@ itsa.typeof("string").validate("hello").valid === true;
 itsa.typeof("object").validate([]).valid === true;
 ```
 
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### Type Classes
+
+When you're validating nested data, you can use JavaScript type classes
+like `String`, `RegExp`, `Boolean`, `Array`, `Number`, `Date`, `Object`,
+or `Function` to verify the data's type.
+
+Each check parallels its matching `itsa` validator. For example `Date` is
+like `itsa.date()` and will only match valid dates. If you want to do an
+`instanceof` check use `itsa.instanceof(...)` or `itsa.typeof(...)`.
+
+
+##### Example
+
+```js
+itsa.any(String, Number).validate("red").valid === true;
+itsa.object({age:Number}).validate({age:42}).valid === true;
+itsa.object({age:Date}).validate({age:new Date("invalid")}).valid === false;
+```
 
 
 
