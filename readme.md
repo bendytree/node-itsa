@@ -64,7 +64,7 @@ result.describe() === "colors: Cannot be empty.";
      - [falsy](#itsafalsy)
      - [function](#itsafunction)
      - [hex](#itsahex)
-     - [instanceof](#itsainstanceof)
+     - [instanceof](#itsainstanceofcls)
      - [integer](#itsainteger)
      - [json](#itsajson)
      - [len](#itsalenexactormin-max)
