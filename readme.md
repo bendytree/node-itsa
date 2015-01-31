@@ -74,6 +74,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
  - [Short Circuiting](#short-circuiting)
  - [Pull Requests](#pull-requests)
  - [Alternative Libraries](#alternative-libraries)
+ - [Testing](#testing)
  - [License](#license)
  - [Todo](#todo)
 
@@ -2036,6 +2037,12 @@ HTML Form Validators
  - [DiegoLopesLima/Validate/validate.js](https://github.com/DiegoLopesLima/Validate) - "The jQuery Validate is an advanced plugin for an easily and quickly form validation"
  - [guillaumepotier/Parsley.js](https://github.com/guillaumepotier/Parsley.js) - "Validate your forms, frontend, without writing a single line of javascript - http://parsleyjs.org"
  - [formvalidation/formvalidation](https://github.com/formvalidation/formvalidation) - "The best @jquery plugin to validate form fields."
+
+
+# Testing
+
+Testing is done with mocha and is monitored with Travis CI. At last count, there were 191
+separate tests that document and verify the `itsa` library.
 
 
 # License
