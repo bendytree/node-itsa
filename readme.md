@@ -54,6 +54,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [string](#itsastring)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
+     - [typeof](#itsatypeof)
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
      - [unique](#itsauniquegetter)
@@ -1373,6 +1374,34 @@ itsa.truthy().validate(undefined).valid === false;
 
 ----------------------------------------------------------------------
 
+### itsa.typeof(type)
+
+Runs a typeof check on your data an is valid when the result matches the given type.
+
+Keep in mind that `typeof []`, `typeof null`, `typeof new Date` all equal `"object"`. So if you want
+a more strict type check then use validators like `itsa.array()` or `itsa.null()`.
+
+##### Arguments
+
+ - `type` - Required. A string that is the expected type for your data. Ie. `"object"`.
+
+##### Examples
+
+``` js
+itsa.typeof("boolean").validate(true).valid === true;
+itsa.typeof("string").validate("hello").valid === true;
+itsa.typeof("object").validate([]).valid === true;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.undefined()
 
 Valid only if the value is strictly equal to `undefined`.
@@ -2140,7 +2169,4 @@ You can run the tests by running `npm run test`.
 [MIT](https://github.com/bendytree/node-itsa/blob/master/LICENSE)
 
 
-## Todo
-
- - typeof
 
