@@ -38,6 +38,9 @@ git add .
 echo "Running git commit..."
 git commit -am "Updated distribution bundles"
 
+echo "Tagging git version..."
+node bin/git-tag.js
+
 echo "Pushing to GitHub..."
 git push origin master
 
