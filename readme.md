@@ -10,7 +10,7 @@
   var itsa = require("itsa");
 
   var userDefinition = itsa.object({
-    name: itsa.string().length(1, 20),
+    name: itsa.string().notEmpty(),
     age: itsa.any(
       itsa.undefined(),
       itsa.number().between(18, 200)
@@ -18,9 +18,7 @@
     email: itsa.email()
   });
 
-  var user = { name: "Bob" };
-
-  var result = userDefinition.validate(user);
+  var result = userDefinition.validate({ name: "Bob" });
   result.valid === false;
   result.describe() === "email: Not an email address.";
 ```
