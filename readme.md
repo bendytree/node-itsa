@@ -54,7 +54,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [string](#itsastring)
      - [true](#itsatrue)
      - [truthy](#itsatruthy)
-     - [typeof](#itsatypeof)
+     - [typeof](#itsatypeoftype)
      - [undefined](#itsaundefined)
      - [under](#itsaundervalue--inclusive)
      - [unique](#itsauniquegetter)
