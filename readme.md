@@ -20,6 +20,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [after](#itsaaftervalue--inclusive)
      - [alphanumeric](#itsaalphanumeric)
      - [any](#itsaanyvalidator--validator)
+     - [args](#itsaargsexample-allowextraitems)
      - [array](#itsaarrayexample-allowextraitems)
      - [arrayOf](#itsaarrayofexample)
      - [before](#itsabeforevalue--inclusive)
@@ -271,6 +272,72 @@ itsa.any(itsa.string().maxLength(3), undefined, null);
 
 ----------------------------------------------------------------------
 
+### itsa.args([example[, allowExtraItems]])
+
+This validates that the given data is an `arguments` object. You may
+optionally validate the argument items according to their index.
+
+NOTE: Ideally this would be called `itsa.arguments` but that's not possible.
+
+``` js
+(function(){
+  itsa.args().validate(arguments).valid === true;
+})();
+itsa.args().validate([]).valid === false;
+itsa.args().validate({}).valid === false;
+```
+
+##### Arguments
+
+ - `example` - Optional. Array. Must be an array of zero or more validators if given.
+ - `allowExtraItems` - Optional. Boolean. Defaults to `true` if no example is given. Defaults to `false` if example is given. See below.
+
+##### Item Validation
+
+You can optionally validate the items within an arguments object by passing an "example" array. Each item in your
+data's array will be validated according to its index. For example, the first validator will be run against
+the first argument, etc.
+
+``` js
+(function(){
+  itsa.args([itsa.string()]).validate(arguments).valid === true;
+})("red");
+
+(function(){
+  itsa.args([itsa.string(), itsa.number()]).validate(arguments).valid === true;
+})("red", 42);
+```
+
+##### Allowing Extra Items
+
+If there are more items in your real arguments compared to your example array, then this is considered invalid.
+
+To allow extra items, pass `true` as the second parameter.
+
+``` js
+(function(){
+  itsa.args([
+    itsa.string()
+  ]).validate(arguments).valid === false;
+})("red", 42);
+
+(function(){
+  itsa.args([
+    itsa.string()
+  ], true).validate(arguments).valid === true;
+})("red", 42);
+
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
 ### itsa.array([example[, allowExtraItems]])
 
 Like the `.arrayOf` validator, this succeeds when the data is a JavaScript array. You may
@@ -311,6 +378,8 @@ To allow extra items, pass `true` as the second parameter.
 itsa.array([itsa.string()]).validate(["red", 42]).valid === false;
 itsa.array([itsa.string()], true).validate(["red", 42]).valid === true;
 ```
+
+
 
 
 
@@ -2061,8 +2130,9 @@ HTML Form Validators
 
 # Testing
 
-Testing is done with mocha and is monitored with Travis CI. At last count, there were 191
-separate tests that document and verify the `itsa` library.
+Testing is done with mocha and is monitored with Travis CI (see the badge at the top of the page).
+At last count, there were over 200 tests that document and verify the `itsa` library.
+You can run the tests by running `npm run test`.
 
 
 # License
@@ -2072,6 +2142,5 @@ separate tests that document and verify the `itsa` library.
 
 ## Todo
 
- - arguments example/tests
  - typeof
 
