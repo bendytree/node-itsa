@@ -7,12 +7,12 @@ var pathToJs = __dirname+"/../dist/itsa.js";
 var js = fs.readFileSync(pathToJs, "UTF8");
 
 var header = "\
-/*! \
-  * @license \
-  * itsa ITSA_VERSION_GOES_HERE <https://github.com/bendytree/node-itsa> \
-  * Copyright ITSA_BUNDLE_DATE_GOES_HERE Josh Wright <http://www.joshwright.com> \
-  * MIT LICENSE <https://github.com/bendytree/node-itsa/blob/master/LICENSE> \
-  */ \
+/*! \n\
+  * @license \n\
+  * itsa ITSA_VERSION_GOES_HERE <https://github.com/bendytree/node-itsa> \n\
+  * Copyright ITSA_BUNDLE_DATE_GOES_HERE Josh Wright <http://www.joshwright.com> \n\
+  * MIT LICENSE <https://github.com/bendytree/node-itsa/blob/master/LICENSE> \n\
+  */ \n\
 ";
 
 header = header.replace("ITSA_VERSION_GOES_HERE", version);
