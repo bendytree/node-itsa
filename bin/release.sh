@@ -7,13 +7,13 @@ echo "Running tests..."
 npm run test
 
 echo "Bump version..."
-node bin/bump-version.js
+node scripts/bump-version.js
 
 echo "Browserifying..."
 ./node_modules/.bin/browserify ./index.js -d --s itsa -o ./dist/itsa.js
 
 echo "Updating credits..."
-node bin/update-credits.js
+node scripts/update-credits.js
 
 echo "Minifying..."
 ./node_modules/.bin/uglifyjs ./dist/itsa.js -c > ./dist/itsa.min.js
@@ -39,7 +39,7 @@ echo "Running git commit..."
 git commit -am "Updated distribution bundles"
 
 echo "Tagging git version..."
-node bin/git-tag.js
+node scripts/git-tag.js
 
 echo "Pushing to GitHub..."
 git push origin master
