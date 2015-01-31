@@ -64,6 +64,7 @@ result.describe() === "colors: Cannot be empty.";
      - [falsy](#itsafalsy)
      - [function](#itsafunction)
      - [hex](#itsahex)
+     - [instanceof](#itsainstanceof)
      - [integer](#itsainteger)
      - [json](#itsajson)
      - [len](#itsalenexactormin-max)
@@ -761,6 +762,35 @@ If you care about case, use the `.lowercase()` or `.uppercase()` validator as we
 itsa.hex().validate("faC8").valid === true;
 itsa.hex().validate(34).valid === true;
 itsa.hex().validate("aabbxyz").valid === false;
+```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.instanceof(cls)
+
+Valid when the data matches `data instanceof cls`.
+
+This does an actual `instanceof` check, so it may have unexpected results.
+For example, `43 instanceof Number === false`. It may have unexpected results across frames in a web browser, since it uses `instanceof`.
+
+In most cases, you may be better off using validators like `itsa.number()`.
+
+##### Arguments
+
+ - `cls` - Required. A class to compare against such as `String` or `Number`.
+
+##### Example
+
+``` js
+itsa.instanceof(Object).validate({}).valid === true;
+itsa.instanceof(String).validate("red").valid === false; // !!!
+itsa.instanceof(Number).validate(42).valid === false; // !!!
 ```
 
 
