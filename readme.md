@@ -14,12 +14,15 @@
     age: itsa.any(
       itsa.undefined(),
       itsa.number().between(18, 200)
-    )
+    ),
+    email: itsa.email()
   });
 
   var user = { name: "Bob" };
 
-  userDefinition.validate(user).valid === true;
+  var result = userDefinition.validate(user);
+  result.valid === false;
+  result.describe() === "email: Not an email address.";
 ```
 
 
