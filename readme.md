@@ -2045,8 +2045,5 @@ HTML Form Validators
 
 ## Todo
 
- - pre bundle
- - npm publish?
- - toRandom
  - functions
 
