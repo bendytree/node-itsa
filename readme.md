@@ -14,7 +14,7 @@ var itsa = require("itsa");
 itsa.object().validate([]).valid === false;
 ```
 
-###### Advanced Example
+###### Complex Example
 
 ```js
 var itsa = require("itsa");
