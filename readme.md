@@ -1376,7 +1376,7 @@ itsa.truthy().validate(undefined).valid === false;
 
 ### itsa.typeof(type)
 
-Runs a typeof check on your data an is valid when the result matches the given type.
+Runs a typeof check on your data and is valid when the result matches the given type.
 
 Keep in mind that `typeof []`, `typeof null`, `typeof new Date` all equal `"object"`. So if you want
 a more strict type check then use validators like `itsa.array()` or `itsa.null()`.
