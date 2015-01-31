@@ -77,6 +77,7 @@ result.describe() === "colors: Cannot be empty.";
      - [number](#itsanumber)
      - [object](#itsaobjectexample-allowextrafields)
      - [over](#itsaovervalue--inclusive)
+     - [regexp](#itsaregexp)
      - [startsWith](#itsastartswithvalue)
      - [string](#itsastring)
      - [true](#itsatrue)
@@ -1291,6 +1292,28 @@ itsa.over("b").validate("a").valid === false;
 //inclusive
 itsa.over(5, true).validate(5).valid === true;
 itsa.over("a", true).validate("a").valid === true;
+```
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.regexp()
+
+Valid when the data is a JavaScript `RegExp` object.
+
+##### Examples
+
+``` js
+itsa.regexp().validate(/a+/).valid === true;
+itsa.regexp().validate(new RegExp("a+")).valid === true;
+
+itsa.regexp().validate("a+").valid === false;
+itsa.regexp().validate(42).valid === false;
 ```
 
 
