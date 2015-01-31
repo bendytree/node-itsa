@@ -3,6 +3,13 @@
 
 set -o errexit # Exit on error
 
+if [ -z "$(git status --porcelain)" ]; then
+  echo "Working directory clean..."
+else
+  echo "ERROR: WORKING DIRECTORY DIRTY. PLEASE COMMIT ALL CHANGES"
+  exit 1
+fi
+
 echo "Running tests..."
 npm run test
 
@@ -24,19 +31,11 @@ du -h ./dist/itsa.min.js
 echo "gzip size..."
 gzip -c ./dist/itsa.min.js | wc -c
 
-
-#if [ -z "$(git status --porcelain)" ]; then
-#  echo "Working directory clean..."
-#else
-#  echo "ERROR: WORKING DIRECTORY DIRTY. PLEASE COMMIT ALL CHANGES"
-#  exit 1
-#fi
-
 echo "Running git add..."
 git add .
 
 echo "Running git commit..."
-git commit -am "Updated distribution bundles"
+git commit -am "Bundling and version bump"
 
 echo "Tagging git version..."
 node scripts/git-tag.js
