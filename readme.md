@@ -25,12 +25,15 @@ var userDefinition = itsa.object({
     itsa.undefined(),
     itsa.number().between(18, 200)
   ),
-  email: itsa.email()
+  email: itsa.email(),
+  colors: itsa.arrayOf(
+    itsa.any("red", "green", "blue", "yellow", "white", "black")
+  ).notEmpty()
 });
 
-var result = userDefinition.validate({ name: "Bob" });
+var result = userDefinition.validate({ name: "Bob", email: "bob@example.com" });
 result.valid === false;
-result.describe() === "email: Not an email address.";
+result.describe() === "colors: Cannot be empty.";
 ```
 
 
