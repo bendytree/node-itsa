@@ -2,7 +2,7 @@
 
 #itsa
 
-    > Pronounced "it's a".
+ > Pronounced "it's a".
 
 `itsa` is a JavaScript library designed to validate JavaScript data. It is composable and extensible. There are no dependencies, no global variables, and no extending of native objects.
 
