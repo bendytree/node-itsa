@@ -16,7 +16,7 @@ var header = "\
 ";
 
 header = header.replace("ITSA_VERSION_GOES_HERE", version);
-header = header.replace("ITSA_BUNDLE_DATE_GOES_HERE", moment().format("MM/DD/YYYY"));
+header = header.replace("ITSA_BUNDLE_DATE_GOES_HERE", moment().format("M/DD/YYYY"));
 
 fs.writeFileSync(pathToJs, header + js);
 
