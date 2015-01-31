@@ -2,12 +2,21 @@
 
 #itsa
 
-*Pronounced "it's a".*
+`itsa` is a JavaScript library designed to validate JavaScript data. It is composable and extensible. There are no dependencies, no global variables, and no extending of native objects.
 
-`itsa` is a JavaScript library designed to validate JavaScript data.
+```js
+  var userDefinition = itsa.object({
+    name: itsa.string().length(1, 20),
+    age: itsa.any(
+      itsa.undefined(),
+      itsa.number().between(18, 200)
+    )
+  });
 
-The data can be primitives, objects, arrays, or any mixture therein. It is designed to expressive, composable, extensible, simple, and clean. There are no dependencies,
-no global variables, no extending of native objects. `itsa` is the only object exported by this library.
+  var user = { name: "Bob" };
+
+  userDefinition.validate(user).valid === true;
+```
 
 
 ## Table of Contents 
