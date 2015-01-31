@@ -5,7 +5,7 @@ var itsa = require('../index');
 describe('custom error messages', function(){
 
   it('can be provided', function(){
-    assert.equal(itsa.string().validate(42).describe(), "Expected a string, but found a number", "Standard error");
+    assert.equal(itsa.string().validate(42).describe(), "Expected a string.", "Standard error");
     assert.equal(itsa.string().msg("Hash tag fail").validate(42).describe(), "Hash tag fail", "Custom error");
   });
 
