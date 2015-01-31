@@ -34,6 +34,7 @@ no global variables, no extending of native objects. `itsa` is the only object e
      - [equal](#itsaequalexamplevalue)
      - [false](#itsafalse)
      - [falsy](#itsafalsy)
+     - [function](#itsafunction)
      - [hex](#itsahex)
      - [integer](#itsainteger)
      - [json](#itsajson)
@@ -183,12 +184,6 @@ call `result.describe()` to get a string that describes the reason for failure.
  result.valid === false;
  result.describe() === "Length is 12, max is 5";
 ```
-
-#### Using a Getter
-
-You can also pass a function to `.validate(...)` instead of your actual value. Why would
-you want to do that? I don't know, but it's useful within the api. Your function will be
-called (possibly multiple times) and the return value is the data that is validated.
 
 
 #### Result Logs
@@ -743,6 +738,31 @@ itsa.falsy().validate(false).valid === true;
 itsa.falsy().validate(0).valid === true;
 itsa.falsy().validate(undefined).valid === true;
 itsa.falsy().validate(null).valid === true;
+itsa.falsy().validate(true).valid === false;
+itsa.falsy().validate(1).valid === false;
+itsa.falsy().validate([]).valid === false;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.function()
+
+Valid for values which are functions.
+
+##### Examples
+
+``` js
+itsa.falsy().validate(function(){}).valid === true;
+itsa.falsy().validate(0).valid === false;
+itsa.falsy().validate(undefined).valid === false;
+itsa.falsy().validate(null).valid === false;
 itsa.falsy().validate(true).valid === false;
 itsa.falsy().validate(1).valid === false;
 itsa.falsy().validate([]).valid === false;
@@ -2052,5 +2072,6 @@ separate tests that document and verify the `itsa` library.
 
 ## Todo
 
- - functions
+ - arguments example/tests
+ - typeof
 
