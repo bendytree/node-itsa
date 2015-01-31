@@ -1,6 +1,6 @@
 {
   "name": "itsa",
-  "version": "1.1.5",
+  "version": "1.1.13",
   "description": "Expressive validation for JavaScript data",
   "main": "index.js",
   "repository": {
@@ -20,6 +20,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "moment": "^2.9.0",
     "browserify": "^8.1.1",
     "chai": "1.10.0",
     "mocha": "2.1.0",
@@ -28,7 +29,6 @@
   "author": "Josh Wright <josh@joshwright.com> (http://joshwright.com)",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha",
-    "bundle": "./bin/bundle.sh",
     "release": "./bin/release.sh"
   },
   "license": "MIT",
