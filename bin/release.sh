@@ -30,7 +30,7 @@ du -h ./dist/itsa.min.js
 
 echo "gzip size..."
 gzip -c ./dist/itsa.min.js | wc -c
-
+exit 1
 echo "Running git add..."
 git add .
 
