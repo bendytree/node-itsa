@@ -44,6 +44,9 @@ node bin/git-tag.js
 echo "Pushing to GitHub..."
 git push origin master
 
+echo "Pushing git tags..."
+git push --tags
+
 echo "Pushing to NPM..."
 npm publish
 
