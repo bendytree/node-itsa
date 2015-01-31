@@ -793,6 +793,15 @@ itsa.instanceof(String).validate("red").valid === false; // !!!
 itsa.instanceof(Number).validate(42).valid === false; // !!!
 ```
 
+##### Custom Class
+
+``` js
+var User = function () { };
+var user = new User();
+
+itsa.instanceof(User).validate(user).valid === true;
+```
+
 
 
 
