@@ -12,7 +12,11 @@ fi
 
 echo "Bundling..."
 npm run bundle
+
+echo "Running git add..."
 git add dist/
+
+echo "Running git commit..."
 git commit -m "Updated distribution bundles"
 
 echo "Updating Version Number..."
