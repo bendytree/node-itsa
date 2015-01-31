@@ -37,4 +37,13 @@ describe('instanceof', function(){
     }
   });
 
+  it('identifies custom classes', function(){
+    var User = function () { };
+    var user = new User();
+
+    assert.equal(itsa.instanceof(User).validate(user).valid, true, "user");
+    assert.equal(itsa.instanceof(User).validate(null).valid, false, "null");
+    assert.equal(itsa.instanceof(User).validate({}).valid, false, "{}");
+  });
+
 });
