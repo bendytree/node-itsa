@@ -10,19 +10,19 @@ else
   exit 1
 fi
 
-echo "Bundling..."
-npm run bundle
-git add ./dist
-git commit -m "Updated distribution bundles"
-
-echo "Updating Version Number..."
-npm version patch
-
-echo "Pushing to GitHub..."
-git push origin master
-
-echo "Pushing to NPM..."
-npm publish
-
-echo "Release Success!"
+#echo "Bundling..."
+#npm run bundle
+#git add ./dist
+#git commit -m "Updated distribution bundles"
+#
+#echo "Updating Version Number..."
+#npm version patch
+#
+#echo "Pushing to GitHub..."
+#git push origin master
+#
+#echo "Pushing to NPM..."
+#npm publish
+#
+#echo "Release Success!"
 
