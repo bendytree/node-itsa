@@ -1,10 +1,11 @@
-[![Build Status](https://travis-ci.org/bendytree/node-itsa.svg?branch=master)](https://travis-ci.org/bendytree/node-itsa)
+[![Build Status](https://travis-ci.org/bendytree/node-itsa.svg?branch=master)](https://travis-ci.org/bendytree/node-itsa) [![npm version](https://badge.fury.io/js/itsa.svg)](http://badge.fury.io/js/itsa)
 
-#itsa
+
+#itsa - data validation
 
  > Pronounced "it's a".
 
-`itsa` is a JavaScript library designed to validate JavaScript data. It is composable and extensible. There are no dependencies, no global variables, and no extending of native objects.
+`itsa` is a JavaScript library that validates JavaScript data. It is composable and extensible. There there are no dependencies, no global variables, and no extending of native objects.
 
 ###### Simple Example
 
