@@ -114,7 +114,7 @@ result.describe() === "colors: Cannot be empty.";
 
 # Installation
 
-`itsa` has no dependencies and works on via npm:
+#### With NPM (recommended)
 
     > npm install itsa --save
 
@@ -122,12 +122,12 @@ result.describe() === "colors: Cannot be empty.";
 var itsa = require("itsa");
 ```
 
-#### Without NPM or Browserify
+#### Without NPM
 
-If you need it client side and don't use browserify, then use `dist/itsa.js` for development (it has source maps) and
-use `dist/itsa.min.js` for production.
+If you don't use NPM, then use `dist/itsa.js` for development (it has source maps) and
+use `dist/itsa.min.js` for production. There are no dependencies.
 
-    > itsa.min.js - 28K minified, 6K gzipped
+    > [itsa.min.js](https://raw.githubusercontent.com/bendytree/node-itsa/master/dist/itsa.min.js) - 28K minified, 6K gzipped
 
 
 ------------------------------------------------
