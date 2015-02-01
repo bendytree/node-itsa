@@ -127,7 +127,7 @@ var itsa = require("itsa");
 If you need it client side and don't use browserify, then use `dist/itsa.js` for development (it has source maps) and
 use `dist/itsa.min.js` for production.
 
-    > itsa.min.js - 28K minified, 5K gzipped
+    > itsa.min.js - 28K minified, 6K gzipped
 
 
 ------------------------------------------------
@@ -2276,7 +2276,7 @@ HTML Form Validators
 # Testing
 
 Testing is done with mocha and is monitored with Travis CI (see the badge at the top of the page).
-At last count, there were over 200 tests that document and verify the `itsa` library.
+At last count, there are 220 tests that document and verify the `itsa` library.
 You can run the tests by running `npm run test`.
 
 
