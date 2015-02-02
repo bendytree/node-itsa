@@ -43,7 +43,7 @@ result.describe() === "colors: Cannot be empty.";
  - [Installation](#installation)
  - [How It Works](#how-it-works)
  - [Required vs Optional](#required-vs-optional)
- - [Validate](#validate)
+ - [Validating](#validating)
  - [Validators](#validators)
      - [after](#itsaaftervalue--inclusive)
      - [alphanumeric](#itsaalphanumeric)
@@ -201,7 +201,7 @@ itsa.any(itsa.string(), null).validate(null).valid === true;
 
 
 
-# Validate
+# Validating
 
 #### validate(value) -> result
 
@@ -215,6 +215,29 @@ call `result.describe()` to get a string that describes the reason for failure.
  var result = validator.validate("Bob was here");
  result.valid === false;
  result.describe() === "Length is 12, max is 5";
+```
+
+#### validOrThrow(value)
+
+As a shorthand, you can choose to automatically throw if the data is invalid. This is useful
+ for validating incoming method parameters:
+
+```js
+var doThing = function (criteria, callback) {
+  //validate
+  itsa.object({
+    criteria: itsa.object(),
+    callback: itsa.function()
+  }).validOrThrow({
+    criteria: criteria,
+    callback: callback
+  });
+
+  //go on
+};
+
+doThing(); //throws!
+doThing({}, function(){}); //does not throw
 ```
 
 
