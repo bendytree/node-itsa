@@ -46,4 +46,15 @@ describe('extended prototypes', function(){
     delete Array.prototype.dumb;
   });
 
+  it('of array - does not break `args` validation', function(){
+    Array.prototype.dumb = "dumb";
+    (function(){
+      assert.equal(itsa.args([
+        itsa.number(),
+        itsa.string()
+      ]).validate(arguments).valid, true);
+    })(42, "red");
+    delete Array.prototype.dumb;
+  });
+
 });
