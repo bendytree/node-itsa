@@ -35,4 +35,15 @@ describe('extended prototypes', function(){
     delete Array.prototype.dumb;
   });
 
+  it('of array - does not break primitive check validation', function(){
+    Array.prototype.dumb = function(){};
+    var result = itsa.object({
+      fields: undefined
+    }).validate({
+      fields: undefined
+    });
+    assert.equal(result.valid, true);
+    delete Array.prototype.dumb;
+  });
+
 });
