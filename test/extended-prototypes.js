@@ -57,4 +57,16 @@ describe('extended prototypes', function(){
     delete Array.prototype.dumb;
   });
 
+  it('of array - does not break `unique` validation', function(){
+    Object.prototype.foo1 = function(){};
+    Object.prototype.foo2 = function(){};
+    Array.prototype.foo1 = function(){};
+    Array.prototype.foo2 = function(){};
+    assert.equal(itsa.unique("id").validate([]).valid, true);
+    delete Array.prototype.foo1;
+    delete Array.prototype.foo2;
+    delete Object.prototype.foo1;
+    delete Object.prototype.foo2;
+  });
+
 });
