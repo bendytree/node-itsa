@@ -69,4 +69,45 @@ describe('extended prototypes', function(){
     delete Object.prototype.foo2;
   });
 
+  it('of array - doesn`t mess with error logs', function(){
+    Object.prototype.foo1 = function(){};
+    Object.prototype.foo2 = function(){};
+    Array.prototype.foo1 = function(){};
+    Array.prototype.foo2 = function(){};
+    assert.equal(itsa.object().validate(42).describe().indexOf("undefined") === -1, true, "Description shouldn't contain the word `undefined`.");
+    delete Array.prototype.foo1;
+    delete Array.prototype.foo2;
+    delete Object.prototype.foo1;
+    delete Object.prototype.foo2;
+  });
+
+  it('doesnt make valid empty checks invalid', function(){
+    Object.prototype.foo1 = function(){};
+    Object.prototype.foo2 = function(){};
+    Array.prototype.foo1 = function(){};
+    Array.prototype.foo2 = function(){};
+    assert.equal(itsa.empty().validate([]).valid, true, "[]");
+    assert.equal(itsa.empty().validate({}).valid, true, "{}");
+    assert.equal(itsa.empty().validate("").valid, true, "blank string");
+    delete Array.prototype.foo1;
+    delete Array.prototype.foo2;
+    delete Object.prototype.foo1;
+    delete Object.prototype.foo2;
+  });
+
+  it('doesnt make invalid empty checks valid', function(){
+    Object.prototype.foo1 = function(){};
+    Object.prototype.foo2 = function(){};
+    Array.prototype.foo1 = function(){};
+    Array.prototype.foo2 = function(){};
+    assert.equal(itsa.notEmpty().validate([]).valid, false, "[]");
+    assert.equal(itsa.notEmpty().validate({}).valid, false, "{}");
+    assert.equal(itsa.notEmpty().validate("").valid, false, "blank string");
+    delete Array.prototype.foo1;
+    delete Array.prototype.foo2;
+    delete Object.prototype.foo1;
+    delete Object.prototype.foo2;
+  });
+
+
 });
