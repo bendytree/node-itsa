@@ -33,4 +33,14 @@ describe('validOrThrow', function(){
     doThing({}, function(){});
   });
 
+  it('can be called with unbound context', function(){
+    var validOrThrow = itsa.string().validOrThrow;
+
+    validOrThrow("Bob");
+
+    assert.throws(function(){
+      validOrThrow(42);
+    });
+  });
+
 });
