@@ -5,18 +5,20 @@ var itsa = require('../index');
 describe('to-integer', function(){
 
   it('works on values that become integers', function(){
-    var values = {
-      "1": 1,
-      "22a": 22,
-      3.3: 3
-    };
-    for (var key in values){
-      var obj = {age:key};
+    var values = [
+      {from: "1", to:1},
+      {from: "22a", to:22},
+      {from: 3.3, to:3},
+      {from: new Date(1234567), to:1234567}
+    ];
+    for (var i = 0; i < values.length; i++){
+      var value = values[i];
+      var obj = {age:value.from};
       var validator = itsa.object({
         age: itsa.toInteger()
       });
-      assert.equal(validator.validate(obj).valid, true, "Should be valid: "+JSON.stringify(key));
-      assert.equal(obj.age, values[key], JSON.stringify(key));
+      assert.equal(validator.validate(obj).valid, true, "Should be valid: "+JSON.stringify(value));
+      assert.equal(obj.age, value.to, JSON.stringify(value));
     }
   });
 
@@ -27,7 +29,6 @@ describe('to-integer', function(){
       "a b",
       null,
       undefined,
-      new Date(),
       {a:2},
       {}
     ];

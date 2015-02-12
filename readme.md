@@ -1861,6 +1861,8 @@ obj.gpa === "B";
 
 Tries to convert the data to an integer, using `parseInt`. If the result is `NaN` then the validation will fail and the value will be unchanged.
 
+If the value was a date, then `.getTime()` is used since `parseInt(new Date())` is `NaN`.
+
 NOTE: If you omit the radix, it defaults to 10. Older versions of `parseInt` would guess the radix, but that is not allowed here.
 
 ##### Arguments
