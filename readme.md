@@ -65,6 +65,7 @@ result.describe() === "colors: Cannot be empty.";
      - [falsy](#itsafalsy)
      - [function](#itsafunction)
      - [hex](#itsahex)
+     - [if](#itsaif)
      - [instanceof](#itsainstanceofcls)
      - [integer](#itsainteger)
      - [json](#itsajson)
@@ -786,6 +787,44 @@ If you care about case, use the `.lowercase()` or `.uppercase()` validator as we
 itsa.hex().validate("faC8").valid === true;
 itsa.hex().validate(34).valid === true;
 itsa.hex().validate("aabbxyz").valid === false;
+```
+
+
+
+
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.if(test, itsaInstance)
+
+If the `test` condition is true, then the `itsa` validation is executed.
+
+##### Arguments
+
+ - `test` - Required. Function or object. If a function is given, then it will receive the data to validate as the only argument. If an object is given, then all keys/values of the object must have a match on the data object.
+ - `itsaInstance` - Required. An `itsa` expression to execute if the test is true.
+
+##### Example
+
+``` js
+var data = { type: "video", videoId: "1234" };
+
+itsa.if(
+  { type:"video" },
+  itsa.object({
+    videoId:itsa.string()
+  })
+).validate().valid === true;
+
+itsa.if(
+  function(o){ return o.type === "video"; },
+  itsa.object({
+    videoId:itsa.string()
+  })
+).validate().valid === true;
 ```
 
 
