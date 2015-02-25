@@ -23,10 +23,13 @@ echo "Updating credits..."
 node scripts/update-credits.js
 
 echo "Collapsing require statements..."
-./node_modules/.bin/bundle-collapser ./dist/itsa.js > ./dist/itsa.min.js
+./node_modules/.bin/bundle-collapser ./dist/itsa.js > ./dist/itsa.collapsed.js
 
 echo "Minifying..."
-./node_modules/.bin/uglifyjs ./dist/itsa.min.js --comments -c > ./dist/itsa.min.js
+./node_modules/.bin/uglifyjs ./dist/itsa.collapsed.js --comments -c > ./dist/itsa.min.js
+
+echo "Removing collapsed..."
+rm ./dist/itsa.collapsed.js
 
 echo "minified size..."
 du -h ./dist/itsa.min.js
