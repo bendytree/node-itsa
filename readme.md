@@ -129,7 +129,7 @@ var itsa = require("itsa");
 If you don't use NPM, then use [`dist/itsa.js`](https://raw.githubusercontent.com/bendytree/node-itsa/master/dist/itsa.js) for development (it has source maps) and
 use [`dist/itsa.min.js`](https://raw.githubusercontent.com/bendytree/node-itsa/master/dist/itsa.min.js) for production. There are no dependencies.
 
-    > itsa.min.js - 28K minified, 6K gzipped
+    > itsa.min.js - 28K minified, 5.6K gzipped
 
 
 ------------------------------------------------
