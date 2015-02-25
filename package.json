@@ -1,6 +1,6 @@
 {
   "name": "itsa",
-  "version": "1.2.17",
+  "version": "1.2.18",
   "description": "Expressive validation for JavaScript data",
   "main": "index.js",
   "repository": {
