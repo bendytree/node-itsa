@@ -22,8 +22,11 @@ echo "Browserifying..."
 echo "Updating credits..."
 node scripts/update-credits.js
 
+echo "Collapsing require statements..."
+./node_modules/.bin/bundle-collapser ./dist/itsa.js > ./dist/itsa.min.js
+
 echo "Minifying..."
-./node_modules/.bin/uglifyjs ./dist/itsa.js --comments -c > ./dist/itsa.min.js
+./node_modules/.bin/uglifyjs ./dist/itsa.min.js --comments -c > ./dist/itsa.min.js
 
 echo "minified size..."
 du -h ./dist/itsa.min.js
