@@ -48,6 +48,7 @@ result.describe() === "colors: Cannot be empty.";
      - [after](#itsaaftervalue--inclusive)
      - [alphanumeric](#itsaalphanumeric)
      - [any](#itsaanyvalidator--validator)
+     - [anything](#itsaanythingvalidator--validator)
      - [args](#itsaargsexample-allowextraitems)
      - [array](#itsaarrayexample-allowextraitems)
      - [arrayOf](#itsaarrayofexample)
@@ -319,6 +320,21 @@ itsa.any(itsa.string().maxLength(3), undefined, null);
 ```
 
 
+
+
+
+
+----------------------------------------------------------------------
+
+### itsa.anything()
+
+Any value (including `undefined`) is accepted.
+
+###### Examples
+
+``` js
+itsa.anything(); //matches strings, objects, arrays, numbers, null, undefined, etc
+```
 
 
 
