@@ -33,7 +33,7 @@ describe('instanceof', function(){
       { val: "abc", cls: String },
     ];
     for(var i=0; i<values.length; i++) {
-      assert.equal(itsa.instanceof(values[i].cls).validate(values[i].val).valid, false, JSON.stringify(values[i].val));
+      assert.equal(itsa.instanceof(values[i].cls).validate(values[i].val).valid, true, JSON.stringify(values[i].val));
     }
   });
 
