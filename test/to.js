@@ -49,6 +49,14 @@ describe('to', function(){
     assert.equal(obj.color, "red");
   });
 
+  it('function receives current value', function(){
+    var obj = { color: 'red' };
+    var oldValue = null;
+    itsa.object({ color: itsa.to(function(v){ oldValue = v; return "green"; }) }).validate(obj);
+    assert.equal(oldValue, "red");
+    assert.equal(obj.color, "green");
+  });
+
   it('works on multiple fields of an object', function(){
     var obj = { color: 887766 };
     var validator = itsa.object({
