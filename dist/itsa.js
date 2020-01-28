@@ -1,6 +1,6 @@
 /*! 
   * @license 
-  * itsa 1.2.26 <https://github.com/bendytree/node-itsa> 
+  * itsa 1.2.27 <https://github.com/bendytree/node-itsa> 
   * Copyright 1/28/2020 Josh Wright <http://www.joshwright.com> 
   * MIT LICENSE <https://github.com/bendytree/node-itsa/blob/master/LICENSE> 
   */ 
