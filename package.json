@@ -23,7 +23,7 @@
     "browserify": "^8.1.1",
     "bundle-collapser": "^1.1.4",
     "chai": "1.10.0",
-    "lodash": "^3.1.0",
+    "lodash": "^4.17.13",
     "mocha": "2.1.0",
     "moment": "^2.9.0",
     "shelljs": "^0.3.0",
