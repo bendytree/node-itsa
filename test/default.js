@@ -36,6 +36,25 @@ describe('default', function(){
     assert.equal(obj.color, "blue");
   });
 
+  it('sets boolean if original is null or undefined', function(){
+    var test = function(origVal, defaultVal, expectedVal){
+      var obj = { foo: origVal };
+      itsa.object({ foo: itsa.default(defaultVal) }).validate(obj);
+      assert.equal(obj.foo, expectedVal, `orig: ${origVal} default: ${defaultVal} expected: ${expectedVal} actual: ${obj.foo}`);
+    };
+
+    test(undefined, true, true);
+    test(undefined, false, false);
+    test(null, true, true);
+    test(null, false, false);
+    test(0, false, 0);
+    test(0, true, 0);
+    test('bar', false, 'bar');
+    test('bar', true, 'bar');
+    test(true, false, true);
+    test(false, true, false);
+  });
+
   it('defaulted value is used for future validations', function(){
     var obj = {  };
     var result = itsa.object({ color: itsa.default("red").string() }).validate(obj);
