@@ -1,0 +1,15 @@
+{
+  // Options: https://www.typescriptlang.org/tsconfig
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "target": "es2020",
+    "module": "esnext",
+    "sourceMap": true,
+    "isolatedModules": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "src/**/*",
+    "@types/**/*",
+  ]
+}
