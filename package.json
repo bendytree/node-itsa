@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "rollup -c",
-    "bump-patch": "npm --no-git-tag-version version patch"
+    "bump-patch": "echo \"bumping patch...\" && npm --no-git-tag-version version patch && exit 0"
   },
   "pre-commit": [
     "bump-patch"
