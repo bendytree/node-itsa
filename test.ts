@@ -9,3 +9,4 @@ const runTests = (...tests) => {
 runTests(1, 2, 3);
 
 export const name:string = 'Josh' + ' ' + 'Wright';
+
