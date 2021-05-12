@@ -1,6 +1,6 @@
 import { Itsa } from "./index";
-import {ItsaActorContext} from "./core";
-import {ItsaAny} from "./any";
+import { ItsaActorContext } from "./core";
+import { ItsaAny } from "./any";
 
 export class ItsaAnything extends ItsaAny {
   constructor() {

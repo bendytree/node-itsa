@@ -1,4 +1,3 @@
-import _ from "lodash";
 import {itsa, Itsa} from "./index";
 import {ItsaActorContext, ItsaCore} from "./core";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
@@ -37,8 +36,8 @@ export class ItsaAny extends ItsaCore {
       }
     });
   }
-  any(...options:(ItsaOrPrimative | ItsaOrPrimative[])[]):Itsa {
-    const schemas = _.flatten(options).map(x => primitiveToItsa(x));
+  any(...options:(ItsaOrPrimative[] | (ItsaOrPrimative[])[])):Itsa {
+    const schemas = options.flat().map(x => primitiveToItsa(x));
     const settings:ItsaAnySettings = { schemas };
     this.actions.push({ actorId: 'any', settings });
     return this as any as Itsa;

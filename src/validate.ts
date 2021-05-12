@@ -1,6 +1,6 @@
 
 import { ItsaActor, ItsaActorContext } from './core';
-import {ItsaVerify} from "./verify";
+import { ItsaVerify } from "./verify";
 
 export interface ItsaInternalValidationSettings {
   val:any;
@@ -47,7 +47,7 @@ export class ItsaValidationResult {
   }
 }
 
-export class ItsaValidate {
+export class ItsaValidate extends ItsaVerify {
 
   _validate(settings:ItsaInternalValidationSettings):ItsaValidationResult {
     const result = new ItsaValidationResult(settings.settings.exhaustive);
