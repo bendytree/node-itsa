@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaHandlerContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./index";
 
 export interface ItsaConvertSettings {
   converter:Function;
@@ -8,19 +8,19 @@ export interface ItsaConvertSettings {
 export class ItsaConvert {
   convert(this:Itsa, converter:Function):Itsa{
     const settings: ItsaConvertSettings = { converter };
-    this.actions.push({ handlerId: 'convert', settings });
+    this.predicates.push({ id: 'convert', settings });
     return this as any as Itsa;
   }
   to(this:Itsa, converter:Function):Itsa{
     const settings: ItsaConvertSettings = { converter };
-    this.actions.push({ handlerId: 'convert', settings });
+    this.predicates.push({ id: 'convert', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaConvert, {
   id: 'convert',
-  handler: (context:ItsaHandlerContext, settings: ItsaConvertSettings) => {
+  validate: (context:ItsaValidateContext, settings: ItsaConvertSettings) => {
     const { val, setVal, result } = context;
     const { converter } = settings;
     if (typeof converter !== 'function') return;

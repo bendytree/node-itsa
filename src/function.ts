@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaFunctionSettings {
@@ -13,14 +13,14 @@ interface ItsaFunctionIncomingSettings {
 export class ItsaFunction {
   function(this:Itsa, settings:ItsaFunctionIncomingSettings = {}):Itsa{
     if (settings.length) settings.length = primitiveToItsa(settings.length);
-    this.actions.push({ handlerId: 'function', settings });
+    this.predicates.push({ id: 'function', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaFunction, {
   id: 'function',
-  handler: (context:ItsaHandlerContext, settings:ItsaFunctionSettings) => {
+  validate: (context:ItsaValidateContext, settings:ItsaFunctionSettings) => {
     const { val, type, result } = context;
     if (type !== 'function') return result.addError('Expected function');
     if (settings.length) {

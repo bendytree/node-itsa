@@ -52,7 +52,7 @@ export class ItsaValidationResult {
   }
 }
 
-export interface ItsaHandlerContext {
+export interface ItsaValidateContext {
   parent?:object | [];
   key?:string | number;
   path:(string | number)[];
@@ -64,27 +64,27 @@ export interface ItsaHandlerContext {
   result: ItsaValidationResult;
 }
 
-export interface ItsaAction {
-  handlerId:string;
+export interface ItsaPredicate {
+  id:string;
   settings?:any;
 }
 
-export interface ItsaHandler {
+export interface ItsaValidator {
   id:string;
-  handler:(ItsaHandlerContext, any) => void;
+  validate:(ItsaValidateContext, any) => void;
 }
 
 type ItsaSubclass = new (...args: any[]) => any;
 
-export const itsa = { actions: [] } as Itsa;
+export const itsa = { predicates: [] } as Itsa;
 
 export class Itsa {
-  actions:ItsaAction[] = [];
-  static handlers:{[key:string]:ItsaHandler} = {};
+  predicates:ItsaPredicate[] = [];
+  static validators:{[key:string]:ItsaValidator} = {};
 
-  static extend(cls:ItsaSubclass, ...handlers: ItsaHandler[]) {
-    for (const handler of handlers) {
-      Itsa.handlers[handler.id] = handler;
+  static extend(cls:ItsaSubclass, ...validators: ItsaValidator[]) {
+    for (const validator of validators) {
+      Itsa.validators[validator.id] = validator;
     }
 
     const keys = Object.getOwnPropertyNames(cls.prototype).filter(m => m !== 'constructor');

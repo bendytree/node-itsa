@@ -12,12 +12,12 @@ describe('itsa', function() {
         type: itsa.any('red', 'blue', itsa.null()),
         values: itsa.array(itsa.boolean()).notEmpty(),
       }));
-      const expected = `{"actions":[{"handlerId":"object","settings":{"example":{"id":{"actions":[{"handlerId":"number"},{"handlerId":"min","settings":{"min":1024,"inclusive":true}}]},"type":{"actions":[{"handlerId":"any","settings":{"schemas":[{"actions":[{"handlerId":"equal","settings":{"example":"red"}}]},{"actions":[{"handlerId":"equal","settings":{"example":"blue"}}]},{"actions":[{"handlerId":"equal","settings":{"example":null,"strict":true}}]}]}}]},"values":{"actions":[{"handlerId":"array","settings":{"example":{"actions":[{"handlerId":"boolean","settings":null}]}}},{"handlerId":"notEmpty","settings":null}]}},"config":{}}}]}`;
+      const expected = `{"predicates":[{"id":"object","settings":{"example":{"id":{"predicates":[{"id":"number"},{"id":"min","settings":{"min":1024,"inclusive":true}}]},"type":{"predicates":[{"id":"any","settings":{"schemas":[{"predicates":[{"id":"equal","settings":{"example":"red"}}]},{"predicates":[{"id":"equal","settings":{"example":"blue"}}]},{"predicates":[{"id":"equal","settings":{"example":null,"strict":true}}]}]}}]},"values":{"predicates":[{"id":"array","settings":{"example":{"predicates":[{"id":"boolean","settings":null}]}}},{"id":"notEmpty","settings":null}]}},"config":{}}}]}`;
       assert.strictEqual(json, expected);
     });
 
     it('deserializes back into a schema', function() {
-      const schema = itsa.load({"actions":[{"handlerId":"object","settings":{"example":{"id":{"actions":[{"handlerId":"number","settings":null},{"handlerId":"min","settings":{"min":1024,"inclusive":true}}]},"type":{"actions":[{"handlerId":"any","settings":{"schemas":[{"actions":[{"handlerId":"equal","settings":{"example":"red"}}]},{"actions":[{"handlerId":"equal","settings":{"example":"blue"}}]},{"actions":[{"handlerId":"equal","settings":{"example":null,"strict":true}}]}]}}]},"values":{"actions":[{"handlerId":"array","settings":{"example":{"actions":[{"handlerId":"boolean","settings":null}]}}},{"handlerId":"notEmpty","settings":null}]}},"config":{}}}]});
+      const schema = itsa.load({"predicates":[{"id":"object","settings":{"example":{"id":{"predicates":[{"id":"number","settings":null},{"id":"min","settings":{"min":1024,"inclusive":true}}]},"type":{"predicates":[{"id":"any","settings":{"schemas":[{"predicates":[{"id":"equal","settings":{"example":"red"}}]},{"predicates":[{"id":"equal","settings":{"example":"blue"}}]},{"predicates":[{"id":"equal","settings":{"example":null,"strict":true}}]}]}}]},"values":{"predicates":[{"id":"array","settings":{"example":{"predicates":[{"id":"boolean","settings":null}]}}},{"id":"notEmpty","settings":null}]}},"config":{}}}]});
       const result = schema.validate({
         id:2000,
         type: 'blue',

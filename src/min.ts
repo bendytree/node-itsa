@@ -1,4 +1,4 @@
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 interface ItsaMinSettings {
   min:any;
@@ -9,32 +9,32 @@ export class ItsaMin {
   min(this: Itsa, min:any, inclusive?:boolean):Itsa {
     inclusive = inclusive ?? true;
     const settings:ItsaMinSettings = { min, inclusive };
-    this.actions.push({ handlerId: 'min', settings });
+    this.predicates.push({ id: 'min', settings });
     return this as any as Itsa;
   }
   over(this: Itsa, min:any, inclusive?:boolean):Itsa {
     inclusive = inclusive ?? false;
     const settings:ItsaMinSettings = { min, inclusive };
-    this.actions.push({ handlerId: 'min', settings });
+    this.predicates.push({ id: 'min', settings });
     return this as any as Itsa;
   }
   above(this: Itsa, min:any, inclusive?:boolean):Itsa {
     inclusive = inclusive ?? false;
     const settings:ItsaMinSettings = { min, inclusive };
-    this.actions.push({ handlerId: 'min', settings });
+    this.predicates.push({ id: 'min', settings });
     return this as any as Itsa;
   }
   atLeast(this: Itsa, min:any, inclusive?:boolean):Itsa {
     inclusive = inclusive ?? true;
     const settings:ItsaMinSettings = { min, inclusive };
-    this.actions.push({ handlerId: 'min', settings });
+    this.predicates.push({ id: 'min', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaMin, {
   id: 'min',
-  handler: (context: ItsaHandlerContext, settings: ItsaMinSettings) => {
+  validate: (context: ItsaValidateContext, settings: ItsaMinSettings) => {
     const { val, result } = context;
     const { min, inclusive } = settings;
     if (inclusive) {

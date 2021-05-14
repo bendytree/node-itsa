@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaHandlerContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./index";
 
 export interface ItsaEqualSettings {
   strict?:boolean;
@@ -9,14 +9,14 @@ export interface ItsaEqualSettings {
 export class ItsaEqual {
   equal(this:Itsa, val:any, settings:ItsaEqualSettings = {}):Itsa{
     settings.example = val;
-    this.actions.push({ handlerId: 'equal', settings });
+    this.predicates.push({ id: 'equal', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaEqual, {
   id: 'equal',
-  handler: (context:ItsaHandlerContext, settings:ItsaEqualSettings) => {
+  validate: (context:ItsaValidateContext, settings:ItsaEqualSettings) => {
     const { val, result } = context;
     const { example } = settings;
     const strict = settings.strict ?? true;

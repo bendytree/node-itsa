@@ -1,16 +1,16 @@
 
-import { Itsa, ItsaHandlerContext} from "./index";
+import { Itsa, ItsaValidateContext} from "./index";
 
 export class ItsaFalsy {
   falsy(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'falsy', settings:null });
+    this.predicates.push({ id: 'falsy', settings:null });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaFalsy, {
   id: 'falsy',
-  handler: (context:ItsaHandlerContext) => {
+  validate: (context:ItsaValidateContext) => {
     const { val, result } = context;
     if (val) return result.addError(`Expected falsy value.`);
   }

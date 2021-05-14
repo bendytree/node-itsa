@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 interface ItsaUniqueSettings {
   getter?: Function;
@@ -8,14 +8,14 @@ interface ItsaUniqueSettings {
 export class ItsaUnique {
   unique(this:Itsa, getter?:Function):Itsa{
     const settings: ItsaUniqueSettings = { getter };
-    this.actions.push({ handlerId: 'unique', settings });
+    this.predicates.push({ id: 'unique', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaUnique, {
   id: 'unique',
-  handler: (context:ItsaHandlerContext, settings: ItsaUniqueSettings) => {
+  validate: (context:ItsaValidateContext, settings: ItsaUniqueSettings) => {
     const { val, result } = context;
     const { getter } = settings;
     const set = new Set();

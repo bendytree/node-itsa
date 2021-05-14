@@ -1,4 +1,4 @@
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaArraySettings {
@@ -8,14 +8,14 @@ interface ItsaArraySettings {
 export class ItsaArray {
   array(this:Itsa, example?:ItsaOrPrimative):Itsa {
     const settings:ItsaArraySettings = { example: example ? primitiveToItsa(example) : null };
-    this.actions.push({ handlerId: 'array', settings });
+    this.predicates.push({ id: 'array', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaArray, {
   id: 'array',
-  handler: (context:ItsaHandlerContext, settings:ItsaArraySettings) => {
+  validate: (context:ItsaValidateContext, settings:ItsaArraySettings) => {
     const { val, validation, exists, result, type } = context;
     const { example } = settings;
 

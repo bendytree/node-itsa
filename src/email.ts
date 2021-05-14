@@ -1,18 +1,18 @@
 
-import { Itsa, ItsaHandlerContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./index";
 
 const rx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export class ItsaEmail {
   email(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'email', settings:null });
+    this.predicates.push({ id: 'email', settings:null });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaEmail, {
   id: 'email',
-  handler: (context:ItsaHandlerContext) => {
+  validate: (context:ItsaValidateContext) => {
     const { val, type, result } = context;
     if (type !== 'string') return result.addError(`Expected email but found ${type}`);
     const isValid = rx.test(val);

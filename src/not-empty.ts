@@ -1,15 +1,15 @@
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 export class ItsaNotEmpty {
   notEmpty(this:Itsa):Itsa {
-    this.actions.push({ handlerId: 'notEmpty', settings:null });
+    this.predicates.push({ id: 'notEmpty', settings:null });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaNotEmpty, {
   id: 'notEmpty',
-  handler: (context: ItsaHandlerContext) => {
+  validate: (context: ItsaValidateContext) => {
     const { val, result } = context;
     const len = val ? val.length : null;
     if (typeof len === 'number' && len) {

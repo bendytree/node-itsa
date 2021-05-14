@@ -4,12 +4,12 @@ import {ItsaEqualSettings} from "./equal";
 export class ItsaNull {
   null(this:Itsa):Itsa {
     const settings:ItsaEqualSettings = { example: null, strict: true };
-    this.actions.push({ handlerId: 'equal', settings });
+    this.predicates.push({ id: 'equal', settings });
     return this as any as Itsa;
   }
   undefined(this:Itsa):Itsa {
     const settings:ItsaEqualSettings = { example: undefined, strict: true };
-    this.actions.push({ handlerId: 'equal', settings });
+    this.predicates.push({ id: 'equal', settings });
     return this as any as Itsa;
   }
 }

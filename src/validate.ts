@@ -1,8 +1,8 @@
 
 import {
   Itsa, ItsaError,
-  ItsaHandler,
-  ItsaHandlerContext,
+  ItsaValidator,
+  ItsaValidateContext,
   ItsaInternalValidationSettings, ItsaValidationException,
   ItsaValidationResult,
   ItsaValidationSettings
@@ -22,13 +22,13 @@ class ItsaValidation {
           result.value = newVal;
         }
       };
-      for (const action of this.actions) {
-        const handler:ItsaHandler = Itsa.handlers[action.handlerId];
+      for (const predicate of this.predicates) {
+        const validator:ItsaValidator = Itsa.validators[predicate.id];
 
         /* istanbul ignore next */
-        if (!handler) throw new Error(`Handler not found: ${action.handlerId}`);
+        if (!validator) throw new Error(`Validator not found: ${predicate.id}`);
 
-        const context:ItsaHandlerContext = {
+        const context:ItsaValidateContext = {
           setVal,
           result,
           val: settings.val,
@@ -39,7 +39,7 @@ class ItsaValidation {
           validation: settings.settings,
           path: settings.path,
         };
-        handler.handler(context, action.settings);
+        validator.validate(context, predicate.settings);
         if (!result.ok) return result;
       }
     }catch (e){

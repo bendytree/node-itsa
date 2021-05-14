@@ -1,18 +1,18 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 const rxObjectId = /^[0-9a-f]{24}$/i;
 
 export class ItsaObjectId {
   objectid(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'objectid', settings:null });
+    this.predicates.push({ id: 'objectid', settings:null });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaObjectId, {
   id: 'objectid',
-  handler: (context:ItsaHandlerContext, settings?:any) => {
+  validate: (context:ItsaValidateContext, settings?:any) => {
     const { val, result, type } = context;
     if (!val) return result.addError('ObjectId is required');
     if (type !== 'string') return result.addError('ObjectId must be a string');

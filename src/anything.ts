@@ -1,15 +1,15 @@
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 export class ItsaAnything {
   anything(this:Itsa):Itsa {
-    this.actions.push({ handlerId: 'anything', settings:null });
+    this.predicates.push({ id: 'anything', settings:null });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaAnything, {
   id: 'anything',
-  handler: (context:ItsaHandlerContext) => {
+  validate: (context:ItsaValidateContext) => {
 
   }
 });

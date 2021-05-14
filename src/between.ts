@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 export interface ItsaBetweenExtraSettings {
   inclusive?:boolean;
@@ -16,14 +16,14 @@ export class ItsaBetween {
     const settings = extraSettings as ItsaBetweenSettings;
     settings.min = min;
     settings.max = max;
-    this.actions.push({ handlerId: 'between', settings:settings });
+    this.predicates.push({ id: 'between', settings:settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaBetween, {
   id: 'between',
-  handler: (context:ItsaHandlerContext, settings:ItsaBetweenSettings) => {
+  validate: (context:ItsaValidateContext, settings:ItsaBetweenSettings) => {
     const { val, result } = context;
     const { min, max } = settings;
     const inclusive = settings.inclusive ?? true;

@@ -1,4 +1,4 @@
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 interface ItsaLengthSettings {
   exactly?:number;
@@ -17,14 +17,14 @@ export class ItsaLength {
     if (typeof min !== 'number') {
       settings = { min: 1 };
     }
-    this.actions.push({ handlerId: 'length', settings });
+    this.predicates.push({ id: 'length', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaLength, {
   id: 'length',
-  handler: (context: ItsaHandlerContext, settings:ItsaLengthSettings) => {
+  validate: (context: ItsaValidateContext, settings:ItsaLengthSettings) => {
     const {val, result} = context;
     const len = val ? val.length : null;
     if (typeof len !== 'number') {

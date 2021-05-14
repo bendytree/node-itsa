@@ -1,7 +1,7 @@
 
-import {itsa, Itsa, ItsaAction} from "./index";
+import {Itsa, ItsaPredicate} from "./index";
 
-type RawItsa = {actions:ItsaAction[]};
+type RawItsa = {predicates:ItsaPredicate[]};
 
 const convert = (el:any) => {
   const proto = Object.prototype.toString.call(el);
@@ -16,9 +16,9 @@ const convert = (el:any) => {
     el[key] = convert(el[key]);
   }
 
-  if (isObject && el.actions) {
+  if (isObject && el.predicates) {
     const i = new Itsa();
-    i.actions = el.actions;
+    i.predicates = el.predicates;
     return i;
   }
 
@@ -27,7 +27,7 @@ const convert = (el:any) => {
 
 export class ItsaSerialize {
   load(this:Itsa, raw:RawItsa):Itsa{
-    this.actions = convert(raw).actions;
+    this.predicates = convert(raw).predicates;
     return this as any as Itsa;
   }
 }

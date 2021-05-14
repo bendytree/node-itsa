@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaObjectExample {
@@ -37,14 +37,14 @@ export class ItsaObject {
       config.value = primitiveToItsa(config.value);
     }
     const settings:ItsaObjectSettings = { example:convertedExample as ItsaObjectExample, config };
-    this.actions.push({ handlerId: 'object', settings });
+    this.predicates.push({ id: 'object', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaObject, {
   id: 'object',
-  handler: (context:ItsaHandlerContext, settings:ItsaObjectSettings) => {
+  validate: (context:ItsaValidateContext, settings:ItsaObjectSettings) => {
     const { val, parent, validation, result, type } = context;
     const { example, config } = settings;
     const extras = config.extras ?? false;

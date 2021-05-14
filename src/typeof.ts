@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 interface ItsaTypeOfSettings {
   type: string;
@@ -8,14 +8,14 @@ interface ItsaTypeOfSettings {
 export class ItsaTypeOf {
   typeof(this:Itsa, type:string):Itsa{
     const settings: ItsaTypeOfSettings = { type };
-    this.actions.push({ handlerId: 'typeof', settings });
+    this.predicates.push({ id: 'typeof', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaTypeOf, {
   id: 'typeof',
-  handler: (context:ItsaHandlerContext, settings: ItsaTypeOfSettings) => {
+  validate: (context:ItsaValidateContext, settings: ItsaTypeOfSettings) => {
     const { val, result } = context;
     const { type } = settings;
     const actualType = typeof val;

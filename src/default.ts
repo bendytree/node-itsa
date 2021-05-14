@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaHandlerContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./index";
 
 export interface ItsaDefaultSettings {
   val?:any;
@@ -9,11 +9,11 @@ export interface ItsaDefaultSettings {
 export class ItsaDefault {
   default(this:Itsa, val, settings:ItsaDefaultSettings = {}):Itsa{
     settings.val = val;
-    this.actions.push({ handlerId: 'default', settings });
+    this.predicates.push({ id: 'default', settings });
     return this as any as Itsa;
   }
   defaultNow(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'defaultNow', settings:null });
+    this.predicates.push({ id: 'defaultNow', settings:null });
     return this as any as Itsa;
   }
 }
@@ -23,7 +23,7 @@ Itsa.extend(
   ...[
     {
       id: 'default',
-      handler: (context:ItsaHandlerContext, settings:ItsaDefaultSettings) => {
+      validate: (context:ItsaValidateContext, settings:ItsaDefaultSettings) => {
         const { val, setVal } = context;
         const falsy = settings.falsy ?? false;
         const doReplace = falsy ? !val : (val === null || val === undefined);
@@ -34,7 +34,7 @@ Itsa.extend(
     },
     {
       id: 'defaultNow',
-      handler: (context:ItsaHandlerContext) => {
+      validate: (context:ItsaValidateContext) => {
         const { val, setVal } = context;
         if (val === null || val === undefined) {
           setVal(new Date());

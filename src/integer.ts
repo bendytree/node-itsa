@@ -1,15 +1,15 @@
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 export class ItsaInteger {
   integer(this:Itsa):Itsa {
-    this.actions.push({ handlerId: 'integer', settings:null });
+    this.predicates.push({ id: 'integer', settings:null });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaInteger, {
   id: 'integer',
-  handler: (context: ItsaHandlerContext) => {
+  validate: (context: ItsaValidateContext) => {
     const {val, result} = context;
     const valid = typeof val === "number"
       && isNaN(val) === false

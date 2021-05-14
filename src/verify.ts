@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaHandlerContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./index";
 
 interface ItsaVerifySettings {
   verifier: Function;
@@ -8,14 +8,14 @@ interface ItsaVerifySettings {
 export class ItsaVerify {
   verify(this:Itsa, verifier:Function):Itsa{
     const settings: ItsaVerifySettings = { verifier };
-    this.actions.push({ handlerId: 'verify', settings });
+    this.predicates.push({ id: 'verify', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaVerify, {
   id: 'verify',
-  handler: (context:ItsaHandlerContext, settings: ItsaVerifySettings) => {
+  validate: (context:ItsaValidateContext, settings: ItsaVerifySettings) => {
     const { val, result } = context;
     const { verifier } = settings;
     try {

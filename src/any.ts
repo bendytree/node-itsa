@@ -1,4 +1,4 @@
-import {ItsaHandlerContext, Itsa, ItsaHandler} from "./index";
+import {ItsaValidateContext, Itsa, ItsaValidator} from "./index";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaAnySettings {
@@ -9,14 +9,14 @@ class ItsaAny {
   any (this:Itsa, ...options:(ItsaOrPrimative | ItsaOrPrimative[])[]):Itsa {
     const schemas = options.flat().map(x => primitiveToItsa(x)) as Itsa[];
     const settings:ItsaAnySettings = { schemas };
-    this.actions.push({ handlerId: 'any', settings });
+    this.predicates.push({ id: 'any', settings });
     return this as any as Itsa;
   }
 }
 
-const handler:ItsaHandler = {
+const validate:ItsaValidator = {
   id: 'any',
-  handler: (context:ItsaHandlerContext, settings:ItsaAnySettings) => {
+  validate: (context:ItsaValidateContext, settings:ItsaAnySettings) => {
     const { key, val, parent, validation, exists, result } = context;
     const { schemas } = settings;
 
@@ -41,7 +41,7 @@ const handler:ItsaHandler = {
   }
 };
 
-Itsa.extend(ItsaAny, handler);
+Itsa.extend(ItsaAny, validate);
 
 declare module './index' {
   interface Itsa extends ItsaAny { }

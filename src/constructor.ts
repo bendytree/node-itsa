@@ -1,5 +1,5 @@
 
-import { ItsaHandlerContext } from "./index";
+import { ItsaValidateContext } from "./index";
 import { Itsa } from "./index";
 
 export interface ItsaConstructorSettings {
@@ -9,14 +9,14 @@ export interface ItsaConstructorSettings {
 export class ItsaConstructor {
   constructorIs(this:Itsa, cls:Function):Itsa{
     const settings: ItsaConstructorSettings = { cls };
-    this.actions.push({ handlerId: 'constructor', settings });
+    this.predicates.push({ id: 'constructor', settings });
     return this as any as Itsa;
   }
 }
 
 Itsa.extend(ItsaConstructor, {
   id: 'constructor',
-  handler: (context:ItsaHandlerContext, settings: ItsaConstructorSettings) => {
+  validate: (context:ItsaValidateContext, settings: ItsaConstructorSettings) => {
     const { val, result } = context;
     const isMatch = val !== null && val !== undefined && val.constructor === settings.cls;
     if (!isMatch) return result.addError(`Expected to be ${settings.cls}`);
