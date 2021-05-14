@@ -1,15 +1,6 @@
 {
-  // Options: https://www.typescriptlang.org/tsconfig
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "es2020",
     "module": "commonjs",
-    "sourceMap": true,
-    "isolatedModules": true,
-    "esModuleInterop": true
   },
-  "include": [
-    "src/**/*",
-    "@types/**/*",
-  ]
 }

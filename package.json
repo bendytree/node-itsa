@@ -1,10 +1,10 @@
 {
   "name": "itsa",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "itsa is a JavaScript library that validates JavaScript data",
   "scripts": {
-    "coverage": "rm -rf .coverage/* && nyc mocha",
-    "test": "mocha --reporter utils/reporter.js --parallel --watch",
+    "coverage": "rm -rf .coverage/* && TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
+    "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha --reporter utils/reporter.js --parallel --watch",
     "build": "rm -rf ./dist/* && rollup -c && rm -rf ./dist/types",
     "bump-patch": "npm --no-git-tag-version version patch && git add package.json package-lock.json && exit 0"
   },

@@ -1,15 +1,19 @@
 {
   // Options: https://www.typescriptlang.org/tsconfig
   "compilerOptions": {
-    "experimentalDecorators": true,
-    "target": "es2020",
-    "module": "commonjs",
     "sourceMap": true,
     "isolatedModules": true,
-    "esModuleInterop": true
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "module": "ES2015", //rollup requires ES2015 or ESNext
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./dist/types"
   },
+  "exclude": ["node_modules"],
   "include": [
     "src/**/*",
-    "@types/**/*",
+    "@types/**/*"
   ]
 }
