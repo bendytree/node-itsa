@@ -1,21 +1,21 @@
 import {Itsa} from "./index";
-import {ItsaNotEmpty} from "./not-empty";
-import { ItsaEqualSettings } from './equal';
+import {ItsaEqualSettings} from "./equal";
 
-export class ItsaNull extends ItsaNotEmpty {
-  constructor() {
-    super();
-  }
-  null():Itsa {
+export class ItsaNull {
+  null(this:Itsa):Itsa {
     const settings:ItsaEqualSettings = { example: null, strict: true };
-    this.actions.push({ actorId: 'equal', settings });
+    this.actions.push({ handlerId: 'equal', settings });
     return this as any as Itsa;
   }
-  undefined():Itsa {
+  undefined(this:Itsa):Itsa {
     const settings:ItsaEqualSettings = { example: undefined, strict: true };
-    this.actions.push({ actorId: 'equal', settings });
+    this.actions.push({ handlerId: 'equal', settings });
     return this as any as Itsa;
   }
 }
 
+Itsa.extend(ItsaNull);
 
+declare module './index' {
+  interface Itsa extends ItsaNull { }
+}

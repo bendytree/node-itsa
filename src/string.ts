@@ -1,22 +1,21 @@
 
-import {ItsaActorContext} from "./core";
-import { Itsa } from "./index";
-import {ItsaObject} from "./object";
+import {Itsa, ItsaHandlerContext} from "./index";
 
-export class ItsaString extends ItsaObject {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'string',
-      handler: (context:ItsaActorContext) => {
-        const { type, result } = context;
-        if (type !== 'string') return result.addError(`Expected string`);
-      }
-    });
-  }
-  string():Itsa{
-    this.actions.push({ actorId: 'string', settings:null });
+export class ItsaString {
+  string(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'string', settings:null });
     return this as any as Itsa;
   }
+}
+
+Itsa.extend(ItsaString, {
+  id: 'string',
+  handler: (context:ItsaHandlerContext) => {
+    const { type, result } = context;
+    if (type !== 'string') return result.addError(`Expected string`);
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaString { }
 }

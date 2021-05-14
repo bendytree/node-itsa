@@ -1,29 +1,29 @@
 
-import { ItsaActorContext } from "./core";
+import { ItsaHandlerContext } from "./index";
 import { Itsa } from "./index";
-import { ItsaConvert } from "./convert";
 
-export class ItsaDate extends ItsaConvert {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'date',
-      handler: (context:ItsaActorContext) => {
-        const { val, result } = context;
-        const type = Object.prototype.toString.call(val);
-        if (type !== "[object Date]") {
-          result.addError(`Expected date but found ${type}`);
-          return;
-        }
-        if (!isFinite(val)) {
-          result.addError(`Date is not valid`);
-        }
-      }
-    });
-  }
-  date():Itsa{
-    this.actions.push({ actorId: 'date', settings:null });
+export class ItsaDate {
+  date(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'date', settings:null });
     return this as any as Itsa;
   }
 }
+
+Itsa.extend(ItsaDate, {
+  id: 'date',
+  handler: (context:ItsaHandlerContext) => {
+    const { val, result } = context;
+    const type = Object.prototype.toString.call(val);
+    if (type !== "[object Date]") {
+      return result.addError(`Expected date but found ${type}`);
+    }
+    if (!isFinite(val)) {
+      result.addError(`Date is not valid`);
+    }
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaDate { }
+}
+

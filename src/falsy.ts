@@ -1,22 +1,22 @@
 
-import {ItsaActorContext} from "./core";
-import { Itsa } from "./index";
-import {ItsaEqual} from "./equal";
+import { Itsa, ItsaHandlerContext} from "./index";
 
-export class ItsaFalsy extends ItsaEqual {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'falsy',
-      handler: (context:ItsaActorContext) => {
-        const { val, result } = context;
-        if (val) return result.addError(`Expected falsy value.`);
-      }
-    });
-  }
-  falsy():Itsa{
-    this.actions.push({ actorId: 'falsy', settings:null });
+export class ItsaFalsy {
+  falsy(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'falsy', settings:null });
     return this as any as Itsa;
   }
 }
+
+Itsa.extend(ItsaFalsy, {
+  id: 'falsy',
+  handler: (context:ItsaHandlerContext) => {
+    const { val, result } = context;
+    if (val) return result.addError(`Expected falsy value.`);
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaFalsy { }
+}
+

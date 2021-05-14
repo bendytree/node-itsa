@@ -1,56 +1,17 @@
 
-import { ItsaActor, ItsaActorContext } from './core';
-import { ItsaVerify } from "./verify";
+import {
+  Itsa,
+  ItsaHandler,
+  ItsaHandlerContext,
+  ItsaInternalValidationSettings,
+  ItsaValidationResult,
+  ItsaValidationSettings
+} from './index';
 
-export interface ItsaInternalValidationSettings {
-  val:any;
-  key?:string|number;
-  parent?:object|[];
-  exists: boolean;
-  settings:ItsaValidationSettings;
-}
-
-export interface ItsaValidationSettings {
-  partial?:boolean;
-  exhaustive?:boolean;
-}
-
-export interface ItsaError {
-  message:string;
-}
-
-export class ItsaValidationResult {
-  ok: boolean = true;
-  errors: ItsaError[] = [];
-  value: any;
-  message?: string;
-
-  constructor(private exhaustive: boolean) { }
-
-  addError (message:string) {
-    this.ok = false;
-    this.message = message;
-    this.errors.push({ message }); // path: null, val,
-    if (!this.exhaustive) {
-      throw 'STOP_ON_FIRST_ERROR';
-    }
-  }
-
-  combine(result: ItsaValidationResult):void{
-    this.ok = this.ok && result.ok;
-    for (const e of result.errors) {
-      this.errors.push(e);
-      if (!this.exhaustive) {
-        throw 'STOP_ON_FIRST_ERROR';
-      }
-    }
-  }
-}
-
-export class ItsaValidate extends ItsaVerify {
-
-  _validate(settings:ItsaInternalValidationSettings):ItsaValidationResult {
-    const result = new ItsaValidationResult(settings.settings.exhaustive);
+class ItsaValidation {
+  _validate(this:Itsa, settings:ItsaInternalValidationSettings):ItsaValidationResult {
+    const { key } = settings;
+    const result = new ItsaValidationResult(settings.settings.exhaustive, key, settings.path);
     result.value = settings.val;
     try {
       const setVal = (newVal:any) => {
@@ -62,9 +23,12 @@ export class ItsaValidate extends ItsaVerify {
         }
       };
       for (const action of this.actions) {
-        const actor:ItsaActor = this.actors[action.actorId];
-        if (!actor) throw new Error(`Actor not found: ${action.actorId}`);
-        const context:ItsaActorContext = {
+        const handler:ItsaHandler = Itsa.handlers[action.handlerId];
+
+        /* istanbul ignore next */
+        if (!handler) throw new Error(`Handler not found: ${action.handlerId}`);
+
+        const context:ItsaHandlerContext = {
           setVal,
           result,
           val: settings.val,
@@ -73,22 +37,32 @@ export class ItsaValidate extends ItsaVerify {
           exists: settings.exists,
           type: typeof settings.val,
           validation: settings.settings,
+          path: settings.path,
         };
-        actor.handler(context, action.settings);
+        handler.handler(context, action.settings);
+        if (!result.ok) return result;
       }
     }catch (e){
+      /* istanbul ignore next */
       if (e !== 'STOP_ON_FIRST_ERROR') throw e;
     }
     return result;
   }
 
-  validate(val: any, settings:ItsaValidationSettings = {}):ItsaValidationResult {
+  validate(this:Itsa, val: any, settings:ItsaValidationSettings = {}):ItsaValidationResult {
     return this._validate({
       val,
       settings,
       key:null,
       parent:null,
       exists: true,
+      path: [],
     });
   }
+}
+
+Itsa.extend(ItsaValidation);
+
+declare module './index' {
+  interface Itsa extends ItsaValidation { }
 }

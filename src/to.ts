@@ -1,118 +1,113 @@
 
-import {ItsaActorContext} from "./core";
-import { Itsa } from "./index";
-import {ItsaString} from "./string";
+import {Itsa, ItsaHandlerContext} from "./index";
 
 interface ItsaToIntSettings {
   radix?:number;
 }
 
-export class ItsaTo extends ItsaString {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'toDate',
-      handler: (context:ItsaActorContext) => {
-        const { val, setVal, result } = context;
-        const date = new Date(val);
-        if (!isFinite(date.getTime())) return result.addError(`Date conversion failed`);
-        setVal(date);
-      }
-    });
-
-    this.registerActor({
-      id: 'toFloat',
-      handler: (context:ItsaActorContext) => {
-        const { val, setVal, result } = context;
-        const newFloat = parseFloat(val);
-        if (isNaN(newFloat)) return result.addError(`Float conversion failed`);
-        setVal(newFloat);
-      }
-    });
-
-    this.registerActor({
-      id: 'toInt',
-      handler: (context:ItsaActorContext, settings:ItsaToIntSettings) => {
-        const { val, setVal, result } = context;
-        const { radix } = settings;
-        const newFloat = parseInt(val, radix ?? 10);
-        if (isNaN(newFloat)) return result.addError(`Float conversion failed`);
-        setVal(newFloat);
-      }
-    });
-
-    this.registerActor({
-      id: 'toLowerCase',
-      handler: (context:ItsaActorContext) => {
-        const { val, setVal } = context;
-        setVal(String(val).toLowerCase());
-      }
-    });
-
-    this.registerActor({
-      id: 'toUpperCase',
-      handler: (context:ItsaActorContext) => {
-        const { val, setVal } = context;
-        setVal(String(val).toUpperCase());
-      }
-    });
-
-    this.registerActor({
-      id: 'toNow',
-      handler: (context:ItsaActorContext) => {
-        const { setVal } = context;
-        setVal(new Date());
-      }
-    });
-
-    this.registerActor({
-      id: 'toString',
-      handler: (context:ItsaActorContext) => {
-        const { val, setVal } = context;
-        setVal(String(val));
-      }
-    });
-
-    this.registerActor({
-      id: 'toTrimmed',
-      handler: (context:ItsaActorContext) => {
-        const { val, setVal } = context;
-        setVal(String(val).trim());
-      }
-    });
-  }
-  toDate():Itsa{
-    this.actions.push({ actorId: 'toDate', settings:null });
+export class ItsaTo {
+  toDate(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toDate', settings:null });
     return this as any as Itsa;
   }
-  toFloat():Itsa{
-    this.actions.push({ actorId: 'toFloat', settings:null });
+  toFloat(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toFloat', settings:null });
     return this as any as Itsa;
   }
-  toInt(radix?:number):Itsa{
+  toInt(this:Itsa, radix?:number):Itsa{
     const settings:ItsaToIntSettings = { radix };
-    this.actions.push({ actorId: 'toInt', settings });
+    this.actions.push({ handlerId: 'toInt', settings });
     return this as any as Itsa;
   }
-  toLowerCase():Itsa{
-    this.actions.push({ actorId: 'toLowerCase', settings: null });
+  toLowerCase(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toLowerCase', settings: null });
     return this as any as Itsa;
   }
-  toUpperCase():Itsa{
-    this.actions.push({ actorId: 'toUpperCase', settings: null });
+  toUpperCase(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toUpperCase', settings: null });
     return this as any as Itsa;
   }
-  toNow():Itsa{
-    this.actions.push({ actorId: 'toNow', settings: null });
+  toNow(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toNow', settings: null });
     return this as any as Itsa;
   }
-  toString():Itsa{
-    this.actions.push({ actorId: 'toString', settings: null });
+  toString(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toString', settings: null });
     return this as any as Itsa;
   }
-  toTrimmed():Itsa{
-    this.actions.push({ actorId: 'toTrimmed', settings: null });
+  toTrimmed(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'toTrimmed', settings: null });
     return this as any as Itsa;
   }
+}
+
+Itsa.extend(
+  ItsaTo,
+  {
+    id: 'toDate',
+    handler: (context:ItsaHandlerContext) => {
+      const { val, setVal, result } = context;
+      const date = new Date(val);
+      if (!isFinite(date.getTime())) return result.addError(`Date conversion failed`);
+      setVal(date);
+    }
+  },
+  {
+    id: 'toFloat',
+    handler: (context:ItsaHandlerContext) => {
+      const { val, setVal, result } = context;
+      const newFloat = parseFloat(val);
+      if (isNaN(newFloat)) return result.addError(`Float conversion failed`);
+      setVal(newFloat);
+    }
+  },
+  {
+    id: 'toInt',
+    handler: (context:ItsaHandlerContext, settings:ItsaToIntSettings) => {
+      const { val, setVal, result } = context;
+      const { radix } = settings;
+      const newInt = parseInt(val, radix ?? 10);
+      if (isNaN(newInt)) return result.addError(`Int conversion failed`);
+      setVal(newInt);
+    }
+  },
+  {
+    id: 'toLowerCase',
+    handler: (context:ItsaHandlerContext) => {
+      const { val, setVal } = context;
+      setVal(String(val).toLowerCase());
+    }
+  },
+  {
+    id: 'toUpperCase',
+    handler: (context:ItsaHandlerContext) => {
+      const { val, setVal } = context;
+      setVal(String(val).toUpperCase());
+    }
+  },
+  {
+    id: 'toNow',
+    handler: (context:ItsaHandlerContext) => {
+      const { setVal } = context;
+      setVal(new Date());
+    }
+  },
+  {
+    id: 'toString',
+    handler: (context:ItsaHandlerContext) => {
+      const { val, setVal } = context;
+      setVal(String(val));
+    }
+  },
+  {
+    id: 'toTrimmed',
+    handler: (context:ItsaHandlerContext) => {
+      const { val, setVal } = context;
+      setVal(String(val).trim());
+    }
+  },
+);
+
+declare module './index' {
+  interface Itsa extends ItsaTo { }
 }

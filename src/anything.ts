@@ -1,22 +1,19 @@
-import { Itsa } from "./index";
-import { ItsaActorContext } from "./core";
-import { ItsaAny } from "./any";
+import {Itsa, ItsaHandlerContext} from "./index";
 
-export class ItsaAnything extends ItsaAny {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'anything',
-      handler: (context:ItsaActorContext) => {
-
-      }
-    });
-  }
-  anything():Itsa {
-    this.actions.push({ actorId: 'anything', settings:null });
+export class ItsaAnything {
+  anything(this:Itsa):Itsa {
+    this.actions.push({ handlerId: 'anything', settings:null });
     return this as any as Itsa;
   }
 }
 
+Itsa.extend(ItsaAnything, {
+  id: 'anything',
+  handler: (context:ItsaHandlerContext) => {
 
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaAnything { }
+}

@@ -1,6 +1,4 @@
-import { Itsa } from "./index";
-import { ItsaActorContext } from "./core";
-import {ItsaInteger} from "./integer";
+import {Itsa, ItsaHandlerContext} from "./index";
 
 interface ItsaLengthSettings {
   exactly?:number;
@@ -8,31 +6,8 @@ interface ItsaLengthSettings {
   max?:number;
 }
 
-export class ItsaLength extends ItsaInteger {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'length',
-      handler: (context: ItsaActorContext, settings:ItsaLengthSettings) => {
-        const {val, result} = context;
-        const len = val ? val.length : null;
-        if (typeof len !== 'number') {
-          return result.addError('Invalid length');
-        }
-        if (typeof settings.exactly === 'number' && settings.exactly !== len) {
-          return result.addError(`Expected length to be ${settings.exactly}`);
-        }
-        if (typeof settings.min === 'number' && settings.min > len) {
-          return result.addError(`Expected length to be at least ${settings.min}`);
-        }
-        if (typeof settings.max === 'number' && settings.max < len) {
-          return result.addError(`Expected length to be at most ${settings.max}`);
-        }
-      }
-    });
-  }
-  length(min?:number, max?:number):Itsa {
+export class ItsaLength {
+  length(this: Itsa, min?:number, max?:number):Itsa {
     let settings:ItsaLengthSettings = {
       min, max
     };
@@ -42,7 +17,31 @@ export class ItsaLength extends ItsaInteger {
     if (typeof min !== 'number') {
       settings = { min: 1 };
     }
-    this.actions.push({ actorId: 'length', settings });
+    this.actions.push({ handlerId: 'length', settings });
     return this as any as Itsa;
   }
+}
+
+Itsa.extend(ItsaLength, {
+  id: 'length',
+  handler: (context: ItsaHandlerContext, settings:ItsaLengthSettings) => {
+    const {val, result} = context;
+    const len = val ? val.length : null;
+    if (typeof len !== 'number') {
+      return result.addError('Invalid length');
+    }
+    if (typeof settings.exactly === 'number' && settings.exactly !== len) {
+      return result.addError(`Expected length to be ${settings.exactly}`);
+    }
+    if (typeof settings.min === 'number' && settings.min > len) {
+      return result.addError(`Expected length to be at least ${settings.min}`);
+    }
+    if (typeof settings.max === 'number' && settings.max < len) {
+      return result.addError(`Expected length to be at most ${settings.max}`);
+    }
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaLength { }
 }

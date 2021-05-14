@@ -1,22 +1,22 @@
 
-import { ItsaActorContext } from "./core";
+import { ItsaHandlerContext } from "./index";
 import { Itsa } from "./index";
-import { ItsaBetween } from "./between";
 
-export class ItsaBoolean extends ItsaBetween {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'boolean',
-      handler: (context:ItsaActorContext) => {
-        const { type, result } = context;
-        if (type !== 'boolean') result.addError(`Expected bool but found ${type}`);
-      }
-    });
-  }
-  boolean():Itsa{
-    this.actions.push({ actorId: 'boolean', settings:null });
+export class ItsaBoolean {
+  boolean(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'boolean', settings:null });
     return this as any as Itsa;
   }
+}
+
+Itsa.extend(ItsaBoolean, {
+  id: 'boolean',
+  handler: (context:ItsaHandlerContext) => {
+    const { type, result } = context;
+    if (type !== 'boolean') result.addError(`Expected bool but found ${type}`);
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaBoolean { }
 }

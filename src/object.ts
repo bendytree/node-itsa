@@ -1,7 +1,5 @@
 
-import { Itsa } from "./index";
-import {ItsaActorContext} from "./core";
-import {ItsaNumber} from "./number";
+import {Itsa, ItsaHandlerContext} from "./index";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaObjectExample {
@@ -23,85 +21,8 @@ interface ItsaObjectSettings {
   config: ItsaObjectConfig;
 }
 
-export class ItsaObject extends ItsaNumber {
-  constructor() {
-    super();
-
-    this.registerActor({
-      id: 'object',
-      handler: (context:ItsaActorContext, settings:ItsaObjectSettings) => {
-        const { val, parent, validation, result, type } = context;
-        const { example, config } = settings;
-        const extras = config.extras ?? false;
-
-        // Validate object
-        if (!val) return result.addError(`Expected object but value is ${val}.`);
-        if (type !== "object") return result.addError(`Expected object but type is ${type}.`);
-        if (val instanceof RegExp) return result.addError(`Expected object but type is regex.`);
-        if (val instanceof Date) return result.addError(`Expected object but type is date.`);
-        if (Array.isArray(val)) return result.addError(`Expected object but type is array.`);
-
-        const objectKeys = Object.keys(val);
-
-        if (example) {
-          // Validate according to example
-          const exampleKeys = Object.keys(example);
-          for (const key of exampleKeys) {
-            // For root object, we might skip missing fields
-            if (!parent && validation.partial && !objectKeys.includes(key)) {
-              continue;
-            }
-
-            const subSchema = example[key];
-            const subResult = subSchema._validate({
-              key,
-              parent:val,
-              val: val[key],
-              exists: key in val,
-              settings: validation,
-            });
-            result.combine(subResult);
-          }
-
-          // Error for extra properties?
-          if (!extras) {
-            const extraKeys = objectKeys.filter(k => !exampleKeys.includes(k));
-            if (extraKeys.length) {
-              return result.addError(`Extra unknown properties: ${extraKeys.join(', ')}`);
-            }
-          }
-        }
-
-        if (config.key) {
-          for (const key of objectKeys) {
-            const subResult = config.key._validate({
-              key,
-              parent:val,
-              val: key,
-              exists: true,
-              settings: validation,
-            });
-            result.combine(subResult);
-          }
-        }
-
-        if (config.value) {
-          for (const key of objectKeys) {
-            const subVal = val[key];
-            const subResult = config.value._validate({
-              key,
-              parent:val,
-              val: subVal,
-              exists: true,
-              settings: validation,
-            });
-            result.combine(subResult);
-          }
-        }
-      }
-    });
-  }
-  object(example?:ItsaObjectExampleWithPrimitives, config:ItsaObjectConfig = {}):Itsa{
+export class ItsaObject {
+  object(this:Itsa, example?:ItsaObjectExampleWithPrimitives, config:ItsaObjectConfig = {}):Itsa{
     let convertedExample = null;
     if (example) {
       convertedExample = {};
@@ -116,8 +37,88 @@ export class ItsaObject extends ItsaNumber {
       config.value = primitiveToItsa(config.value);
     }
     const settings:ItsaObjectSettings = { example:convertedExample as ItsaObjectExample, config };
-    this.actions.push({ actorId: 'object', settings });
+    this.actions.push({ handlerId: 'object', settings });
     return this as any as Itsa;
   }
 }
 
+Itsa.extend(ItsaObject, {
+  id: 'object',
+  handler: (context:ItsaHandlerContext, settings:ItsaObjectSettings) => {
+    const { val, parent, validation, result, type } = context;
+    const { example, config } = settings;
+    const extras = config.extras ?? false;
+
+    // Validate object
+    if (!val) return result.addError(`Expected object but value is ${val}.`);
+    if (type !== "object") return result.addError(`Expected object but type is ${type}.`);
+    if (val instanceof RegExp) return result.addError(`Expected object but type is regex.`);
+    if (val instanceof Date) return result.addError(`Expected object but type is date.`);
+    if (Array.isArray(val)) return result.addError(`Expected object but type is array.`);
+
+    const objectKeys = Object.keys(val);
+
+    if (example) {
+      // Validate according to example
+      const exampleKeys = Object.keys(example);
+      for (const key of exampleKeys) {
+        // For root object, we might skip missing fields
+        if (!parent && validation.partial && !objectKeys.includes(key)) {
+          continue;
+        }
+
+        const subSchema = example[key];
+        const subResult = subSchema._validate({
+          key,
+          parent:val,
+          val: val[key],
+          exists: key in val,
+          settings: validation,
+          path: [...context.path, key],
+        });
+        result.combine(subResult);
+      }
+
+      // Error for extra properties?
+      if (!extras) {
+        const extraKeys = objectKeys.filter(k => !exampleKeys.includes(k));
+        if (extraKeys.length) {
+          result.addError(`Extra unknown properties: ${extraKeys.join(', ')}`);
+        }
+      }
+    }
+
+    if (config.key) {
+      for (const key of objectKeys) {
+        const subResult = config.key._validate({
+          key,
+          parent: val,
+          val: key,
+          exists: true,
+          settings: validation,
+          path: [...context.path, key],
+        });
+        result.combine(subResult);
+      }
+    }
+
+    if (config.value) {
+      for (const key of objectKeys) {
+        const subVal = val[key];
+        const subResult = config.value._validate({
+          key,
+          parent: val,
+          val: subVal,
+          exists: true,
+          settings: validation,
+          path: [...context.path, key],
+        });
+        result.combine(subResult);
+      }
+    }
+  }
+});
+
+declare module './index' {
+  interface Itsa extends ItsaObject { }
+}

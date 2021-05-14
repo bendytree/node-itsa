@@ -1,20 +1,29 @@
 
-import { ItsaActorContext } from "./core";
-import { Itsa } from "./index";
-import { ItsaDate } from "./date";
+import { Itsa, ItsaHandlerContext } from "./index";
 
 export interface ItsaDefaultSettings {
   val?:any;
   falsy?: boolean;
 }
 
-export class ItsaDefault extends ItsaDate {
-  constructor() {
-    super();
+export class ItsaDefault {
+  default(this:Itsa, val, settings:ItsaDefaultSettings = {}):Itsa{
+    settings.val = val;
+    this.actions.push({ handlerId: 'default', settings });
+    return this as any as Itsa;
+  }
+  defaultNow(this:Itsa):Itsa{
+    this.actions.push({ handlerId: 'defaultNow', settings:null });
+    return this as any as Itsa;
+  }
+}
 
-    this.registerActor({
+Itsa.extend(
+  ItsaDefault,
+  ...[
+    {
       id: 'default',
-      handler: (context:ItsaActorContext, settings:ItsaDefaultSettings) => {
+      handler: (context:ItsaHandlerContext, settings:ItsaDefaultSettings) => {
         const { val, setVal } = context;
         const falsy = settings.falsy ?? false;
         const doReplace = falsy ? !val : (val === null || val === undefined);
@@ -22,25 +31,20 @@ export class ItsaDefault extends ItsaDate {
           setVal(settings.val);
         }
       }
-    });
-
-    this.registerActor({
+    },
+    {
       id: 'defaultNow',
-      handler: (context:ItsaActorContext) => {
+      handler: (context:ItsaHandlerContext) => {
         const { val, setVal } = context;
         if (val === null || val === undefined) {
           setVal(new Date());
         }
       }
-    });
-  }
-  default(val, settings:ItsaDefaultSettings = {}):Itsa{
-    settings.val = val;
-    this.actions.push({ actorId: 'default', settings });
-    return this as any as Itsa;
-  }
-  defaultNow():Itsa{
-    this.actions.push({ actorId: 'defaultNow', settings:null });
-    return this as any as Itsa;
-  }
+    }
+  ]
+);
+
+declare module './index' {
+  interface Itsa extends ItsaDefault { }
 }
+
