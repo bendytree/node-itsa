@@ -55,5 +55,20 @@ describe('itsa', function() {
       assert.strictEqual(JSON.stringify(errors[0].path), '["a","c"]');
     });
 
+    it('it can throw an error', function() {
+      try {
+        itsa.number().validateOrThrow('foo');
+        assert.fail('This should have thrown');
+      }catch(e){ }
+    })
+
+    it('it does not throw if it is valid', function() {
+      try {
+        itsa.number().validateOrThrow(5);
+      }catch(e){
+        assert.fail(`This should not have thrown, but it did: ${e}`);
+      }
+    });
+
   });
 });

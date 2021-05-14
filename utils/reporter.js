@@ -28,6 +28,7 @@ module.exports = function (runner) {
           console.log("\x1b[31m", `    > ${test.error.message}`);
         }else{
           console.log("\x1b[31m", `   ${test.body.replace(/[\r\n]/g, ' ').replace(/^.*strictE/mig, '..e').substr(0, 60)}`);
+          console.log("\x1b[31m", `    > ${test.error.message}`);
         }
       }
     }

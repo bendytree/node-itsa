@@ -19,6 +19,11 @@ export interface ItsaError {
   path:(string | number)[];
 }
 
+export class ItsaValidationException extends Error {
+  message: string;
+  result: ItsaValidationResult;
+}
+
 export class ItsaValidationResult {
   ok: boolean = true;
   errors: ItsaError[] = [];
@@ -96,6 +101,10 @@ export class Itsa {
       }
     }
   }
+
+  // toJSON():string {
+  //
+  // }
 }
 
 import './any';
@@ -121,6 +130,8 @@ import './not-empty';
 import './null';
 import './number';
 import './object';
+import './objectid';
+import './serialize';
 import './string';
 import './to';
 import './truthy';
