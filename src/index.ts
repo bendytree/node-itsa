@@ -66,7 +66,7 @@ export interface ItsaHandlerContext {
 
 export interface ItsaAction {
   handlerId:string;
-  settings:any;
+  settings?:any;
 }
 
 export interface ItsaHandler {

@@ -12,8 +12,8 @@ describe('itsa', function() {
         type: itsa.any('red', 'blue', itsa.null()),
         values: itsa.array(itsa.boolean()).notEmpty(),
       }));
-      const expected = {"actions":[{"handlerId":"object","settings":{"example":{"id":{"actions":[{"handlerId":"number","settings":null},{"handlerId":"min","settings":{"min":1024,"inclusive":true}}]},"type":{"actions":[{"handlerId":"any","settings":{"schemas":[{"actions":[{"handlerId":"equal","settings":{"example":"red"}}]},{"actions":[{"handlerId":"equal","settings":{"example":"blue"}}]},{"actions":[{"handlerId":"equal","settings":{"example":null,"strict":true}}]}]}}]},"values":{"actions":[{"handlerId":"array","settings":{"example":{"actions":[{"handlerId":"boolean","settings":null}]}}},{"handlerId":"notEmpty","settings":null}]}},"config":{}}}]};
-      assert.strictEqual(json, JSON.stringify(expected));
+      const expected = `{"actions":[{"handlerId":"object","settings":{"example":{"id":{"actions":[{"handlerId":"number"},{"handlerId":"min","settings":{"min":1024,"inclusive":true}}]},"type":{"actions":[{"handlerId":"any","settings":{"schemas":[{"actions":[{"handlerId":"equal","settings":{"example":"red"}}]},{"actions":[{"handlerId":"equal","settings":{"example":"blue"}}]},{"actions":[{"handlerId":"equal","settings":{"example":null,"strict":true}}]}]}}]},"values":{"actions":[{"handlerId":"array","settings":{"example":{"actions":[{"handlerId":"boolean","settings":null}]}}},{"handlerId":"notEmpty","settings":null}]}},"config":{}}}]}`;
+      assert.strictEqual(json, expected);
     });
 
     it('deserializes back into a schema', function() {

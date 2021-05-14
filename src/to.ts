@@ -20,23 +20,23 @@ export class ItsaTo {
     return this as any as Itsa;
   }
   toLowerCase(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'toLowerCase', settings: null });
+    this.actions.push({ handlerId: 'toLowerCase' });
     return this as any as Itsa;
   }
   toUpperCase(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'toUpperCase', settings: null });
+    this.actions.push({ handlerId: 'toUpperCase' });
     return this as any as Itsa;
   }
   toNow(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'toNow', settings: null });
+    this.actions.push({ handlerId: 'toNow' });
     return this as any as Itsa;
   }
   toString(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'toString', settings: null });
+    this.actions.push({ handlerId: 'toString' });
     return this as any as Itsa;
   }
   toTrimmed(this:Itsa):Itsa{
-    this.actions.push({ handlerId: 'toTrimmed', settings: null });
+    this.actions.push({ handlerId: 'toTrimmed' });
     return this as any as Itsa;
   }
 }

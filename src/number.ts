@@ -2,7 +2,7 @@ import {Itsa, ItsaHandlerContext} from "./index";
 
 export class ItsaNumber {
   number(this:Itsa):Itsa {
-    this.actions.push({ handlerId: 'number', settings: null });
+    this.actions.push({ handlerId: 'number' });
     return this as any as Itsa;
   }
 }
