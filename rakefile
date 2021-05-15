@@ -61,7 +61,7 @@ task :release do
   puts ""
   puts "Version ${version} is live:"
   puts " • https://github.com/bendytree/node-itsa"
-  puts " • http://npmjs.com/package/node-itsa"
+  puts " • http://npmjs.com/package/itsa"
   puts ""
 
 end
