@@ -47,10 +47,11 @@ task :release do
   runOrFail "git commit -am \"Release ${version}\""
 
   puts "> RUNNING TAG..."
-  runOrFail "git tag ${version}"
+  tag = "v${version}"
+  runOrFail "git tag ${tag}"
 
   puts "> RUNNING PUSH TAG..."
-  runOrFail "git push --tags"
+  runOrFail "git push origin refs/tags/${tag}"
 
   puts "> RUNNING PUSH GitHub..."
   runOrFail "git push origin master"
