@@ -44,11 +44,11 @@ task :release do
   version = packageData["version"]
 
   puts "> RUNNING COMMIT..."
-  runOrFail "git commit -am \"Release ${version}\""
+  runOrFail "git commit -am \"Release #{version}\""
 
   puts "> RUNNING TAG..."
-  tag = "v${version}"
-  runOrFail "git tag ${tag}"
+  tag = "v#{version}"
+  runOrFail "git tag #{tag}"
 
   puts "> RUNNING PUSH GitHub..."
   runOrFail "git push origin master"
@@ -60,7 +60,7 @@ task :release do
   runOrFail "npm publish"
 
   puts ""
-  puts "Version ${version} is live:"
+  puts "Version #{version} is live:"
   puts " • https://github.com/bendytree/node-itsa"
   puts " • http://npmjs.com/package/itsa"
   puts ""
