@@ -282,7 +282,7 @@ declare module './itsa' {
 }
 
 declare class ItsaValidation {
-    _validate(this: Itsa, settings: ItsaInternalValidationSettings): ItsaValidationResult;
+    _validate(this: Itsa, settings: ItsaInternalValidationSettings): ItsaValidationResultBuilder;
     validate(this: Itsa, val: any, settings?: ItsaValidationSettings): ItsaValidationResult;
     validOrThrow(this: Itsa, val: any, settings?: ItsaValidationSettings): void;
 }
@@ -320,14 +320,20 @@ declare class ItsaValidationException extends Error {
     message: string;
     result: ItsaValidationResult;
 }
-declare class ItsaValidationResult {
-    private exhaustive;
-    private key;
-    private path;
+interface ItsaValidationResult {
     ok: boolean;
     errors: ItsaError[];
     value: any;
     message?: string;
+}
+declare class ItsaValidationResultBuilder implements ItsaValidationResult {
+    private exhaustive;
+    private key;
+    private path;
+    ok: boolean;
+    errors: any[];
+    value: any;
+    message?: any;
     constructor(exhaustive: boolean, key: string | number, path: (string | number)[]);
     addError(message: string): void;
     combine(result: ItsaValidationResult): void;
@@ -341,7 +347,7 @@ interface ItsaValidateContext {
     type: string;
     setVal: (val: any) => void;
     validation: ItsaValidationSettings;
-    result: ItsaValidationResult;
+    result: ItsaValidationResultBuilder;
 }
 interface ItsaPredicate {
     id: string;
@@ -361,4 +367,4 @@ declare class Itsa {
 }
 declare const itsa: Itsa;
 
-export { Itsa, ItsaError, ItsaInternalValidationSettings, ItsaPredicate, ItsaValidateContext, ItsaValidationException, ItsaValidationResult, ItsaValidationSettings, ItsaValidator, itsa };
+export { Itsa, ItsaError, ItsaInternalValidationSettings, ItsaPredicate, ItsaValidateContext, ItsaValidationException, ItsaValidationResult, ItsaValidationResultBuilder, ItsaValidationSettings, ItsaValidator, itsa };

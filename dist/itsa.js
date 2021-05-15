@@ -1,7 +1,7 @@
 
 /**
  * @license
- * itsa 2.1.39
+ * itsa 2.1.42
  * Copyright 2021 Josh Wright <https://www.joshwright.com> 
  * MIT LICENSE
  */
@@ -883,7 +883,7 @@
   class ItsaValidation {
       _validate(settings) {
           const { key } = settings;
-          const result = new ItsaValidationResult(settings.settings.exhaustive, key, settings.path);
+          const result = new ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path);
           result.value = settings.val;
           try {
               const setVal = (newVal) => {
@@ -978,13 +978,15 @@
 
   class ItsaValidationException extends Error {
   }
-  class ItsaValidationResult {
+  class ItsaValidationResultBuilder {
       constructor(exhaustive, key, path) {
           this.exhaustive = exhaustive;
           this.key = key;
           this.path = path;
           this.ok = true;
           this.errors = [];
+          this.value = undefined;
+          this.message = undefined;
       }
       addError(message) {
           this.ok = false;
@@ -1031,7 +1033,7 @@
 
   exports.Itsa = Itsa;
   exports.ItsaValidationException = ItsaValidationException;
-  exports.ItsaValidationResult = ItsaValidationResult;
+  exports.ItsaValidationResultBuilder = ItsaValidationResultBuilder;
   exports.itsa = itsa;
 
   Object.defineProperty(exports, '__esModule', { value: true });
