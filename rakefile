@@ -21,7 +21,8 @@ task :release do
   # In sync with origin
   puts "> RUNNING SYNC CHECK..."
   runOrFail "git fetch origin master"
-  commitsOff = (runOrFail "git rev-list HEAD...origin/master --count").delete!("\n")
+  commitsOff = (runOrFail "git rev-list HEAD...origin/master --count").delete!("\n").to_i
+  puts "commitsOff: ${commitsOff}"
   if commitsOff != "0" then
     raise "You're not synced with the origin."
   end
