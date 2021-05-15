@@ -71,8 +71,8 @@ task :bumppatch do
   if ENV['NO_BUMP'] == "true"
     exit 0
   end
-  npm --no-git-tag-version version patch
-  git add package.json package-lock.json
+  runOrFail "npm --no-git-tag-version version patch"
+  runOrFail "git add package.json package-lock.json"
   exit 0
 end
 
