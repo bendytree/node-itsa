@@ -1,6 +1,6 @@
 {
   "name": "itsa",
-  "version": "2.1.34",
+  "version": "2.1.35",
   "description": "JavaScript data validation",
   "keywords": [
     "validation",
@@ -8,6 +8,7 @@
     "typescript"
   ],
   "main": "dist/itsa.js",
+  "types": "dist/itsa.d.ts",
   "scripts": {
     "coverage": "rm -rf .coverage/* && TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
     "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha --reporter utils/reporter.js --parallel --exit",
