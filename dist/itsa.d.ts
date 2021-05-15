@@ -319,6 +319,7 @@ interface ItsaError {
 declare class ItsaValidationException extends Error {
     message: string;
     result: ItsaValidationResult;
+    constructor(result: ItsaValidationResult);
 }
 interface ItsaValidationResult {
     ok: boolean;

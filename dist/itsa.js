@@ -1,12 +1,10 @@
 
 /**
  * @license
- * itsa 2.1.42
- * Copyright 2021 Josh Wright <https://www.joshwright.com>
+ * itsa 2.1.45
+ * Copyright 2021 Josh Wright <https://www.joshwright.com> 
  * MIT LICENSE
  */
-
-import {ItsaValidationResult} from "./itsa";
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
@@ -977,9 +975,10 @@ import {ItsaValidationResult} from "./itsa";
   });
 
   class ItsaValidationException extends Error {
-      constructor(result:ItsaValidationResult) {
+      constructor(result) {
           super();
-          `${result.errors[0].path.join('.')}: ${result.errors[0].message}`
+          this.message = `${result.errors[0].path.join('.')}: ${result.errors[0].message}`;
+          this.result = result;
       }
   }
   class ItsaValidationResultBuilder {
