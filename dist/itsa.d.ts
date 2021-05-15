@@ -359,7 +359,6 @@ declare class Itsa {
     };
     static extend(cls: ItsaSubclass, ...validators: ItsaValidator[]): void;
 }
-
 declare const itsa: Itsa;
 
 export { Itsa, ItsaError, ItsaInternalValidationSettings, ItsaPredicate, ItsaValidateContext, ItsaValidationException, ItsaValidationResult, ItsaValidationSettings, ItsaValidator, itsa };
