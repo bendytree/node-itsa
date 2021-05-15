@@ -51,7 +51,7 @@ task :release do
   runOrFail "git tag ${tag}"
 
   puts "> RUNNING PUSH TAG..."
-  runOrFail "git push origin refs/tags/${tag}"
+  runOrFail "git push origin ${tag}"
 
   puts "> RUNNING PUSH GitHub..."
   runOrFail "git push origin master"
