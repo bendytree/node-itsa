@@ -50,11 +50,11 @@ task :release do
   tag = "v${version}"
   runOrFail "git tag ${tag}"
 
-  puts "> RUNNING PUSH TAG..."
-  runOrFail "git push origin ${tag}"
-
   puts "> RUNNING PUSH GitHub..."
   runOrFail "git push origin master"
+
+  puts "> RUNNING PUSH TAG..."
+  runOrFail "git push --tags"
 
   puts "> RUNNING NPM PUBLISH..."
   runOrFail "npm publish"
