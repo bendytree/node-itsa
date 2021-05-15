@@ -22,6 +22,12 @@ export interface ItsaError {
 export class ItsaValidationException extends Error {
   message: string;
   result: ItsaValidationResult;
+
+  constructor(result:ItsaValidationResult) {
+    super();
+    this.message = `${result.errors[0].path.join('.')}: ${result.errors[0].message}`;
+    this.result = result;
+  }
 }
 
 export interface ItsaValidationResult {
