@@ -101,6 +101,8 @@ export class Itsa {
   }
 }
 
+export const itsa:Itsa = { predicates: [] } as Itsa;
+
 import './any';
 import './anything';
 import './array';
@@ -133,5 +135,3 @@ import './typeof';
 import './unique';
 import './validate';
 import './verify';
-
-export const itsa:Itsa = { predicates: [] } as Itsa;
