@@ -1,17 +1,19 @@
 
 import {
-  Itsa, ItsaError,
+  Itsa,
   ItsaValidator,
   ItsaValidateContext,
-  ItsaInternalValidationSettings, ItsaValidationException,
+  ItsaInternalValidationSettings,
+  ItsaValidationException,
   ItsaValidationResult,
-  ItsaValidationSettings
+  ItsaValidationSettings,
+  ItsaValidationResultBuilder
 } from './itsa';
 
 class ItsaValidation {
-  _validate(this:Itsa, settings:ItsaInternalValidationSettings):ItsaValidationResult {
+  _validate(this:Itsa, settings:ItsaInternalValidationSettings):ItsaValidationResultBuilder {
     const { key } = settings;
-    const result = new ItsaValidationResult(settings.settings.exhaustive, key, settings.path);
+    const result = new ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path);
     result.value = settings.val;
     try {
       const setVal = (newVal:any) => {

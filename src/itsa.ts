@@ -24,13 +24,22 @@ export class ItsaValidationException extends Error {
   result: ItsaValidationResult;
 }
 
-export class ItsaValidationResult {
-  ok: boolean = true;
-  errors: ItsaError[] = [];
+export interface ItsaValidationResult {
+  ok: boolean;
+  errors: ItsaError[];
   value: any;
   message?: string;
+}
 
-  constructor(private exhaustive: boolean, private key: string | number, private path: (string | number)[]) { }
+export class ItsaValidationResultBuilder implements ItsaValidationResult {
+  ok = true;
+  errors = [];
+  value = undefined;
+  message? = undefined;
+
+  constructor(private exhaustive: boolean, private key: string | number, private path: (string | number)[]) {
+
+  }
 
   addError (message:string) {
     this.ok = false;
@@ -61,7 +70,7 @@ export interface ItsaValidateContext {
   type: string;
   setVal:(val:any) => void;
   validation: ItsaValidationSettings;
-  result: ItsaValidationResult;
+  result: ItsaValidationResultBuilder;
 }
 
 export interface ItsaPredicate {
