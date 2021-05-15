@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 interface ItsaToIntSettings {
   radix?:number;
@@ -108,6 +108,6 @@ Itsa.extend(
   },
 );
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaTo { }
 }

@@ -1,6 +1,6 @@
 
-import { ItsaValidateContext } from "./index";
-import { Itsa } from "./index";
+import { ItsaValidateContext } from "./itsa";
+import { Itsa } from "./itsa";
 
 export class ItsaBoolean {
   boolean(this:Itsa):Itsa{
@@ -17,6 +17,6 @@ Itsa.extend(ItsaBoolean, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaBoolean { }
 }

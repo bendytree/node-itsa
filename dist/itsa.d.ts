@@ -3,7 +3,7 @@ declare type ItsaOrPrimative = Itsa | number | string | boolean | null | undefin
 declare class ItsaAny {
     any(this: Itsa, ...options: (ItsaOrPrimative | ItsaOrPrimative[])[]): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaAny {
     }
 }
@@ -11,7 +11,7 @@ declare module './index' {
 declare class ItsaAnything {
     anything(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaAnything {
     }
 }
@@ -19,7 +19,7 @@ declare module './index' {
 declare class ItsaArray {
     array(this: Itsa, example?: ItsaOrPrimative): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaArray {
     }
 }
@@ -30,7 +30,7 @@ interface ItsaBetweenExtraSettings {
 declare class ItsaBetween {
     between(this: Itsa, min: any, max: any, extraSettings?: ItsaBetweenExtraSettings): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaBetween {
     }
 }
@@ -38,7 +38,7 @@ declare module './index' {
 declare class ItsaBoolean {
     boolean(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaBoolean {
     }
 }
@@ -46,7 +46,7 @@ declare module './index' {
 declare class ItsaConstructor {
     constructorIs(this: Itsa, cls: Function): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaConstructor {
     }
 }
@@ -55,7 +55,7 @@ declare class ItsaConvert {
     convert(this: Itsa, converter: Function): Itsa;
     to(this: Itsa, converter: Function): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaConvert {
     }
 }
@@ -63,7 +63,7 @@ declare module './index' {
 declare class ItsaDate {
     date(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaDate {
     }
 }
@@ -76,7 +76,7 @@ declare class ItsaDefault {
     default(this: Itsa, val: any, settings?: ItsaDefaultSettings): Itsa;
     defaultNow(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaDefault {
     }
 }
@@ -84,7 +84,7 @@ declare module './index' {
 declare class ItsaEmail {
     email(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaEmail {
     }
 }
@@ -96,7 +96,7 @@ interface ItsaEqualSettings {
 declare class ItsaEqual {
     equal(this: Itsa, val: any, settings?: ItsaEqualSettings): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaEqual {
     }
 }
@@ -104,7 +104,7 @@ declare module './index' {
 declare class ItsaFalsy {
     falsy(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaFalsy {
     }
 }
@@ -115,7 +115,7 @@ interface ItsaFunctionIncomingSettings {
 declare class ItsaFunction {
     function(this: Itsa, settings?: ItsaFunctionIncomingSettings): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaFunction {
     }
 }
@@ -123,7 +123,7 @@ declare module './index' {
 declare class ItsaInstanceOf {
     instanceof(this: Itsa, cls: any): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaInstanceOf {
     }
 }
@@ -131,7 +131,7 @@ declare module './index' {
 declare class ItsaInteger {
     integer(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaInteger {
     }
 }
@@ -139,7 +139,7 @@ declare module './index' {
 declare class ItsaLength {
     length(this: Itsa, min?: number, max?: number): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaLength {
     }
 }
@@ -147,7 +147,7 @@ declare module './index' {
 declare class ItsaMatches {
     matches(this: Itsa, regex: RegExp): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaMatches {
     }
 }
@@ -158,7 +158,7 @@ declare class ItsaMax {
     below(this: Itsa, max: any, inclusive?: boolean): Itsa;
     atMost(this: Itsa, max: any, inclusive?: boolean): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaMax {
     }
 }
@@ -169,7 +169,7 @@ declare class ItsaMin {
     above(this: Itsa, min: any, inclusive?: boolean): Itsa;
     atLeast(this: Itsa, min: any, inclusive?: boolean): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaMin {
     }
 }
@@ -177,7 +177,7 @@ declare module './index' {
 declare class ItsaNotEmpty {
     notEmpty(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaNotEmpty {
     }
 }
@@ -186,7 +186,7 @@ declare class ItsaNull {
     null(this: Itsa): Itsa;
     undefined(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaNull {
     }
 }
@@ -194,7 +194,7 @@ declare module './index' {
 declare class ItsaNumber {
     number(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaNumber {
     }
 }
@@ -210,7 +210,7 @@ interface ItsaObjectConfig {
 declare class ItsaObject {
     object(this: Itsa, example?: ItsaObjectExampleWithPrimitives, config?: ItsaObjectConfig): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaObject {
     }
 }
@@ -218,7 +218,7 @@ declare module './index' {
 declare class ItsaObjectId {
     objectid(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaObjectId {
     }
 }
@@ -229,7 +229,7 @@ declare type RawItsa = {
 declare class ItsaSerialize {
     load(this: Itsa, raw: RawItsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaSerialize {
     }
 }
@@ -237,7 +237,7 @@ declare module './index' {
 declare class ItsaString {
     string(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaString {
     }
 }
@@ -252,7 +252,7 @@ declare class ItsaTo {
     toString(this: Itsa): Itsa;
     toTrimmed(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaTo {
     }
 }
@@ -260,7 +260,7 @@ declare module './index' {
 declare class ItsaTruthy {
     truthy(this: Itsa): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaTruthy {
     }
 }
@@ -268,7 +268,7 @@ declare module './index' {
 declare class ItsaTypeOf {
     typeof(this: Itsa, type: string): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaTypeOf {
     }
 }
@@ -276,7 +276,7 @@ declare module './index' {
 declare class ItsaUnique {
     unique(this: Itsa, getter?: Function): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaUnique {
     }
 }
@@ -286,7 +286,7 @@ declare class ItsaValidation {
     validate(this: Itsa, val: any, settings?: ItsaValidationSettings): ItsaValidationResult;
     validOrThrow(this: Itsa, val: any, settings?: ItsaValidationSettings): void;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaValidation {
     }
 }
@@ -294,7 +294,7 @@ declare module './index' {
 declare class ItsaVerify {
     verify(this: Itsa, verifier: Function): Itsa;
 }
-declare module './index' {
+declare module './itsa' {
     interface Itsa extends ItsaVerify {
     }
 }
@@ -352,7 +352,6 @@ interface ItsaValidator {
     validate: (ItsaValidateContext: any, any: any) => void;
 }
 declare type ItsaSubclass = new (...args: any[]) => any;
-declare const itsa: Itsa;
 declare class Itsa {
     predicates: ItsaPredicate[];
     static validators: {
@@ -360,5 +359,7 @@ declare class Itsa {
     };
     static extend(cls: ItsaSubclass, ...validators: ItsaValidator[]): void;
 }
+
+declare const itsa: Itsa;
 
 export { Itsa, ItsaError, ItsaInternalValidationSettings, ItsaPredicate, ItsaValidateContext, ItsaValidationException, ItsaValidationResult, ItsaValidationSettings, ItsaValidator, itsa };

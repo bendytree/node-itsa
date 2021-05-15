@@ -76,8 +76,6 @@ export interface ItsaValidator {
 
 type ItsaSubclass = new (...args: any[]) => any;
 
-export const itsa = { predicates: [] } as Itsa;
-
 export class Itsa {
   predicates:ItsaPredicate[] = [];
   static validators:{[key:string]:ItsaValidator} = {};
@@ -135,3 +133,5 @@ import './typeof';
 import './unique';
 import './validate';
 import './verify';
+
+export const itsa:Itsa = { predicates: [] } as Itsa;

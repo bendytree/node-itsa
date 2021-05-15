@@ -1,4 +1,4 @@
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 interface ItsaInstanceOfSettings {
   cls: any;
@@ -23,6 +23,6 @@ Itsa.extend(ItsaInstanceOf, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaInstanceOf { }
 }

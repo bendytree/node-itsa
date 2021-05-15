@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaValidateContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./itsa";
 
 export interface ItsaDefaultSettings {
   val?:any;
@@ -44,7 +44,7 @@ Itsa.extend(
   ]
 );
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaDefault { }
 }
 

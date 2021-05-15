@@ -18,7 +18,7 @@ const banner = `
 
 export default [
   {
-    input: 'src/index.ts',
+    input: 'src/itsa.ts',
     output: {
       name: 'Itsa',
       file: 'dist/itsa.min.js',
@@ -44,7 +44,7 @@ export default [
     ]
   },
   {
-    input: 'src/index.ts',
+    input: 'src/itsa.ts',
     output: {
       name: 'Itsa',
       file: 'dist/itsa.js',
@@ -67,7 +67,7 @@ export default [
     ]
   },
   {
-    input: './dist/types/index.d.ts',
+    input: './dist/types/itsa.d.ts',
     output: [{ file: './dist/itsa.d.ts', format: 'es' }],
     plugins: [dts()],
   },

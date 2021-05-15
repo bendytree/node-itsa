@@ -6,7 +6,7 @@ import {
   ItsaInternalValidationSettings, ItsaValidationException,
   ItsaValidationResult,
   ItsaValidationSettings
-} from './index';
+} from './itsa';
 
 class ItsaValidation {
   _validate(this:Itsa, settings:ItsaInternalValidationSettings):ItsaValidationResult {
@@ -72,6 +72,6 @@ class ItsaValidation {
 
 Itsa.extend(ItsaValidation);
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaValidation { }
 }

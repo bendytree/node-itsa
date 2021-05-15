@@ -1,6 +1,6 @@
 
-import { ItsaValidateContext } from "./index";
-import { Itsa } from "./index";
+import { ItsaValidateContext } from "./itsa";
+import { Itsa } from "./itsa";
 
 export interface ItsaConstructorSettings {
   cls:Function;
@@ -23,6 +23,6 @@ Itsa.extend(ItsaConstructor, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaConstructor { }
 }

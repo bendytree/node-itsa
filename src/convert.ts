@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaValidateContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./itsa";
 
 export interface ItsaConvertSettings {
   converter:Function;
@@ -33,7 +33,7 @@ Itsa.extend(ItsaConvert, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaConvert { }
 }
 

@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaValidateContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./itsa";
 
 export interface ItsaEqualSettings {
   strict?:boolean;
@@ -27,7 +27,7 @@ Itsa.extend(ItsaEqual, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaEqual { }
 }
 

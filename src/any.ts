@@ -1,4 +1,4 @@
-import {ItsaValidateContext, Itsa, ItsaValidator} from "./index";
+import {ItsaValidateContext, Itsa, ItsaValidator} from "./itsa";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaAnySettings {
@@ -43,6 +43,6 @@ const validate:ItsaValidator = {
 
 Itsa.extend(ItsaAny, validate);
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaAny { }
 }

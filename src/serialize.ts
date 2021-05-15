@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaPredicate} from "./index";
+import {Itsa, ItsaPredicate} from "./itsa";
 
 type RawItsa = {predicates:ItsaPredicate[]};
 
@@ -34,6 +34,6 @@ export class ItsaSerialize {
 
 Itsa.extend(ItsaSerialize);
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaSerialize { }
 }

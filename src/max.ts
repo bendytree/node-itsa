@@ -1,4 +1,4 @@
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 interface ItsaMaxSettings {
   max:any;
@@ -47,6 +47,6 @@ Itsa.extend(ItsaMax, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaMax { }
 }

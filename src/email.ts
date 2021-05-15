@@ -1,5 +1,5 @@
 
-import { Itsa, ItsaValidateContext } from "./index";
+import { Itsa, ItsaValidateContext } from "./itsa";
 
 const rx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -22,7 +22,7 @@ Itsa.extend(ItsaEmail, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaEmail { }
 }
 

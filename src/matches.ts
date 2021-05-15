@@ -1,4 +1,4 @@
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 interface ItsaMatchesSettings {
   regex:RegExp;
@@ -23,6 +23,6 @@ Itsa.extend(ItsaMatches, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaMatches { }
 }

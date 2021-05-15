@@ -1,4 +1,4 @@
-import {Itsa} from "./index";
+import {Itsa} from "./itsa";
 import {ItsaEqualSettings} from "./equal";
 
 export class ItsaNull {
@@ -16,6 +16,6 @@ export class ItsaNull {
 
 Itsa.extend(ItsaNull);
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaNull { }
 }

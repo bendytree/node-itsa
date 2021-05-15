@@ -1,6 +1,6 @@
 
-import { ItsaValidateContext } from "./index";
-import { Itsa } from "./index";
+import { ItsaValidateContext } from "./itsa";
+import { Itsa } from "./itsa";
 
 export class ItsaDate {
   date(this:Itsa):Itsa{
@@ -23,7 +23,7 @@ Itsa.extend(ItsaDate, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaDate { }
 }
 

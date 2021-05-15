@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaFunctionSettings {
@@ -37,7 +37,7 @@ Itsa.extend(ItsaFunction, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaFunction { }
 }
 

@@ -1,4 +1,4 @@
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
 
 interface ItsaArraySettings {
@@ -39,6 +39,6 @@ Itsa.extend(ItsaArray, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaArray { }
 }

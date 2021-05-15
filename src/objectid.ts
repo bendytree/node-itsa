@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 const rxObjectId = /^[0-9a-f]{24}$/i;
 
@@ -21,6 +21,6 @@ Itsa.extend(ItsaObjectId, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaObjectId { }
 }

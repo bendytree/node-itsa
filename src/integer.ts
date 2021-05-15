@@ -1,4 +1,4 @@
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 export class ItsaInteger {
   integer(this:Itsa):Itsa {
@@ -21,6 +21,6 @@ Itsa.extend(ItsaInteger, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaInteger { }
 }

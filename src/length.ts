@@ -1,4 +1,4 @@
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 interface ItsaLengthSettings {
   exactly?:number;
@@ -42,6 +42,6 @@ Itsa.extend(ItsaLength, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaLength { }
 }

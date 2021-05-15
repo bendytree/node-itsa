@@ -1,7 +1,7 @@
 
 /**
  * @license
- * itsa 2.1.28
+ * itsa 2.1.30
  * Copyright 2021 Josh Wright <https://www.joshwright.com> 
  * MIT LICENSE
  */
@@ -1004,13 +1004,9 @@
           }
       }
   }
-  const itsa = { predicates: [] };
   class Itsa {
       constructor() {
           this.predicates = [];
-          // toJSON():string {
-          //
-          // }
       }
       static extend(cls, ...validators) {
           for (const validator of validators) {
@@ -1031,6 +1027,7 @@
       }
   }
   Itsa.validators = {};
+  const itsa = { predicates: [] };
 
   exports.Itsa = Itsa;
   exports.ItsaValidationException = ItsaValidationException;

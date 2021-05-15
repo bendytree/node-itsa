@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaValidateContext} from "./index";
+import {Itsa, ItsaValidateContext} from "./itsa";
 
 export interface ItsaBetweenExtraSettings {
   inclusive?:boolean;
@@ -34,6 +34,6 @@ Itsa.extend(ItsaBetween, {
   }
 });
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaBetween { }
 }

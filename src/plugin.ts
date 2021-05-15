@@ -1,6 +1,6 @@
 
 import { describe, it } from 'mocha';
-import {Itsa, itsa, ItsaValidateContext} from "./index";
+import {Itsa, itsa, ItsaValidateContext} from "./itsa";
 import assert from "assert";
 
 class ItsaBird {
@@ -10,7 +10,7 @@ class ItsaBird {
   }
 }
 
-declare module './index' {
+declare module './itsa' {
   interface Itsa extends ItsaBird { }
 }
 

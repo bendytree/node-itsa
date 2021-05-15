@@ -1,5 +1,5 @@
 
-import {itsa, Itsa} from "./index";
+import {itsa, Itsa} from "./itsa";
 
 export declare type ItsaOrPrimative = Itsa | number | string | boolean | null | undefined | Function;
 

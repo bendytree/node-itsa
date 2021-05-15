@@ -1,7 +1,7 @@
 
 import assert from 'assert';
 import { describe, it } from 'mocha';
-import { itsa } from "./index";
+import { itsa } from "./itsa";
 
 describe('itsa', function() {
   describe('max', function() {

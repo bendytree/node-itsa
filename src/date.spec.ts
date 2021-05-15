@@ -1,6 +1,6 @@
 
 import { describe, it } from 'mocha';
-import { itsa } from "./index";
+import { itsa } from "./itsa";
 import assert from "assert";
 
 describe('itsa', function() {

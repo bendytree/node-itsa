@@ -1,7 +1,12 @@
 {
   "name": "itsa",
-  "version": "2.1.30",
+  "version": "2.1.31",
   "description": "JavaScript data validation",
+  "keywords": [
+    "validation",
+    "schema",
+    "typescript"
+  ],
   "main": "dist/itsa.js",
   "scripts": {
     "coverage": "rm -rf .coverage/* && TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
