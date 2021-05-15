@@ -60,7 +60,7 @@ class ItsaValidation {
     });
   }
 
-  validateOrThrow(this:Itsa, val:any, settings?:ItsaValidationSettings) {
+  validOrThrow(this:Itsa, val:any, settings?:ItsaValidationSettings) {
     const result = this.validate(val, settings);
     if (!result.ok) {
       const error = new ItsaValidationException(`${result.errors[0].path.join('.')}: ${result.errors[0].message}`);

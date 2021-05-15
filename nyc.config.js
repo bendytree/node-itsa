@@ -5,4 +5,5 @@ module.exports = {
   'temp-dir': '/tmp/nyc',
   'report-dir': './.coverage',
   'exclude': [ '**/*.spec.ts' ],
+  'check-coverage': true,
 };

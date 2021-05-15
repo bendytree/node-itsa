@@ -1,0 +1,90 @@
+require 'io/console'
+require 'json'
+
+desc "Pushes changes to npm and GitHub."
+task :release do
+
+  # Makes sure your git status is clean
+  puts "> RUNNING STATUS CHECK..."
+  status = runOrFail "git status -s" #empty string if nothing to commit
+  unless status.empty?
+    raise 'All changes must be commited first'
+  end
+
+  # Make sure you're on master
+  puts "> RUNNING BRANCH CHECK..."
+  branch = runOrFail("git branch | grep \\* | cut -d ' ' -f2").delete!("\n")
+  if branch != "master"
+    raise "You're on #{branch}, not master."
+  end
+
+  # In sync with origin
+  puts "> RUNNING SYNC CHECK..."
+  runOrFail "git fetch origin master"
+  commitsOff = (runOrFail "git rev-list HEAD...origin/master --count").delete!("\n")
+  if commitsOff != "0" then
+    raise "You're not synced with the origin."
+  end
+
+  puts "> RUNNING COVERAGE..."
+  runOrFail "npm run coverage"
+
+  puts "> RUNNING TEST..."
+  runOrFail "npm run test"
+
+  puts "> RUNNING PATCH BUMP..."
+  runOrFail "npm --no-git-tag-version version patch"
+
+  puts "> RUNNING BUILD..."
+  runOrFail "npm run build"
+
+  puts "> RUNNING GET VERSION..."
+  packageFile = File.open "./package.json"
+  packageData = JSON.load packageFile
+  version = packageData["version"]
+
+  puts "> RUNNING COMMIT..."
+  runOrFail "git commit -am \"Release ${version}\""
+
+  puts "> RUNNING TAG..."
+  runOrFail "git tag ${version}"
+
+  puts "> RUNNING PUSH TAG..."
+  runOrFail "git push --tags"
+
+  puts "> RUNNING PUSH GitHub..."
+  runOrFail "git push origin master"
+
+  puts "> RUNNING NPM PUBLISH..."
+  runOrFail "npm publish"
+
+  puts ""
+  puts "Version ${version} is live:"
+  puts " • https://github.com/bendytree/node-itsa"
+  puts " • http://npmjs.com/package/node-itsa"
+  puts ""
+
+end
+
+
+task :bumppatch do
+  if ENV['NO_BUMP'] == "true"
+    exit 0
+  end
+  npm --no-git-tag-version version patch
+  git add package.json package-lock.json
+  exit 0
+end
+
+
+def runOrFail (cmd)
+  puts "> " + cmd
+  result = `#{cmd}`
+  puts result
+  unless $?.exitstatus == 0
+    exit $?.exitstatus
+  end
+  result
+end
+
+
