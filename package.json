@@ -1,6 +1,6 @@
 {
   "name": "itsa",
-  "version": "2.1.19",
+  "version": "2.1.21",
   "description": "JavaScript data validation",
   "main": "dist/itsa.js",
   "scripts": {
