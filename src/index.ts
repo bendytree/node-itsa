@@ -101,10 +101,6 @@ export class Itsa {
       }
     }
   }
-
-  // toJSON():string {
-  //
-  // }
 }
 
 import './any';
