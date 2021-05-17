@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.55
+ * itsa 2.1.57
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -356,6 +356,45 @@ itsa_1.Itsa.extend(ItsaBoolean, {
     if (type !== 'boolean') result.addError("Expected bool but found ".concat(type));
   }
 });
+
+/***/ }),
+
+/***/ 758:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaClone = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var ItsaClone = /*#__PURE__*/function () {
+  function ItsaClone() {
+    _classCallCheck(this, ItsaClone);
+  }
+
+  _createClass(ItsaClone, [{
+    key: "clone",
+    value: function clone() {
+      var raw = JSON.parse(JSON.stringify(this));
+      return itsa_1.itsa.load(raw);
+    }
+  }]);
+
+  return ItsaClone;
+}();
+
+exports.ItsaClone = ItsaClone;
+itsa_1.Itsa.extend(ItsaClone);
 
 /***/ }),
 
@@ -1182,6 +1221,8 @@ __webpack_require__(911);
 __webpack_require__(850);
 
 __webpack_require__(233);
+
+__webpack_require__(758);
 
 __webpack_require__(438);
 
