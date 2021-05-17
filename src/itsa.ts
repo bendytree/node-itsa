@@ -123,6 +123,7 @@ import './anything';
 import './array';
 import './between';
 import './boolean';
+import './clone';
 import './constructor';
 import './convert';
 import './date';
