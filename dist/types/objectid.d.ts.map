@@ -1,0 +1,1 @@
+{"version":3,"file":"objectid.d.ts","sourceRoot":"","sources":["../../src/objectid.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,IAAI,EAAsB,MAAM,QAAQ,CAAC;AAIjD,qBAAa,YAAY;IACvB,QAAQ,CAAC,IAAI,EAAC,IAAI,GAAE,IAAI;CAIzB;AAaD,OAAO,QAAQ,QAAQ,CAAC;IACtB,UAAU,IAAK,SAAQ,YAAY;KAAI;CACxC"}

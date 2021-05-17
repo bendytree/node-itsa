@@ -1,0 +1,1 @@
+{"version":3,"file":"constructor.d.ts","sourceRoot":"","sources":["../../src/constructor.ts"],"names":[],"mappings":"AAEA,OAAO,EAAE,IAAI,EAAE,MAAM,QAAQ,CAAC;AAE9B,MAAM,WAAW,uBAAuB;IACtC,GAAG,EAAC,QAAQ,CAAC;CACd;AAED,qBAAa,eAAe;IAC1B,aAAa,CAAC,IAAI,EAAC,IAAI,EAAE,GAAG,EAAC,QAAQ,GAAE,IAAI;CAK5C;AAWD,OAAO,QAAQ,QAAQ,CAAC;IACtB,UAAU,IAAK,SAAQ,eAAe;KAAI;CAC3C"}

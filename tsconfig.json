@@ -6,14 +6,18 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "module": "ES2015", //rollup requires ES2015 or ESNext
+    "module": "commonjs",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "./dist/types"
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/cache/js"
   },
-  "exclude": ["node_modules"],
+  "exclude": [
+    "node_modules",
+    "src/**/*.spec.ts",
+  ],
   "include": [
-    "src/**/*",
+    "src/**/*.ts",
     "@types/**/*"
   ]
 }

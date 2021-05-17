@@ -1,0 +1,1 @@
+{"version":3,"file":"truthy.d.ts","sourceRoot":"","sources":["../../src/truthy.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,IAAI,EAAsB,MAAM,QAAQ,CAAC;AAEjD,qBAAa,UAAU;IACrB,MAAM,CAAC,IAAI,EAAC,IAAI,GAAE,IAAI;CAIvB;AAUD,OAAO,QAAQ,QAAQ,CAAC;IACtB,UAAU,IAAK,SAAQ,UAAU;KAAI;CACtC"}
