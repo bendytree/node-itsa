@@ -46,8 +46,10 @@ describe('itsa', function() {
         }
       });
 
-      assert.strictEqual(itsa.bird().validate('salmon').ok, true);
-      assert.strictEqual(itsa.bird().validate('frog').ok, false);
+      // @ts-ignore
+      assert.strictEqual(itsa.fish().validate('salmon').ok, true);
+      // @ts-ignore
+      assert.strictEqual(itsa.fish().validate('frog').ok, false);
     });
 
   });
