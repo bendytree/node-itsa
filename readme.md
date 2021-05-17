@@ -13,7 +13,7 @@
  - Composable
  - Extensible
  - No dependencies
- - 14KB minified, 4KB Gzip
+ - 6.7 KB Minified & Gzipped
  - Convert/default data in-place
  - Bail on first error or get all errors
  - Get paths & messages for each error

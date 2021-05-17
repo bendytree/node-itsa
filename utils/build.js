@@ -1,7 +1,6 @@
 
-const babel = require("@babel/core");
-// const webpack = require('webpack');
-// const buildWebpackConfig = require('./build-webpack-config');
+const webpack = require('webpack');
+const buildWebpackConfig = require('./build-webpack-config');
 const util = require('util');
 const fs = require('fs');
 const execAsync = util.promisify(require('child_process').exec);
@@ -38,21 +37,14 @@ const pathInDist = path => {
       });
     }));
 
-    // console.log('testing...');
-    // const { itsa } = require(pathInDist('/itsa.js'));
-    // console.log({ string: String(itsa.string) });
-    // process.exit(0);
-    //
-    // console.log(`umd => es5...`);
-    // const { code } = await babel.transformAsync(
-    //   pathInCache(`/umd.js`), {
-    //     presets: ["@babel/preset-env"], // , "minify"
-    //   });
-    // fs.writeFileSync(pathInCache('es5.js'), code);
-    //
-    // console.log(`clear cache...`);
-    // await execAsync('rm -rf ./dist/cache', { shell: true });
+    console.log('testing...');
+    const { itsa } = require(pathInDist('/itsa.js'));
+    console.log(`valid: ${itsa.string().validate('test').ok}`);
 
+    console.log(`clear cache...`);
+    await execAsync('rm -rf ./dist/cache', { shell: true });
+
+    console.log('SUCCESS');
     process.exit(0);
   }catch(e){
     console.log('EXCEPTION:');

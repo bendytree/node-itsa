@@ -1,21 +1,11 @@
-const TerserPlugin = require("terser-webpack-plugin");
 const pathutil = require('path');
-const os = require('os');
-const babel = require("@babel/core");
-const util = require('util');
-const fs = require('fs');
-const execAsync = util.promisify(require('child_process').exec);
 const version = require('../package.json').version;
-const banner = `
-  /**
-   * @license
-   * itsa ${version}
-   * Copyright ${new Date().getFullYear()} Josh Wright <https://www.joshwright.com>
-   * MIT LICENSE
-   */
-`;
-
-
+const webpack = require('webpack');
+const TerserPlugin = require('terser-webpack-plugin');
+const banner = `@license
+itsa ${version}
+Copyright ${new Date().getFullYear()} Josh Wright <https://www.joshwright.com>
+MIT LICENSE`;
 
 module.exports = () => {
   const mode = 'production';
@@ -23,13 +13,16 @@ module.exports = () => {
 
   return {
     mode,
-    entry: pathutil.join(__dirname, '/../dist/js/itsa.ts'),
+    entry: {
+      'itsa': pathutil.join(__dirname, '/../dist/cache/js/itsa.js'),
+      'itsa.min': pathutil.join(__dirname, '/../dist/cache/js/itsa.js'),
+    },
     devtool: 'source-map',
     output: {
       path: `${__dirname}/../dist`,
       library: 'ItsaLib',
       libraryTarget: 'umd',
-      filename: 'itsa.js',
+      filename: "[name].js",
       globalObject: 'this',
     },
     // infrastructureLogging: {
@@ -40,6 +33,7 @@ module.exports = () => {
         {
           test: /\.(js)$/,
           exclude: /node_modules/,
+          enforce: "pre",
           use: [
             {
               loader: 'babel-loader',
@@ -56,14 +50,25 @@ module.exports = () => {
                 ],
               }
             },
+            {
+              loader: 'source-map-loader',
+            }
           ],
         },
       ],
     },
+    plugins: [
+      new webpack.BannerPlugin({
+        banner,
+      }),
+    ],
     optimization: {
       minimize: !isDev,
       minimizer: [
-        new TerserPlugin({}),
+        new TerserPlugin({
+          include: /\.min\.js$/,
+          extractComments: false,
+        }),
       ]
     },
     performance: {
