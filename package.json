@@ -1,6 +1,6 @@
 {
   "name": "itsa",
-  "version": "2.1.51",
+  "version": "2.1.52",
   "description": "JavaScript data validation",
   "keywords": [
     "validation",
@@ -13,7 +13,7 @@
     "coverage": "rm -rf .coverage/* && nyc mocha",
     "test": "mocha --reporter utils/reporter.js --parallel --exit",
     "build": "node utils/build",
-    "bump-patch": "npm --no-git-tag-version version patch && git add package.json package-lock.json && exit 0",
+    "bump-patch": "rake bumppatch",
     "release": "rake release"
   },
   "pre-commit": [

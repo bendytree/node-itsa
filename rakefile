@@ -44,7 +44,7 @@ task :release do
   version = packageData["version"]
 
   puts "> RUNNING COMMIT..."
-  runOrFail "git commit -am \"Release #{version}\""
+  runOrFail "NO_BUMP=true git commit -am \"Release #{version}\""
 
   puts "> RUNNING TAG..."
   tag = "v#{version}"
