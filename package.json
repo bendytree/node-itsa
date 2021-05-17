@@ -1,6 +1,6 @@
 {
   "name": "itsa",
-  "version": "2.1.48",
+  "version": "2.1.49",
   "description": "JavaScript data validation",
   "keywords": [
     "validation",
@@ -10,8 +10,8 @@
   "main": "dist/itsa.js",
   "types": "dist/itsa.d.ts",
   "scripts": {
-    "coverage": "rm -rf .coverage/* && TS_NODE_PROJECT='./tsconfig.test.json' nyc mocha",
-    "test": "TS_NODE_PROJECT='./tsconfig.test.json' mocha --reporter utils/reporter.js --parallel --exit",
+    "coverage": "rm -rf .coverage/* && nyc mocha",
+    "test": "mocha --reporter utils/reporter.js --parallel --exit",
     "build": "node utils/build",
     "bump-patch": "npm --no-git-tag-version version patch && git add package.json package-lock.json && exit 0",
     "release": "rake release"
