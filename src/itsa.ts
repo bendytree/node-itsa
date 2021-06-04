@@ -38,6 +38,10 @@ export interface ItsaValidationResult {
   message?: string;
 }
 
+export interface ItsaCombineResultsOptions {
+  throw?:boolean;
+}
+
 export class ItsaValidationResultBuilder implements ItsaValidationResult {
   ok = true;
   errors = [];
@@ -48,20 +52,20 @@ export class ItsaValidationResultBuilder implements ItsaValidationResult {
 
   }
 
-  addError (message:string) {
+  addError (message:string, options:ItsaCombineResultsOptions = {}) {
     this.ok = false;
     this.message = message;
     this.errors.push({ message, key:this.key, path:this.path }); // path: null, val,
-    if (!this.exhaustive) {
+    if (!this.exhaustive && options?.throw !== false) {
       throw 'STOP_ON_FIRST_ERROR';
     }
   }
 
-  combine(result: ItsaValidationResult):void{
+  combine(result: ItsaValidationResult, options:ItsaCombineResultsOptions = {}):void{
     this.ok = this.ok && result.ok;
     for (const e of result.errors) {
       this.errors.push(e);
-      if (!this.exhaustive) {
+      if (!this.exhaustive && options?.throw !== false) {
         throw 'STOP_ON_FIRST_ERROR';
       }
     }
