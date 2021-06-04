@@ -79,5 +79,25 @@ describe('itsa', function() {
       }
     });
 
+    it('the error is useful', function() {
+      try {
+        const schema = itsa.object({
+          name: itsa.string().notEmpty().toTrimmed(),
+          email: itsa.string().matches(/^[\w.%+-]+@[\w.-]+\.[\w]{2,6}$/),
+          phone: itsa.any(null, undefined, itsa.string().matches(/^[\d]{10,12}$/)),
+          pwd_hash: itsa.string(),
+          pwd_date: itsa.date(),
+          pwd_reset_token: itsa.any(null, undefined, itsa.string()),
+          sid: itsa.string(),
+        });
+        const obj = {"_id":"akp4xb3k2hahczlblt","email":"joshinnorman@gmail.com","pwd_hash":"$2b$11$55ueFBbeNHfx/OdwDYQiWeVJgdpnogbKIsWnyceKVzY/MXJMCMfvC","pwd_date":new Date(),"sid":"mKIBBEScNUnAeyyfIZOsME","name":"Foo","phone":"BARs"};
+        const options = {"partial":true};
+        schema.validOrThrow(obj, options);
+        assert.fail('This should have thrown');
+      }catch(e){
+        assert.strictEqual(String(e), 'WTF.');
+      }
+    });
+
   });
 });
