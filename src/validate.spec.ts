@@ -70,5 +70,14 @@ describe('itsa', function() {
       }
     });
 
+    it('the error is useful', function() {
+      try {
+        itsa.number().validOrThrow('foo');
+        assert.fail('This should have thrown');
+      }catch(e){
+        assert.strictEqual(String(e), 'Error: Expected number but type is string.');
+      }
+    });
+
   });
 });

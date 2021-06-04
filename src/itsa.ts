@@ -25,7 +25,8 @@ export class ItsaValidationException extends Error {
 
   constructor(result:ItsaValidationResult) {
     super();
-    this.message = `${result.errors[0].path.join('.')}: ${result.errors[0].message}`;
+    const path = result.errors[0].path.join('.');
+    this.message = `${path ? `${path}: ` : ''}${result.errors[0].message}`;
     this.result = result;
   }
 }
