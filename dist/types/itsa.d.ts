@@ -26,6 +26,9 @@ export interface ItsaValidationResult {
     value: any;
     message?: string;
 }
+export interface ItsaCombineResultsOptions {
+    throw?: boolean;
+}
 export declare class ItsaValidationResultBuilder implements ItsaValidationResult {
     private exhaustive;
     private key;
@@ -35,8 +38,8 @@ export declare class ItsaValidationResultBuilder implements ItsaValidationResult
     value: any;
     message?: any;
     constructor(exhaustive: boolean, key: string | number, path: (string | number)[]);
-    addError(message: string): void;
-    combine(result: ItsaValidationResult): void;
+    addError(message: string, options?: ItsaCombineResultsOptions): void;
+    combine(result: ItsaValidationResult, options?: ItsaCombineResultsOptions): void;
 }
 export interface ItsaValidateContext {
     parent?: object | [];

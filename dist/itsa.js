@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.57
+ * itsa 2.1.61
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1083,7 +1083,8 @@ var ItsaValidationException = /*#__PURE__*/function (_Error) {
     _classCallCheck(this, ItsaValidationException);
 
     _this = _super.call(this);
-    _this.message = "".concat(result.errors[0].path.join('.'), ": ").concat(result.errors[0].message);
+    var path = result.errors[0].path.join('.');
+    _this.message = "".concat(path ? "".concat(path, ": ") : '').concat(result.errors[0].message);
     _this.result = result;
     return _this;
   }
@@ -1109,6 +1110,7 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function () {
   _createClass(ItsaValidationResultBuilder, [{
     key: "addError",
     value: function addError(message) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.ok = false;
       this.message = message;
       this.errors.push({
@@ -1117,13 +1119,14 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function () {
         path: this.path
       }); // path: null, val,
 
-      if (!this.exhaustive) {
+      if (!this.exhaustive && (options === null || options === void 0 ? void 0 : options.throw) !== false) {
         throw 'STOP_ON_FIRST_ERROR';
       }
     }
   }, {
     key: "combine",
     value: function combine(result) {
+      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.ok = this.ok && result.ok;
 
       var _iterator = _createForOfIteratorHelper(result.errors),
@@ -1134,7 +1137,7 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function () {
           var e = _step.value;
           this.errors.push(e);
 
-          if (!this.exhaustive) {
+          if (!this.exhaustive && (options === null || options === void 0 ? void 0 : options.throw) !== false) {
             throw 'STOP_ON_FIRST_ERROR';
           }
         }
