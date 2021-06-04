@@ -20,26 +20,26 @@ export declare class ItsaValidationException extends Error {
     result: ItsaValidationResult;
     constructor(result: ItsaValidationResult);
 }
-export interface ItsaValidationResult {
+export declare class ItsaValidationResult {
     ok: boolean;
     errors: ItsaError[];
     value: any;
     message?: string;
+    okOrThrow(): void;
+    addError(error: ItsaError): void;
+    addResult(result: ItsaValidationResult): void;
 }
-export interface ItsaCombineResultsOptions {
-    throw?: boolean;
-}
-export declare class ItsaValidationResultBuilder implements ItsaValidationResult {
-    private exhaustive;
-    private key;
-    private path;
+export declare class ItsaValidationResultBuilder extends ItsaValidationResult {
     ok: boolean;
     errors: any[];
     value: any;
     message?: any;
+    private readonly exhaustive;
+    private readonly key;
+    private readonly path;
     constructor(exhaustive: boolean, key: string | number, path: (string | number)[]);
-    addError(message: string, options?: ItsaCombineResultsOptions): void;
-    combine(result: ItsaValidationResult, options?: ItsaCombineResultsOptions): void;
+    registerError(message: string): void;
+    registerResult(result: ItsaValidationResult): void;
 }
 export interface ItsaValidateContext {
     parent?: object | [];
@@ -97,6 +97,7 @@ import './objectid';
 import './serialize';
 import './string';
 import './to';
+import './touch';
 import './truthy';
 import './typeof';
 import './unique';

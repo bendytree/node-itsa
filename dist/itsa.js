@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.61
+ * itsa 2.1.63
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -110,7 +110,7 @@ var validate = {
       _iterator.f();
     }
 
-    result.addError("No schemas matched.");
+    result.registerError("No schemas matched.");
   }
 };
 itsa_1.Itsa.extend(ItsaAny, validate);
@@ -226,7 +226,7 @@ itsa_1.Itsa.extend(ItsaArray, {
         result = context.result,
         type = context.type;
     var example = settings.example;
-    if (!Array.isArray(val)) return result.addError("Expected array but found ".concat(type));
+    if (!Array.isArray(val)) return result.registerError("Expected array but found ".concat(type));
     if (!example) return;
     if (!val.length) return;
 
@@ -242,7 +242,7 @@ itsa_1.Itsa.extend(ItsaArray, {
         path: [].concat(_toConsumableArray(context.path), [key])
       });
 
-      result.combine(subResult);
+      result.registerResult(subResult);
     }
   }
 });
@@ -302,9 +302,9 @@ itsa_1.Itsa.extend(ItsaBetween, {
         max = settings.max;
     var inclusive = (_settings$inclusive = settings.inclusive) !== null && _settings$inclusive !== void 0 ? _settings$inclusive : true;
     var isTooLow = inclusive ? val < min : val <= min;
-    if (isTooLow) result.addError("Value cannot be under ".concat(min));
+    if (isTooLow) result.registerError("Value cannot be under ".concat(min));
     var isTooHigh = inclusive ? val > max : val >= max;
-    if (isTooHigh) result.addError("Value cannot be above ".concat(max));
+    if (isTooHigh) result.registerError("Value cannot be above ".concat(max));
   }
 });
 
@@ -353,7 +353,7 @@ itsa_1.Itsa.extend(ItsaBoolean, {
   validate: function validate(context) {
     var type = context.type,
         result = context.result;
-    if (type !== 'boolean') result.addError("Expected bool but found ".concat(type));
+    if (type !== 'boolean') result.registerError("Expected bool but found ".concat(type));
   }
 });
 
@@ -445,7 +445,7 @@ itsa_1.Itsa.extend(ItsaConstructor, {
     var val = context.val,
         result = context.result;
     var isMatch = val !== null && val !== undefined && val.constructor === settings.cls;
-    if (!isMatch) return result.addError("Expected to be ".concat(settings.cls));
+    if (!isMatch) return result.registerError("Expected to be ".concat(settings.cls));
   }
 });
 
@@ -517,7 +517,7 @@ itsa_1.Itsa.extend(ItsaConvert, {
       var newVal = converter(val);
       setVal(newVal);
     } catch (e) {
-      result.addError(e);
+      result.registerError(e);
     }
   }
 });
@@ -570,11 +570,11 @@ itsa_1.Itsa.extend(ItsaDate, {
     var type = Object.prototype.toString.call(val);
 
     if (type !== "[object Date]") {
-      return result.addError("Expected date but found ".concat(type));
+      return result.registerError("Expected date but found ".concat(type));
     }
 
     if (!isFinite(val)) {
-      result.addError("Date is not valid");
+      result.registerError("Date is not valid");
     }
   }
 });
@@ -707,11 +707,11 @@ itsa_1.Itsa.extend(ItsaEmail, {
     var val = context.val,
         type = context.type,
         result = context.result;
-    if (type !== 'string') return result.addError("Expected email but found ".concat(type));
+    if (type !== 'string') return result.registerError("Expected email but found ".concat(type));
     var isValid = rx.test(val);
 
     if (!isValid) {
-      result.addError('Email address is invalid');
+      result.registerError('Email address is invalid');
     }
   }
 });
@@ -770,7 +770,7 @@ itsa_1.Itsa.extend(ItsaEqual, {
     var isEqual = strict ? val === example : val == example;
 
     if (!isEqual) {
-      result.addError("Did not equal ".concat(example));
+      result.registerError("Did not equal ".concat(example));
     }
   }
 });
@@ -820,7 +820,7 @@ itsa_1.Itsa.extend(ItsaFalsy, {
   validate: function validate(context) {
     var val = context.val,
         result = context.result;
-    if (val) return result.addError("Expected falsy value.");
+    if (val) return result.registerError("Expected falsy value.");
   }
 });
 
@@ -874,7 +874,7 @@ itsa_1.Itsa.extend(ItsaFunction, {
     var val = context.val,
         type = context.type,
         result = context.result;
-    if (type !== 'function') return result.addError('Expected function');
+    if (type !== 'function') return result.registerError('Expected function');
 
     if (settings.length) {
       var subResult = settings.length._validate({
@@ -886,7 +886,7 @@ itsa_1.Itsa.extend(ItsaFunction, {
         path: context.path
       });
 
-      result.combine(subResult);
+      result.registerResult(subResult);
     }
   }
 });
@@ -968,7 +968,7 @@ itsa_1.Itsa.extend(ItsaInstanceOf, {
     var isInstance = val instanceof settings.cls;
 
     if (!isInstance) {
-      result.addError("Expected instance of ".concat(settings.cls));
+      result.registerError("Expected instance of ".concat(settings.cls));
     }
   }
 });
@@ -1021,7 +1021,7 @@ itsa_1.Itsa.extend(ItsaInteger, {
     var valid = typeof val === "number" && isNaN(val) === false && [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY].indexOf(val) === -1 && val % 1 === 0;
 
     if (!valid) {
-      result.addError('Invalid integer');
+      result.registerError('Invalid integer');
     }
   }
 });
@@ -1070,7 +1070,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.itsa = exports.Itsa = exports.ItsaValidationResultBuilder = exports.ItsaValidationException = void 0;
+exports.itsa = exports.Itsa = exports.ItsaValidationResultBuilder = exports.ItsaValidationResult = exports.ItsaValidationException = void 0;
 
 var ItsaValidationException = /*#__PURE__*/function (_Error) {
   _inherits(ItsaValidationException, _Error);
@@ -1094,40 +1094,31 @@ var ItsaValidationException = /*#__PURE__*/function (_Error) {
 
 exports.ItsaValidationException = ItsaValidationException;
 
-var ItsaValidationResultBuilder = /*#__PURE__*/function () {
-  function ItsaValidationResultBuilder(exhaustive, key, path) {
-    _classCallCheck(this, ItsaValidationResultBuilder);
+var ItsaValidationResult = /*#__PURE__*/function () {
+  function ItsaValidationResult() {
+    _classCallCheck(this, ItsaValidationResult);
 
-    this.exhaustive = exhaustive;
-    this.key = key;
-    this.path = path;
-    this.ok = true;
     this.errors = [];
-    this.value = undefined;
-    this.message = undefined;
   }
 
-  _createClass(ItsaValidationResultBuilder, [{
-    key: "addError",
-    value: function addError(message) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      this.ok = false;
-      this.message = message;
-      this.errors.push({
-        message: message,
-        key: this.key,
-        path: this.path
-      }); // path: null, val,
-
-      if (!this.exhaustive && (options === null || options === void 0 ? void 0 : options.throw) !== false) {
-        throw 'STOP_ON_FIRST_ERROR';
-      }
+  _createClass(ItsaValidationResult, [{
+    key: "okOrThrow",
+    value: function okOrThrow() {
+      if (!this.ok) throw new ItsaValidationException(this);
     }
   }, {
-    key: "combine",
-    value: function combine(result) {
-      var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      this.ok = this.ok && result.ok;
+    key: "addError",
+    value: function addError(error) {
+      this.ok = false;
+      this.message = error.message;
+      this.errors.push(error);
+    }
+  }, {
+    key: "addResult",
+    value: function addResult(result) {
+      var _this$errors$;
+
+      if (!result.ok) this.ok = false;
 
       var _iterator = _createForOfIteratorHelper(result.errors),
           _step;
@@ -1136,21 +1127,67 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function () {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var e = _step.value;
           this.errors.push(e);
-
-          if (!this.exhaustive && (options === null || options === void 0 ? void 0 : options.throw) !== false) {
-            throw 'STOP_ON_FIRST_ERROR';
-          }
         }
       } catch (err) {
         _iterator.e(err);
       } finally {
         _iterator.f();
       }
+
+      this.message = this.message || ((_this$errors$ = this.errors[0]) === null || _this$errors$ === void 0 ? void 0 : _this$errors$.message);
+    }
+  }]);
+
+  return ItsaValidationResult;
+}();
+
+exports.ItsaValidationResult = ItsaValidationResult;
+
+var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) {
+  _inherits(ItsaValidationResultBuilder, _ItsaValidationResult);
+
+  var _super2 = _createSuper(ItsaValidationResultBuilder);
+
+  function ItsaValidationResultBuilder(exhaustive, key, path) {
+    var _this2;
+
+    _classCallCheck(this, ItsaValidationResultBuilder);
+
+    _this2 = _super2.call(this);
+    _this2.ok = true;
+    _this2.errors = [];
+    _this2.value = undefined;
+    _this2.message = undefined;
+    _this2.key = key;
+    _this2.exhaustive = exhaustive;
+    _this2.path = path;
+    return _this2;
+  }
+
+  _createClass(ItsaValidationResultBuilder, [{
+    key: "registerError",
+    value: function registerError(message) {
+      var result = new ItsaValidationResult();
+      result.addError({
+        message: message,
+        key: this.key,
+        path: this.path
+      });
+      this.addResult(result);
+    }
+  }, {
+    key: "registerResult",
+    value: function registerResult(result) {
+      this.addResult(result);
+
+      if (!this.exhaustive && this.errors.length) {
+        throw 'STOP_ON_FIRST_ERROR';
+      }
     }
   }]);
 
   return ItsaValidationResultBuilder;
-}();
+}(ItsaValidationResult);
 
 exports.ItsaValidationResultBuilder = ItsaValidationResultBuilder;
 
@@ -1271,6 +1308,8 @@ __webpack_require__(744);
 
 __webpack_require__(724);
 
+__webpack_require__(409);
+
 __webpack_require__(709);
 
 __webpack_require__(886);
@@ -1346,19 +1385,19 @@ itsa_1.Itsa.extend(ItsaLength, {
     var len = val ? val.length : null;
 
     if (typeof len !== 'number') {
-      return result.addError('Invalid length');
+      return result.registerError('Invalid length');
     }
 
     if (typeof settings.exactly === 'number' && settings.exactly !== len) {
-      return result.addError("Expected length to be ".concat(settings.exactly));
+      return result.registerError("Expected length to be ".concat(settings.exactly));
     }
 
     if (typeof settings.min === 'number' && settings.min > len) {
-      return result.addError("Expected length to be at least ".concat(settings.min));
+      return result.registerError("Expected length to be at least ".concat(settings.min));
     }
 
     if (typeof settings.max === 'number' && settings.max < len) {
-      return result.addError("Expected length to be at most ".concat(settings.max));
+      return result.registerError("Expected length to be at most ".concat(settings.max));
     }
   }
 });
@@ -1414,7 +1453,7 @@ itsa_1.Itsa.extend(ItsaMatches, {
     var valid = settings.regex.test(String(val));
 
     if (!valid) {
-      result.addError("Does not match ".concat(settings.regex));
+      result.registerError("Does not match ".concat(settings.regex));
     }
   }
 });
@@ -1524,11 +1563,11 @@ itsa_1.Itsa.extend(ItsaMax, {
 
     if (inclusive) {
       var ok = val <= max;
-      if (!ok) result.addError("Value must be at most ".concat(max));
+      if (!ok) result.registerError("Value must be at most ".concat(max));
     } else {
       var _ok = val < max;
 
-      if (!_ok) result.addError("Value must be less than ".concat(max));
+      if (!_ok) result.registerError("Value must be less than ".concat(max));
     }
   }
 });
@@ -1638,11 +1677,11 @@ itsa_1.Itsa.extend(ItsaMin, {
 
     if (inclusive) {
       var ok = val >= min;
-      if (!ok) result.addError("Value must be at least ".concat(min));
+      if (!ok) result.registerError("Value must be at least ".concat(min));
     } else {
       var _ok = val > min;
 
-      if (!_ok) result.addError("Value must be greater than ".concat(min));
+      if (!_ok) result.registerError("Value must be greater than ".concat(min));
     }
   }
 });
@@ -1711,13 +1750,13 @@ itsa_1.Itsa.extend(ItsaNotEmpty, {
       }
 
       if (!hasFields) {
-        result.addError("Object cannot be empty");
+        result.registerError("Object cannot be empty");
       }
 
       return;
     }
 
-    result.addError("Value cannot be empty");
+    result.registerError("Value cannot be empty");
   }
 });
 
@@ -1835,9 +1874,9 @@ itsa_1.Itsa.extend(ItsaNumber, {
     var val = context.val,
         type = context.type,
         result = context.result;
-    if (type !== 'number') return result.addError("Expected number but type is ".concat(type, "."));
-    if (isNaN(val)) return result.addError("Expected number but found NaN.");
-    if (!isFinite(val)) return result.addError("Expected number but found infinity.");
+    if (type !== 'number') return result.registerError("Expected number but type is ".concat(type, "."));
+    if (isNaN(val)) return result.registerError("Expected number but found NaN.");
+    if (!isFinite(val)) return result.registerError("Expected number but found infinity.");
   }
 });
 
@@ -1934,11 +1973,11 @@ itsa_1.Itsa.extend(ItsaObject, {
         config = settings.config;
     var extras = (_config$extras = config.extras) !== null && _config$extras !== void 0 ? _config$extras : false; // Validate object
 
-    if (!val) return result.addError("Expected object but value is ".concat(val, "."));
-    if (type !== "object") return result.addError("Expected object but type is ".concat(type, "."));
-    if (val instanceof RegExp) return result.addError("Expected object but type is regex.");
-    if (val instanceof Date) return result.addError("Expected object but type is date.");
-    if (Array.isArray(val)) return result.addError("Expected object but type is array.");
+    if (!val) return result.registerError("Expected object but value is ".concat(val, "."));
+    if (type !== "object") return result.registerError("Expected object but type is ".concat(type, "."));
+    if (val instanceof RegExp) return result.registerError("Expected object but type is regex.");
+    if (val instanceof Date) return result.registerError("Expected object but type is date.");
+    if (Array.isArray(val)) return result.registerError("Expected object but type is array.");
     var objectKeys = Object.keys(val);
 
     if (example) {
@@ -1964,7 +2003,7 @@ itsa_1.Itsa.extend(ItsaObject, {
           path: [].concat(_toConsumableArray(context.path), [key])
         });
 
-        result.combine(subResult);
+        result.registerResult(subResult);
       } // Error for extra properties?
 
 
@@ -1974,7 +2013,7 @@ itsa_1.Itsa.extend(ItsaObject, {
         });
 
         if (extraKeys.length) {
-          result.addError("Extra unknown properties: ".concat(extraKeys.join(', ')));
+          result.registerError("Extra unknown properties: ".concat(extraKeys.join(', ')));
         }
       }
     }
@@ -1996,7 +2035,7 @@ itsa_1.Itsa.extend(ItsaObject, {
             path: [].concat(_toConsumableArray(context.path), [_key])
           });
 
-          result.combine(_subResult);
+          result.registerResult(_subResult);
         }
       } catch (err) {
         _iterator.e(err);
@@ -2023,7 +2062,7 @@ itsa_1.Itsa.extend(ItsaObject, {
             path: [].concat(_toConsumableArray(context.path), [_key2])
           });
 
-          result.combine(_subResult2);
+          result.registerResult(_subResult2);
         }
       } catch (err) {
         _iterator2.e(err);
@@ -2082,10 +2121,10 @@ itsa_1.Itsa.extend(ItsaObjectId, {
     var val = context.val,
         result = context.result,
         type = context.type;
-    if (!val) return result.addError('ObjectId is required');
-    if (type !== 'string') return result.addError('ObjectId must be a string');
-    if (val.length !== 24) return result.addError('ObjectId must have 24 characters');
-    if (!rxObjectId.test(val)) return result.addError('ObjectId may only contain 0-9, a-z');
+    if (!val) return result.registerError('ObjectId is required');
+    if (type !== 'string') return result.registerError('ObjectId must be a string');
+    if (val.length !== 24) return result.registerError('ObjectId must have 24 characters');
+    if (!rxObjectId.test(val)) return result.registerError('ObjectId may only contain 0-9, a-z');
   }
 });
 
@@ -2196,7 +2235,7 @@ itsa_1.Itsa.extend(ItsaString, {
   validate: function validate(context) {
     var type = context.type,
         result = context.result;
-    if (type !== 'string') return result.addError("Expected string");
+    if (type !== 'string') return result.registerError("Expected string");
   }
 });
 
@@ -2308,7 +2347,7 @@ itsa_1.Itsa.extend(ItsaTo, {
         setVal = context.setVal,
         result = context.result;
     var date = new Date(val);
-    if (!isFinite(date.getTime())) return result.addError("Date conversion failed");
+    if (!isFinite(date.getTime())) return result.registerError("Date conversion failed");
     setVal(date);
   }
 }, {
@@ -2318,7 +2357,7 @@ itsa_1.Itsa.extend(ItsaTo, {
         setVal = context.setVal,
         result = context.result;
     var newFloat = parseFloat(val);
-    if (isNaN(newFloat)) return result.addError("Float conversion failed");
+    if (isNaN(newFloat)) return result.registerError("Float conversion failed");
     setVal(newFloat);
   }
 }, {
@@ -2329,7 +2368,7 @@ itsa_1.Itsa.extend(ItsaTo, {
         result = context.result;
     var radix = settings.radix;
     var newInt = parseInt(val, radix !== null && radix !== void 0 ? radix : 10);
-    if (isNaN(newInt)) return result.addError("Int conversion failed");
+    if (isNaN(newInt)) return result.registerError("Int conversion failed");
     setVal(newInt);
   }
 }, {
@@ -2367,6 +2406,77 @@ itsa_1.Itsa.extend(ItsaTo, {
     setVal(String(val).trim());
   }
 });
+
+/***/ }),
+
+/***/ 409:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var itsa_1 = __webpack_require__(589);
+
+var ItsaTouch = /*#__PURE__*/function () {
+  function ItsaTouch() {
+    _classCallCheck(this, ItsaTouch);
+  }
+
+  _createClass(ItsaTouch, [{
+    key: "touch",
+    value: function touch(obj) {
+      var objectPredicates = this.predicates.filter(function (p) {
+        return p.id === 'object';
+      });
+      if (!objectPredicates.length) throw new Error("This is not an object schema.");
+      if (!obj) throw new Error("The given obj cannot be falsy.");
+
+      var _iterator = _createForOfIteratorHelper(objectPredicates),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var predicate = _step.value;
+          var settings = predicate.settings;
+          var example = settings.example;
+          if (!example) throw new Error("A schema example is required.");
+          var keys = Object.keys(example);
+
+          for (var _i = 0, _keys = keys; _i < _keys.length; _i++) {
+            var key = _keys[_i];
+
+            if (!(key in obj)) {
+              obj[key] = undefined;
+            }
+          }
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+    }
+  }]);
+
+  return ItsaTouch;
+}();
+
+itsa_1.Itsa.extend(ItsaTouch);
 
 /***/ }),
 
@@ -2413,7 +2523,7 @@ itsa_1.Itsa.extend(ItsaTruthy, {
   validate: function validate(context) {
     var val = context.val,
         result = context.result;
-    if (!val) return result.addError("Expected truthy value.");
+    if (!val) return result.registerError("Expected truthy value.");
   }
 });
 
@@ -2472,7 +2582,7 @@ itsa_1.Itsa.extend(ItsaTypeOf, {
     var actualType = _typeof2(val);
 
     if (type !== actualType) {
-      result.addError("Expected ".concat(type));
+      result.registerError("Expected ".concat(type));
     }
   }
 });
@@ -2533,7 +2643,7 @@ itsa_1.Itsa.extend(ItsaUnique, {
       if (getter) subVal = getter(subVal);
 
       if (set.has(subVal)) {
-        return result.addError("".concat(subVal, " occurred multiple times"));
+        return result.registerError("".concat(subVal, " occurred multiple times"));
       }
 
       set.add(subVal);
@@ -2642,11 +2752,7 @@ var ItsaValidation = /*#__PURE__*/function () {
   }, {
     key: "validOrThrow",
     value: function validOrThrow(val, settings) {
-      var result = this.validate(val, settings);
-
-      if (!result.ok) {
-        throw new itsa_1.ItsaValidationException(result);
-      }
+      this.validate(val, settings).okOrThrow();
     }
   }]);
 
@@ -2710,18 +2816,18 @@ itsa_1.Itsa.extend(ItsaVerify, {
 
       if (typeof response === 'boolean') {
         if (response === false) {
-          result.addError("Value is invalid");
+          result.registerError("Value is invalid");
         }
 
         return;
       }
 
       if (typeof response === 'string') {
-        return result.addError(response);
+        return result.registerError(response);
       }
     } catch (e) {
       if (e === 'STOP_ON_FIRST_ERROR') throw e;
-      return result.addError(e);
+      return result.registerError(e);
     }
   }
 });
