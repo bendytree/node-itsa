@@ -19,7 +19,7 @@ Itsa.extend(ItsaArray, {
     const { val, validation, exists, result, type } = context;
     const { example } = settings;
 
-    if (!Array.isArray(val)) return result.addError(`Expected array but found ${type}`);
+    if (!Array.isArray(val)) return result.registerError(`Expected array but found ${type}`);
 
     if (!example) return;
     if (!val.length) return;
@@ -34,7 +34,7 @@ Itsa.extend(ItsaArray, {
         settings: validation,
         path: [...context.path, key],
       });
-      result.combine(subResult);
+      result.registerResult(subResult);
     }
   }
 });

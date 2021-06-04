@@ -22,16 +22,16 @@ Itsa.extend(ItsaVerify, {
       const response = verifier(val);
       if (typeof response === 'boolean') {
         if (response === false) {
-          result.addError(`Value is invalid`);
+          result.registerError(`Value is invalid`);
         }
         return;
       }
       if (typeof response === 'string') {
-        return result.addError(response);
+        return result.registerError(response);
       }
     }catch(e){
       if (e === 'STOP_ON_FIRST_ERROR') throw e;
-      return result.addError(e);
+      return result.registerError(e);
     }
   }
 });

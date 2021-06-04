@@ -28,16 +28,16 @@ Itsa.extend(ItsaLength, {
     const {val, result} = context;
     const len = val ? val.length : null;
     if (typeof len !== 'number') {
-      return result.addError('Invalid length');
+      return result.registerError('Invalid length');
     }
     if (typeof settings.exactly === 'number' && settings.exactly !== len) {
-      return result.addError(`Expected length to be ${settings.exactly}`);
+      return result.registerError(`Expected length to be ${settings.exactly}`);
     }
     if (typeof settings.min === 'number' && settings.min > len) {
-      return result.addError(`Expected length to be at least ${settings.min}`);
+      return result.registerError(`Expected length to be at least ${settings.min}`);
     }
     if (typeof settings.max === 'number' && settings.max < len) {
-      return result.addError(`Expected length to be at most ${settings.max}`);
+      return result.registerError(`Expected length to be at most ${settings.max}`);
     }
   }
 });

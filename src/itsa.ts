@@ -31,43 +31,58 @@ export class ItsaValidationException extends Error {
   }
 }
 
-export interface ItsaValidationResult {
+export class ItsaValidationResult {
   ok: boolean;
-  errors: ItsaError[];
+  errors: ItsaError[] = [];
   value: any;
   message?: string;
+
+  okOrThrow(){
+    if (!this.ok) throw new ItsaValidationException(this);
+  }
+
+  addError(error:ItsaError) {
+    this.ok = false;
+    this.message = error.message;
+    this.errors.push(error);
+  }
+
+  addResult(result: ItsaValidationResult) {
+    if (!result.ok) this.ok = false;
+    for (const e of result.errors) {
+      this.errors.push(e);
+    }
+    this.message = this.message || this.errors[0]?.message;
+  }
 }
 
-export interface ItsaCombineResultsOptions {
-  throw?:boolean;
-}
-
-export class ItsaValidationResultBuilder implements ItsaValidationResult {
+export class ItsaValidationResultBuilder extends ItsaValidationResult {
   ok = true;
   errors = [];
   value = undefined;
   message? = undefined;
 
-  constructor(private exhaustive: boolean, private key: string | number, private path: (string | number)[]) {
+  private readonly exhaustive: boolean;
+  private readonly key: string | number;
+  private readonly path: (string | number)[];
 
+  constructor(exhaustive: boolean, key: string | number, path: (string | number)[]) {
+    super();
+    this.key = key;
+    this.exhaustive = exhaustive;
+    this.path = path;
   }
 
-  addError (message:string, options:ItsaCombineResultsOptions = {}) {
-    this.ok = false;
-    this.message = message;
-    this.errors.push({ message, key:this.key, path:this.path }); // path: null, val,
-    if (!this.exhaustive && options?.throw !== false) {
+  registerError (message:string) {
+    const result = new ItsaValidationResult();
+    result.addError({ message, key: this.key, path: this.path });
+    this.addResult(result);
+  }
+
+  registerResult(result: ItsaValidationResult):void{
+    this.addResult(result);
+    if (!this.exhaustive && this.errors.length) {
       throw 'STOP_ON_FIRST_ERROR';
-    }
-  }
-
-  combine(result: ItsaValidationResult, options:ItsaCombineResultsOptions = {}):void{
-    this.ok = this.ok && result.ok;
-    for (const e of result.errors) {
-      this.errors.push(e);
-      if (!this.exhaustive && options?.throw !== false) {
-        throw 'STOP_ON_FIRST_ERROR';
-      }
     }
   }
 }
@@ -151,6 +166,7 @@ import './objectid';
 import './serialize';
 import './string';
 import './to';
+import './touch';
 import './truthy';
 import './typeof';
 import './unique';

@@ -28,7 +28,7 @@ Itsa.extend(ItsaConvert, {
       const newVal = converter(val);
       setVal(newVal);
     }catch(e){
-      result.addError(e);
+      result.registerError(e);
     }
   }
 });

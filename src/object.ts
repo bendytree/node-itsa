@@ -16,7 +16,7 @@ interface ItsaObjectConfig {
   value?: Itsa;
 }
 
-interface ItsaObjectSettings {
+export interface ItsaObjectSettings {
   example?: ItsaObjectExample;
   config: ItsaObjectConfig;
 }
@@ -50,11 +50,11 @@ Itsa.extend(ItsaObject, {
     const extras = config.extras ?? false;
 
     // Validate object
-    if (!val) return result.addError(`Expected object but value is ${val}.`);
-    if (type !== "object") return result.addError(`Expected object but type is ${type}.`);
-    if (val instanceof RegExp) return result.addError(`Expected object but type is regex.`);
-    if (val instanceof Date) return result.addError(`Expected object but type is date.`);
-    if (Array.isArray(val)) return result.addError(`Expected object but type is array.`);
+    if (!val) return result.registerError(`Expected object but value is ${val}.`);
+    if (type !== "object") return result.registerError(`Expected object but type is ${type}.`);
+    if (val instanceof RegExp) return result.registerError(`Expected object but type is regex.`);
+    if (val instanceof Date) return result.registerError(`Expected object but type is date.`);
+    if (Array.isArray(val)) return result.registerError(`Expected object but type is array.`);
 
     const objectKeys = Object.keys(val);
 
@@ -76,14 +76,14 @@ Itsa.extend(ItsaObject, {
           settings: validation,
           path: [...context.path, key],
         });
-        result.combine(subResult);
+        result.registerResult(subResult);
       }
 
       // Error for extra properties?
       if (!extras) {
         const extraKeys = objectKeys.filter(k => !exampleKeys.includes(k));
         if (extraKeys.length) {
-          result.addError(`Extra unknown properties: ${extraKeys.join(', ')}`);
+          result.registerError(`Extra unknown properties: ${extraKeys.join(', ')}`);
         }
       }
     }
@@ -98,7 +98,7 @@ Itsa.extend(ItsaObject, {
           settings: validation,
           path: [...context.path, key],
         });
-        result.combine(subResult);
+        result.registerResult(subResult);
       }
     }
 
@@ -113,7 +113,7 @@ Itsa.extend(ItsaObject, {
           settings: validation,
           path: [...context.path, key],
         });
-        result.combine(subResult);
+        result.registerResult(subResult);
       }
     }
   }

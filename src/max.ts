@@ -39,10 +39,10 @@ Itsa.extend(ItsaMax, {
     const { max, inclusive } = settings;
     if (inclusive) {
       const ok = val <= max;
-      if (!ok) result.addError(`Value must be at most ${max}`);
+      if (!ok) result.registerError(`Value must be at most ${max}`);
     } else {
       const ok = val < max;
-      if (!ok) result.addError(`Value must be less than ${max}`);
+      if (!ok) result.registerError(`Value must be less than ${max}`);
     }
   }
 });

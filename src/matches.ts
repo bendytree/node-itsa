@@ -18,7 +18,7 @@ Itsa.extend(ItsaMatches, {
     const {val, result} = context;
     const valid = settings.regex.test(String(val));
     if (!valid) {
-      result.addError(`Does not match ${settings.regex}`);
+      result.registerError(`Does not match ${settings.regex}`);
     }
   }
 });

@@ -37,7 +37,7 @@ const validate:ItsaValidator = {
       }
     }
 
-    result.addError(`No schemas matched.`);
+    result.registerError(`No schemas matched.`);
   }
 };
 

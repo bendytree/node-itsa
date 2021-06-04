@@ -13,7 +13,7 @@ Itsa.extend(ItsaBoolean, {
   id: 'boolean',
   validate: (context:ItsaValidateContext) => {
     const { type, result } = context;
-    if (type !== 'boolean') result.addError(`Expected bool but found ${type}`);
+    if (type !== 'boolean') result.registerError(`Expected bool but found ${type}`);
   }
 });
 

@@ -15,10 +15,10 @@ Itsa.extend(ItsaDate, {
     const { val, result } = context;
     const type = Object.prototype.toString.call(val);
     if (type !== "[object Date]") {
-      return result.addError(`Expected date but found ${type}`);
+      return result.registerError(`Expected date but found ${type}`);
     }
     if (!isFinite(val)) {
-      result.addError(`Date is not valid`);
+      result.registerError(`Date is not valid`);
     }
   }
 });

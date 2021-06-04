@@ -63,10 +63,7 @@ class ItsaValidation {
   }
 
   validOrThrow(this:Itsa, val:any, settings?:ItsaValidationSettings) {
-    const result = this.validate(val, settings);
-    if (!result.ok) {
-      throw new ItsaValidationException(result);
-    }
+    this.validate(val, settings).okOrThrow();
   }
 }
 

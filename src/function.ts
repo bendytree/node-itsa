@@ -22,7 +22,7 @@ Itsa.extend(ItsaFunction, {
   id: 'function',
   validate: (context:ItsaValidateContext, settings:ItsaFunctionSettings) => {
     const { val, type, result } = context;
-    if (type !== 'function') return result.addError('Expected function');
+    if (type !== 'function') return result.registerError('Expected function');
     if (settings.length) {
       const subResult = settings.length._validate({
         key: 'length',
@@ -32,7 +32,7 @@ Itsa.extend(ItsaFunction, {
         settings: context.validation,
         path: context.path,
       });
-      result.combine(subResult);
+      result.registerResult(subResult);
     }
   }
 });

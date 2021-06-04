@@ -14,10 +14,10 @@ Itsa.extend(ItsaEmail, {
   id: 'email',
   validate: (context:ItsaValidateContext) => {
     const { val, type, result } = context;
-    if (type !== 'string') return result.addError(`Expected email but found ${type}`);
+    if (type !== 'string') return result.registerError(`Expected email but found ${type}`);
     const isValid = rx.test(val);
     if (!isValid) {
-      result.addError('Email address is invalid');
+      result.registerError('Email address is invalid');
     }
   }
 });

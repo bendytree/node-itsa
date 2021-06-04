@@ -19,6 +19,7 @@
  - Get paths & messages for each error
  - Serialize/deserialize to/from json
  - Partial verification (for updates)
+ - Touch support (for Vue.js)
 
 ###### Simple Example
 
