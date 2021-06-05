@@ -71,6 +71,15 @@ describe('itsa', function() {
       assert.strictEqual(Object.keys(obj).includes('v'), true);
     });
 
+    it('returns the touched object for convenience', function() {
+      const schema = itsa.object({ x: itsa.string() });
+      const obj = { } as any;
+      const result = schema.touch(obj);
+      assert.strictEqual(Object.keys(obj).length, 1);
+      assert.strictEqual(Object.keys(obj).includes('x'), true);
+      assert.strictEqual(obj, result);
+    });
+
   });
 
 });

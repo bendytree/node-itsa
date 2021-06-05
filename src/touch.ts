@@ -3,7 +3,7 @@ import { Itsa } from './itsa';
 import { ItsaObjectSettings } from './object';
 
 class ItsaTouch {
-  touch(this:Itsa, obj:Record<string, any>):void {
+  touch<X>(this:Itsa, obj:X):X {
     const objectPredicates = this.predicates.filter(p => p.id === 'object');
     if (!objectPredicates.length) throw new Error(`This is not an object schema.`);
     if (!obj) throw new Error(`The given obj cannot be falsy.`);
@@ -18,6 +18,7 @@ class ItsaTouch {
         }
       }
     }
+    return obj;
   }
 }
 
