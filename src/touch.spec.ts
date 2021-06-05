@@ -20,11 +20,9 @@ describe('itsa', function() {
       }catch (e){}
     });
 
-    it('throws if given value is not an object', function() {
-      try {
-        itsa.object({}).touch(null);
-        assert.fail('An exception should have been thrown');
-      }catch (e){}
+    it('does nothing if given value is not an object', function() {
+      const result = itsa.object({}).touch(null);
+      assert.strictEqual(result, null);
     });
 
     it('creates an undefined value for each schema key', function() {
@@ -78,6 +76,20 @@ describe('itsa', function() {
       assert.strictEqual(Object.keys(obj).length, 1);
       assert.strictEqual(Object.keys(obj).includes('x'), true);
       assert.strictEqual(obj, result);
+    });
+
+    it('a custom touching function can be used', function() {
+      const schema = itsa.object({
+        x: itsa.string(),
+        y: itsa.string(),
+        z: itsa.string(),
+      });
+      const obj = { x:'foo' } as any;
+      schema.touch(obj, (key, obj) => obj[key] = 'bar');
+      assert.strictEqual(Object.keys(obj).length, 3);
+      assert.strictEqual(obj.x, 'foo');
+      assert.strictEqual(obj.y, 'bar');
+      assert.strictEqual(obj.z, 'bar');
     });
 
   });

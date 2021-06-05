@@ -3,10 +3,10 @@ import { Itsa } from './itsa';
 import { ItsaObjectSettings } from './object';
 
 class ItsaTouch {
-  touch<X>(this:Itsa, obj:X):X {
+  touch<X>(this:Itsa, obj:X, toucher?:(string, X) => void):X {
     const objectPredicates = this.predicates.filter(p => p.id === 'object');
     if (!objectPredicates.length) throw new Error(`This is not an object schema.`);
-    if (!obj) throw new Error(`The given obj cannot be falsy.`);
+    if (!obj) return obj;
     for (const predicate of objectPredicates) {
       const settings = predicate.settings as ItsaObjectSettings;
       const example = settings.example as any;
@@ -14,7 +14,11 @@ class ItsaTouch {
       const keys = Object.keys(example);
       for (const key of keys) {
         if (!(key in obj)) {
-          obj[key] = undefined;
+          if (toucher) {
+            toucher(key, obj);
+          }else{
+            obj[key] = undefined;
+          }
         }
       }
     }
