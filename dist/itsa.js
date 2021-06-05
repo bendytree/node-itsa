@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.65
+ * itsa 2.1.67
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1799,18 +1799,8 @@ var ItsaNull = /*#__PURE__*/function () {
       return this;
     }
   }, {
-    key: "undefined",
-    value: function (_undefined) {
-      function undefined() {
-        return _undefined.apply(this, arguments);
-      }
-
-      undefined.toString = function () {
-        return _undefined.toString();
-      };
-
-      return undefined;
-    }(function () {
+    key: "undef",
+    value: function undef() {
       var settings = {
         example: undefined,
         strict: true
@@ -1820,7 +1810,7 @@ var ItsaNull = /*#__PURE__*/function () {
         settings: settings
       });
       return this;
-    })
+    }
   }]);
 
   return ItsaNull;
