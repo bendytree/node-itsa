@@ -19,14 +19,14 @@ describe('itsa', function() {
 
   describe('undefined', function() {
     it('validates', function() {
-      assert.strictEqual(itsa.undefined().validate(undefined).ok, true);
+      assert.strictEqual(itsa.undef().validate(undefined).ok, true);
     });
 
     it('invalidates', function() {
-      assert.strictEqual(itsa.undefined().validate(null).ok, false);
-      assert.strictEqual(itsa.undefined().validate(0).ok, false);
-      assert.strictEqual(itsa.undefined().validate(false).ok, false);
-      assert.strictEqual(itsa.undefined().validate('').ok, false);
+      assert.strictEqual(itsa.undef().validate(null).ok, false);
+      assert.strictEqual(itsa.undef().validate(0).ok, false);
+      assert.strictEqual(itsa.undef().validate(false).ok, false);
+      assert.strictEqual(itsa.undef().validate('').ok, false);
     });
   });
 });

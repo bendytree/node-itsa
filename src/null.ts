@@ -7,7 +7,7 @@ export class ItsaNull {
     this.predicates.push({ id: 'equal', settings });
     return this as any as Itsa;
   }
-  undefined(this:Itsa):Itsa {
+  undef(this:Itsa):Itsa {
     const settings:ItsaEqualSettings = { example: undefined, strict: true };
     this.predicates.push({ id: 'equal', settings });
     return this as any as Itsa;
