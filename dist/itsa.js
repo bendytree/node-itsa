@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.71
+ * itsa 2.1.73
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1098,6 +1098,7 @@ var ItsaValidationResult = /*#__PURE__*/function () {
   function ItsaValidationResult() {
     _classCallCheck(this, ItsaValidationResult);
 
+    this.ok = true;
     this.errors = [];
   }
 
