@@ -4,7 +4,6 @@ import {
   ItsaValidator,
   ItsaValidateContext,
   ItsaInternalValidationSettings,
-  ItsaValidationException,
   ItsaValidationResult,
   ItsaValidationSettings,
   ItsaValidationResultBuilder

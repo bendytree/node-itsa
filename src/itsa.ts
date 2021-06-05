@@ -32,7 +32,7 @@ export class ItsaValidationException extends Error {
 }
 
 export class ItsaValidationResult {
-  ok: boolean;
+  ok: boolean = true;
   errors: ItsaError[] = [];
   value: any;
   message?: string;

@@ -1,7 +1,7 @@
 
 import assert from 'assert';
 import { describe, it } from 'mocha';
-import { itsa } from "./itsa";
+import {itsa, ItsaValidationResult} from "./itsa";
 
 describe('itsa', function() {
   describe('validate', function() {
@@ -77,6 +77,11 @@ describe('itsa', function() {
       }catch(e){
         assert.strictEqual(String(e), 'Error: Expected number but type is string.');
       }
+    });
+
+    it('a result is valid by default', function() {
+      const result = new ItsaValidationResult();
+      assert.strictEqual(result.ok, true);
     });
 
   });
