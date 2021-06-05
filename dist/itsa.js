@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.69
+ * itsa 2.1.71
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -2429,12 +2429,12 @@ var ItsaTouch = /*#__PURE__*/function () {
 
   _createClass(ItsaTouch, [{
     key: "touch",
-    value: function touch(obj) {
+    value: function touch(obj, toucher) {
       var objectPredicates = this.predicates.filter(function (p) {
         return p.id === 'object';
       });
       if (!objectPredicates.length) throw new Error("This is not an object schema.");
-      if (!obj) throw new Error("The given obj cannot be falsy.");
+      if (!obj) return obj;
 
       var _iterator = _createForOfIteratorHelper(objectPredicates),
           _step;
@@ -2451,7 +2451,11 @@ var ItsaTouch = /*#__PURE__*/function () {
             var key = _keys[_i];
 
             if (!(key in obj)) {
-              obj[key] = undefined;
+              if (toucher) {
+                toucher(key, obj);
+              } else {
+                obj[key] = undefined;
+              }
             }
           }
         }
