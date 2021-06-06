@@ -23,7 +23,10 @@ const validate:ItsaValidator = {
     if (schemas.length === 0)
       return;
 
+    const truthyErrors = [];
     for (const subSchema of schemas) {
+      const isSchemaTruthy = subSchema.predicates.find(p => !['equal', 'falsy'].includes(p.id));
+
       const subResult = subSchema._validate({
         key,
         parent,
@@ -34,10 +37,16 @@ const validate:ItsaValidator = {
       });
       if (subResult.ok) {
         return;
+      }else if (isSchemaTruthy) {
+        truthyErrors.push(subResult.message);
       }
     }
 
-    result.registerError(`No schemas matched.`);
+    if (truthyErrors.length === 1) {
+      result.registerError(truthyErrors[0]);
+    }else{
+      result.registerError(`No schemas matched.`);
+    }
   }
 };
 

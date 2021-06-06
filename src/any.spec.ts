@@ -56,5 +56,11 @@ describe('itsa', function() {
       assert.strictEqual(itsa.any([itsa.number(), itsa.boolean()]).validate(5).ok, true);
       assert.strictEqual(itsa.any([itsa.number(), itsa.boolean()]).validate('red').ok, false);
     });
+
+    it('error message uses single truthy schema', function() {
+      const schema = itsa.any(null, undefined, itsa.string());
+      assert.strictEqual(schema.validate(37).ok, false);
+      assert.strictEqual(schema.validate(37).message, 'Expected string');
+    });
   });
 });
