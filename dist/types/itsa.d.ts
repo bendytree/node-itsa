@@ -70,6 +70,8 @@ export declare class Itsa {
 }
 export declare const itsa: Itsa;
 export type { ItsaOrPrimative, primitiveToItsa } from './helpers';
+import './all';
+import './and';
 import './any';
 import './anything';
 import './array';
