@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.73
+ * itsa 2.1.76
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -83,6 +83,7 @@ var validate = {
         result = context.result;
     var schemas = settings.schemas;
     if (schemas.length === 0) return;
+    var truthyErrors = [];
 
     var _iterator = _createForOfIteratorHelper(schemas),
         _step;
@@ -90,6 +91,9 @@ var validate = {
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var subSchema = _step.value;
+        var isSchemaTruthy = subSchema.predicates.find(function (p) {
+          return !['equal', 'falsy'].includes(p.id);
+        });
 
         var subResult = subSchema._validate({
           key: key,
@@ -102,6 +106,8 @@ var validate = {
 
         if (subResult.ok) {
           return;
+        } else if (isSchemaTruthy) {
+          truthyErrors.push(subResult.message);
         }
       }
     } catch (err) {
@@ -110,7 +116,11 @@ var validate = {
       _iterator.f();
     }
 
-    result.registerError("No schemas matched.");
+    if (truthyErrors.length === 1) {
+      result.registerError(truthyErrors[0]);
+    } else {
+      result.registerError("No schemas matched.");
+    }
   }
 };
 itsa_1.Itsa.extend(ItsaAny, validate);
@@ -1942,6 +1952,18 @@ var ItsaObject = /*#__PURE__*/function () {
         id: 'object',
         settings: settings
       });
+      return this;
+    }
+  }, {
+    key: "addProperty",
+    value: function addProperty(key, schema) {
+      for (var i = this.predicates.length - 1; i >= 0; i--) {
+        var pred = this.predicates[i];
+        if (pred.id !== 'object') continue;
+        pred.settings.example[key] = helpers_1.primitiveToItsa(schema);
+        break;
+      }
+
       return this;
     }
   }]);

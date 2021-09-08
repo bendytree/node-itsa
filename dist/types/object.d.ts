@@ -17,6 +17,7 @@ export interface ItsaObjectSettings {
 }
 export declare class ItsaObject {
     object(this: Itsa, example?: ItsaObjectExampleWithPrimitives, config?: ItsaObjectConfig): Itsa;
+    addProperty(this: Itsa, key: string, schema: ItsaOrPrimative): Itsa;
 }
 declare module './itsa' {
     interface Itsa extends ItsaObject {
