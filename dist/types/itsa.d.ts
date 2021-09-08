@@ -69,6 +69,7 @@ export declare class Itsa {
     static extend(cls: ItsaSubclass, ...validators: ItsaValidator[]): void;
 }
 export declare const itsa: Itsa;
+export type { ItsaOrPrimative, primitiveToItsa } from './helpers';
 import './any';
 import './anything';
 import './array';
@@ -103,5 +104,4 @@ import './typeof';
 import './unique';
 import './validate';
 import './verify';
-export {};
 //# sourceMappingURL=itsa.d.ts.map
