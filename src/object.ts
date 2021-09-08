@@ -44,6 +44,9 @@ export class ItsaObject {
     for (let i = this.predicates.length - 1; i >= 0; i--) {
       const pred = this.predicates[i];
       if (pred.id !== 'object') continue;
+      if (!pred.settings) pred.settings = {};
+      if (!pred.settings.example) pred.settings.example = {};
+      if (!pred.settings.config) pred.settings.config = {};
       pred.settings.example[key] = primitiveToItsa(schema);
       break;
     }
