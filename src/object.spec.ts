@@ -85,6 +85,14 @@ describe('itsa', function() {
       assert.strictEqual(schema.validate({ a:3 }).ok, true);
     });
 
+    it('keys can be added after the fact', function() {
+      const schemaA = itsa.object({ a:itsa.number() });
+      assert.strictEqual(schemaA.validate({ a:3 }).ok, true);
+      assert.strictEqual(schemaA.validate({ a:3, b:2 }).ok, false);
+      const schemaB = schemaA.addProperty('b', itsa.number());
+      assert.strictEqual(schemaB.validate({ a:3, b:2 }).ok, true);
+    });
+
   });
 
 });

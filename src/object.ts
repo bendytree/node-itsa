@@ -40,6 +40,15 @@ export class ItsaObject {
     this.predicates.push({ id: 'object', settings });
     return this as any as Itsa;
   }
+  addProperty(this:Itsa, key:string, schema:ItsaOrPrimative):Itsa {
+    for (let i = this.predicates.length - 1; i >= 0; i--) {
+      const pred = this.predicates[i];
+      if (pred.id !== 'object') continue;
+      pred.settings.example[key] = primitiveToItsa(schema);
+      break;
+    }
+    return this as any as Itsa;
+  }
 }
 
 Itsa.extend(ItsaObject, {
