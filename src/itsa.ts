@@ -140,6 +140,8 @@ export const itsa:Itsa = { predicates: [] } as Itsa;
 
 export type { ItsaOrPrimative, primitiveToItsa } from './helpers';
 
+import './all';
+import './and';
 import './any';
 import './anything';
 import './array';
