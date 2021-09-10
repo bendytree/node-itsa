@@ -97,6 +97,7 @@ import './null';
 import './number';
 import './object';
 import './objectid';
+import './optional';
 import './serialize';
 import './string';
 import './to';

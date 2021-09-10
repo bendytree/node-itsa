@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.83
+ * itsa 2.1.85
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1581,6 +1581,8 @@ __webpack_require__(241);
 
 __webpack_require__(76);
 
+__webpack_require__(635);
+
 __webpack_require__(700);
 
 __webpack_require__(744);
@@ -2411,6 +2413,79 @@ itsa_1.Itsa.extend(ItsaObjectId, {
     if (type !== 'string') return result.registerError('ObjectId must be a string');
     if (val.length !== 24) return result.registerError('ObjectId must have 24 characters');
     if (!rxObjectId.test(val)) return result.registerError('ObjectId may only contain 0-9, a-z');
+  }
+});
+
+/***/ }),
+
+/***/ 635:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaOptional = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var helpers_1 = __webpack_require__(28);
+
+var ItsaOptional = /*#__PURE__*/function () {
+  function ItsaOptional() {
+    _classCallCheck(this, ItsaOptional);
+  }
+
+  _createClass(ItsaOptional, [{
+    key: "optional",
+    value: function optional(allowedSchema) {
+      var settings = {
+        allowedSchema: helpers_1.primitiveToItsa(allowedSchema)
+      };
+      this.predicates.push({
+        id: 'optional',
+        settings: settings
+      });
+      return this;
+    }
+  }]);
+
+  return ItsaOptional;
+}();
+
+exports.ItsaOptional = ItsaOptional;
+itsa_1.Itsa.extend(ItsaOptional, {
+  id: 'optional',
+  validate: function validate(context, settings) {
+    var key = context.key,
+        parent = context.parent,
+        exists = context.exists,
+        validation = context.validation,
+        path = context.path,
+        val = context.val,
+        result = context.result;
+    if (val === null) return;
+    if (val === undefined) return;
+
+    var subResult = settings.allowedSchema._validate({
+      key: key,
+      parent: parent,
+      val: val,
+      exists: exists,
+      path: path,
+      settings: validation
+    });
+
+    if (!subResult.ok) {
+      return result.registerError(subResult.message);
+    }
   }
 });
 
