@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.81
+ * itsa 2.1.83
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -751,6 +751,91 @@ itsa_1.Itsa.extend(ItsaDate, {
 
 /***/ }),
 
+/***/ 263:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.itsaField = exports.itsaSchema = exports.ItsaSchema = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var combineSchemas = function combineSchemas(target, source) {
+  var _iterator = _createForOfIteratorHelper(source.predicates),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var p = _step.value;
+
+      if (p.id === 'object') {
+        var settings = p.settings;
+
+        if (settings.example) {
+          for (var _i = 0, _Object$keys = Object.keys(settings.example); _i < _Object$keys.length; _i++) {
+            var key = _Object$keys[_i];
+            target.addProperty(key, settings.example[key]);
+          }
+        }
+      } else {
+        target.predicates.push(p);
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+};
+
+var ItsaSchema = function ItsaSchema() {
+  _classCallCheck(this, ItsaSchema);
+};
+
+exports.ItsaSchema = ItsaSchema;
+
+function itsaSchema(schema) {
+  return function (target) {
+    if (target.schema && schema) {
+      combineSchemas(target.schema, schema);
+    } else if (schema) {
+      target.schema = schema;
+    } else if (target.schema) {// nothing to do
+    } else {
+      target.schema = itsa_1.itsa.object({});
+    }
+  };
+}
+
+exports.itsaSchema = itsaSchema;
+
+function itsaField(schema) {
+  return function (target, key) {
+    var cls = target.constructor;
+
+    if (!cls.schema) {
+      cls.schema = itsa_1.itsa.object({});
+    }
+
+    cls.schema.addProperty(key, schema);
+  };
+}
+
+exports.itsaField = itsaField;
+
+/***/ }),
+
 /***/ 735:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -1199,7 +1284,7 @@ itsa_1.Itsa.extend(ItsaInteger, {
 /***/ }),
 
 /***/ 589:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 
 
@@ -1236,6 +1321,25 @@ function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[nat
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var __createBinding = this && this.__createBinding || (Object.create ? function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  Object.defineProperty(o, k2, {
+    enumerable: true,
+    get: function get() {
+      return m[k];
+    }
+  });
+} : function (o, m, k, k2) {
+  if (k2 === undefined) k2 = k;
+  o[k2] = m[k];
+});
+
+var __exportStar = this && this.__exportStar || function (m, exports) {
+  for (var p in m) {
+    if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+  }
+};
 
 Object.defineProperty(exports, "__esModule", ({
   value: true
@@ -1494,6 +1598,8 @@ __webpack_require__(457);
 __webpack_require__(997);
 
 __webpack_require__(446);
+
+__exportStar(__webpack_require__(263), exports);
 
 /***/ }),
 
@@ -3040,7 +3146,7 @@ itsa_1.Itsa.extend(ItsaVerify, {
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;

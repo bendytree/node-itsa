@@ -106,4 +106,5 @@ import './typeof';
 import './unique';
 import './validate';
 import './verify';
+export * from './decorators';
 //# sourceMappingURL=itsa.d.ts.map
