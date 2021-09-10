@@ -176,3 +176,5 @@ import './typeof';
 import './unique';
 import './validate';
 import './verify';
+
+export * from './decorators';

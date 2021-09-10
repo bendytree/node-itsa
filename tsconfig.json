@@ -10,7 +10,8 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "./dist/types",
-    "outDir": "./dist/cache/js"
+    "outDir": "./dist/cache/js",
+    "experimentalDecorators": true,
   },
   "exclude": [
     "node_modules",
