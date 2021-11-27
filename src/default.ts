@@ -23,6 +23,9 @@ Itsa.extend(
   ...[
     {
       id: 'default',
+      builder(settings:ItsaDefaultSettings) {
+        return settings.val;
+      },
       validate: (context:ItsaValidateContext, settings:ItsaDefaultSettings) => {
         const { val, setVal } = context;
         const falsy = settings.falsy ?? false;
@@ -34,6 +37,9 @@ Itsa.extend(
     },
     {
       id: 'defaultNow',
+      builder(settings:ItsaDefaultSettings) {
+        return new Date();
+      },
       validate: (context:ItsaValidateContext) => {
         const { val, setVal } = context;
         if (val === null || val === undefined) {

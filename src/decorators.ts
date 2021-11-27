@@ -19,6 +19,10 @@ const combineSchemas = (target:Itsa, source:Itsa) => {
 
 export class ItsaSchema {
   static schema: Itsa;
+  constructor(overrides?) {
+    const schema = (this as any).constructor.schema;
+    return schema.build(overrides);
+  }
 }
 
 export function itsaSchema (schema?:Itsa) {

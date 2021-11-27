@@ -11,6 +11,11 @@ class IUser extends ItsaSchema {
   age?:number;
 }
 
+class IDog extends ItsaSchema {
+  @itsaField(itsa.number())
+  legs:number;
+}
+
 describe('itsa', function() {
   describe('decorators', function() {
     it('works', function() {
@@ -27,6 +32,16 @@ describe('itsa', function() {
       run({ name: 'Sam', age: 'old', fingers: 10 }, false);
       run({ fingers: 10 }, false);
       run({ }, false);
+    });
+
+    it('supports multiple schemas', function() {
+      const user = { name: 'Sam', age: 21, fingers: 10 };
+      const dog = { legs: 4 };
+      assert.strictEqual(IUser.schema.validate(user).ok, true);
+      assert.strictEqual(IUser.schema.validate(dog).ok, false);
+      assert.strictEqual(IDog.schema.validate(user).ok, false);
+      assert.strictEqual(IDog.schema.validate(dog).ok, true);
+      assert.strictEqual(IDog.schema !== IUser.schema, true);
     });
   });
 });

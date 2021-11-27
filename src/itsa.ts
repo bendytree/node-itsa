@@ -1,3 +1,4 @@
+import { ItsaDefaultSettings } from './default';
 
 export interface ItsaInternalValidationSettings {
   val:any;
@@ -107,6 +108,7 @@ export interface ItsaPredicate {
 export interface ItsaValidator {
   id:string;
   validate:(ItsaValidateContext, any) => void;
+  builder?:(settings:ItsaDefaultSettings) => any;
 }
 
 type ItsaSubclass = new (...args: any[]) => any;
@@ -147,6 +149,7 @@ import './anything';
 import './array';
 import './between';
 import './boolean';
+import './build';
 import './clone';
 import './constructor';
 import './convert';
