@@ -56,6 +56,18 @@ export class ItsaObject {
 
 Itsa.extend(ItsaObject, {
   id: 'object',
+  builder(settings: ItsaObjectSettings) {
+    const obj = {};
+    const example = settings.example as any;
+    if (example) {
+      const keys = Object.keys(example);
+      for (const key of keys) {
+        const schemaForKey = example[key];
+        obj[key] = schemaForKey.build();
+      }
+    }
+    return obj;
+  },
   validate: (context:ItsaValidateContext, settings:ItsaObjectSettings) => {
     const { val, parent, validation, result, type } = context;
     const { example, config } = settings;

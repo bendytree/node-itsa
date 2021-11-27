@@ -108,7 +108,7 @@ export interface ItsaPredicate {
 export interface ItsaValidator {
   id:string;
   validate:(ItsaValidateContext, any) => void;
-  builder?:(settings:ItsaDefaultSettings) => any;
+  builder?:(settings) => any;
 }
 
 type ItsaSubclass = new (...args: any[]) => any;

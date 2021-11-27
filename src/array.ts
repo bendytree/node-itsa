@@ -1,5 +1,6 @@
 import {Itsa, ItsaValidateContext} from "./itsa";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
+import { ItsaObjectSettings } from './object';
 
 interface ItsaArraySettings {
   example?: Itsa;
@@ -15,6 +16,9 @@ export class ItsaArray {
 
 Itsa.extend(ItsaArray, {
   id: 'array',
+  builder(settings: ItsaArraySettings) {
+    return [];
+  },
   validate: (context:ItsaValidateContext, settings:ItsaArraySettings) => {
     const { val, validation, exists, result, type } = context;
     const { example } = settings;
