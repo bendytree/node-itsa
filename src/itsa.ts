@@ -12,6 +12,7 @@ export interface ItsaInternalValidationSettings {
 export interface ItsaValidationSettings {
   partial?:boolean;
   exhaustive?:boolean;
+  hint?:string;
 }
 
 export interface ItsaError {
@@ -53,7 +54,13 @@ export class ItsaValidationResult {
     for (const e of result.errors) {
       this.errors.push(e);
     }
-    this.message = this.message || this.errors[0]?.message;
+    if (!this.message && this.errors.length) {
+      const err = this.errors[0];
+      this.message = err.message;
+      if (err.path && err.path.length) {
+        this.message += ` (${(err.path||[]).join('.')})`;
+      }
+    }
   }
 }
 
@@ -61,22 +68,25 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
   ok = true;
   errors = [];
   value = undefined;
+  hint? = undefined;
   message? = undefined;
 
   private readonly exhaustive: boolean;
   private readonly key: string | number;
   private readonly path: (string | number)[];
 
-  constructor(exhaustive: boolean, key: string | number, path: (string | number)[]) {
+  constructor(exhaustive: boolean, key: string | number, path: (string | number)[], hint?: string) {
     super();
     this.key = key;
     this.exhaustive = exhaustive;
     this.path = path;
+    this.hint = hint;
   }
 
   registerError (message:string) {
     const result = new ItsaValidationResult();
-    result.addError({ message, key: this.key, path: this.path });
+    const fullMessage = this.hint ? `${this.hint}: ${message}` : message;
+    result.addError({ message: fullMessage, key: this.key, path: this.path });
     this.addResult(result);
   }
 

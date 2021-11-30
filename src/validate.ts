@@ -12,7 +12,7 @@ import {
 class ItsaValidation {
   _validate(this:Itsa, settings:ItsaInternalValidationSettings):ItsaValidationResultBuilder {
     const { key } = settings;
-    const result = new ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path);
+    const result = new ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path, settings.settings.hint);
     result.value = settings.val;
     try {
       const setVal = (newVal:any) => {
