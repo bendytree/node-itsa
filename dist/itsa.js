@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.87
+ * itsa 2.1.90
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -389,6 +389,9 @@ var ItsaArray = /*#__PURE__*/function () {
 exports.ItsaArray = ItsaArray;
 itsa_1.Itsa.extend(ItsaArray, {
   id: 'array',
+  builder: function builder(settings) {
+    return [];
+  },
   validate: function validate(context, settings) {
     var val = context.val,
         validation = context.validation,
@@ -534,6 +537,8 @@ itsa_1.Itsa.extend(ItsaBoolean, {
 
 
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -552,56 +557,21 @@ Object.defineProperty(exports, "__esModule", ({
 
 var itsa_1 = __webpack_require__(589);
 
-function _build(schema, overrides) {
-  var objectPredicates = schema.predicates.filter(function (p) {
-    return p.id === 'object';
-  });
-
-  if (objectPredicates.length) {
-    var built = {};
-
-    var _iterator = _createForOfIteratorHelper(objectPredicates),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var predicate = _step.value;
-        var settings = predicate.settings;
-        var example = settings.example;
-        if (!example) continue;
-        var keys = Object.keys(example);
-
-        for (var _i = 0, _keys = keys; _i < _keys.length; _i++) {
-          var key = _keys[_i];
-          var schemaForKey = example[key];
-          built[key] = _build(schemaForKey);
-        }
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-
-    return built;
-  }
-
-  var _iterator2 = _createForOfIteratorHelper(schema.predicates),
-      _step2;
+function _build(schema) {
+  var _iterator = _createForOfIteratorHelper(schema.predicates),
+      _step;
 
   try {
-    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-      var _predicate = _step2.value;
-      var validator = itsa_1.Itsa.validators[_predicate.id];
-      if (validator.builder) return validator.builder(_predicate.settings);
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var predicate = _step.value;
+      var validator = itsa_1.Itsa.validators[predicate.id];
+      if (validator.builder) return validator.builder(predicate.settings);
     }
   } catch (err) {
-    _iterator2.e(err);
+    _iterator.e(err);
   } finally {
-    _iterator2.f();
+    _iterator.f();
   }
-
-  return undefined;
 }
 
 ;
@@ -614,7 +584,13 @@ var ItsaBuild = /*#__PURE__*/function () {
   _createClass(ItsaBuild, [{
     key: "build",
     value: function build(overrides) {
-      return _build(this, overrides);
+      var obj = _build(this);
+
+      if (obj && _typeof(obj) === 'object' && overrides && _typeof(overrides) === 'object') {
+        Object.assign(obj, overrides);
+      }
+
+      return obj;
     }
   }]);
 
@@ -1496,8 +1472,6 @@ var ItsaValidationResult = /*#__PURE__*/function () {
   }, {
     key: "addResult",
     value: function addResult(result) {
-      var _this$errors$;
-
       if (!result.ok) this.ok = false;
 
       var _iterator = _createForOfIteratorHelper(result.errors),
@@ -1514,7 +1488,14 @@ var ItsaValidationResult = /*#__PURE__*/function () {
         _iterator.f();
       }
 
-      this.message = this.message || ((_this$errors$ = this.errors[0]) === null || _this$errors$ === void 0 ? void 0 : _this$errors$.message);
+      if (!this.message && this.errors.length) {
+        var err = this.errors[0];
+        this.message = err.message;
+
+        if (err.path && err.path.length) {
+          this.message += " (".concat((err.path || []).join('.'), ")");
+        }
+      }
     }
   }]);
 
@@ -1528,7 +1509,7 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) 
 
   var _super2 = _createSuper(ItsaValidationResultBuilder);
 
-  function ItsaValidationResultBuilder(exhaustive, key, path) {
+  function ItsaValidationResultBuilder(exhaustive, key, path, hint) {
     var _this2;
 
     _classCallCheck(this, ItsaValidationResultBuilder);
@@ -1537,10 +1518,12 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) 
     _this2.ok = true;
     _this2.errors = [];
     _this2.value = undefined;
+    _this2.hint = undefined;
     _this2.message = undefined;
     _this2.key = key;
     _this2.exhaustive = exhaustive;
     _this2.path = path;
+    _this2.hint = hint;
     return _this2;
   }
 
@@ -1548,8 +1531,9 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) 
     key: "registerError",
     value: function registerError(message) {
       var result = new ItsaValidationResult();
+      var fullMessage = this.hint ? "".concat(this.hint, ": ").concat(message) : message;
       result.addError({
-        message: message,
+        message: fullMessage,
         key: this.key,
         path: this.path
       });
@@ -2356,6 +2340,22 @@ var ItsaObject = /*#__PURE__*/function () {
 exports.ItsaObject = ItsaObject;
 itsa_1.Itsa.extend(ItsaObject, {
   id: 'object',
+  builder: function builder(settings) {
+    var obj = {};
+    var example = settings.example;
+
+    if (example) {
+      var keys = Object.keys(example);
+
+      for (var _i = 0, _keys = keys; _i < _keys.length; _i++) {
+        var key = _keys[_i];
+        var schemaForKey = example[key];
+        obj[key] = schemaForKey.build();
+      }
+    }
+
+    return obj;
+  },
   validate: function validate(context, settings) {
     var _config$extras;
 
@@ -2379,8 +2379,8 @@ itsa_1.Itsa.extend(ItsaObject, {
       // Validate according to example
       var exampleKeys = Object.keys(example);
 
-      for (var _i = 0, _exampleKeys = exampleKeys; _i < _exampleKeys.length; _i++) {
-        var key = _exampleKeys[_i];
+      for (var _i2 = 0, _exampleKeys = exampleKeys; _i2 < _exampleKeys.length; _i2++) {
+        var key = _exampleKeys[_i2];
 
         // For root object, we might skip missing fields
         if (!parent && validation.partial && !objectKeys.includes(key)) {
@@ -3161,7 +3161,7 @@ var ItsaValidation = /*#__PURE__*/function () {
     key: "_validate",
     value: function _validate(settings) {
       var key = settings.key;
-      var result = new itsa_1.ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path);
+      var result = new itsa_1.ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path, settings.settings.hint);
       result.value = settings.val;
 
       try {

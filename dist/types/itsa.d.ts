@@ -1,4 +1,4 @@
-import { ItsaDefaultSettings } from './default';
+import './default';
 export interface ItsaInternalValidationSettings {
     val: any;
     key?: string | number;
@@ -10,6 +10,7 @@ export interface ItsaInternalValidationSettings {
 export interface ItsaValidationSettings {
     partial?: boolean;
     exhaustive?: boolean;
+    hint?: string;
 }
 export interface ItsaError {
     message: string;
@@ -34,11 +35,12 @@ export declare class ItsaValidationResultBuilder extends ItsaValidationResult {
     ok: boolean;
     errors: any[];
     value: any;
+    hint?: any;
     message?: any;
     private readonly exhaustive;
     private readonly key;
     private readonly path;
-    constructor(exhaustive: boolean, key: string | number, path: (string | number)[]);
+    constructor(exhaustive: boolean, key: string | number, path: (string | number)[], hint?: string);
     registerError(message: string): void;
     registerResult(result: ItsaValidationResult): void;
 }
@@ -60,7 +62,7 @@ export interface ItsaPredicate {
 export interface ItsaValidator {
     id: string;
     validate: (ItsaValidateContext: any, any: any) => void;
-    builder?: (settings: ItsaDefaultSettings) => any;
+    builder?: (settings: any) => any;
 }
 declare type ItsaSubclass = new (...args: any[]) => any;
 export declare class Itsa {
