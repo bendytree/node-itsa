@@ -2,6 +2,7 @@
 import { describe, it } from 'mocha';
 import { itsa, itsaSchema, itsaField, ItsaSchema } from "./itsa";
 import assert from "assert";
+import _ from "lodash";
 
 @itsaSchema(itsa.object({ fingers: itsa.number() }))
 class IUser extends ItsaSchema {
@@ -42,6 +43,16 @@ describe('itsa', function() {
       assert.strictEqual(IDog.schema.validate(user).ok, false);
       assert.strictEqual(IDog.schema.validate(dog).ok, true);
       assert.strictEqual(IDog.schema !== IUser.schema, true);
+
+      const userExample = {};
+      IUser.schema.touch(userExample);
+      const userFields = _.sortBy(Object.keys(userExample));
+      assert.strictEqual(userFields.join(','), 'age,fingers,name');
+
+      const dogExample = {};
+      IDog.schema.touch(dogExample);
+      const dogFields = _.sortBy(Object.keys(dogExample));
+      assert.strictEqual(dogFields.join(','), 'legs');
     });
   });
 });
