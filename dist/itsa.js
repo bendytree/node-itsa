@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.90
+ * itsa 2.1.93
  * Copyright 2021 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -899,8 +899,9 @@ function itsaField(schema) {
   return function (target, key) {
     var cls = target.constructor;
 
-    if (!cls.schema) {
-      cls.schema = itsa_1.itsa.object({});
+    if (!Object.getOwnPropertyDescriptor(cls, 'schema')) {
+      var parentSchema = cls.schema;
+      cls.schema = parentSchema ? parentSchema.clone() : itsa_1.itsa.object({});
     }
 
     cls.schema.addProperty(key, schema);
