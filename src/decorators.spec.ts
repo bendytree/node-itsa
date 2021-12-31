@@ -17,6 +17,21 @@ class IDog extends ItsaSchema {
   legs:number;
 }
 
+class IFurniture extends ItsaSchema {
+  @itsaField(itsa.number())
+  legs:number;
+}
+
+class ICouch extends IFurniture {
+  @itsaField(itsa.number())
+  seats:number;
+}
+
+class ITable extends IFurniture {
+  @itsaField(itsa.string())
+  shape:string;
+}
+
 describe('itsa', function() {
   describe('decorators', function() {
     it('works', function() {
@@ -53,6 +68,18 @@ describe('itsa', function() {
       IDog.schema.touch(dogExample);
       const dogFields = _.sortBy(Object.keys(dogExample));
       assert.strictEqual(dogFields.join(','), 'legs');
+    });
+
+    it('supports multiple, nested schemas', function() {
+      const couch = {};
+      ICouch.schema.touch(couch);
+      const couchFields = _.sortBy(Object.keys(couch));
+      assert.strictEqual(couchFields.join(','), 'legs,seats');
+
+      const tableExample = {};
+      ITable.schema.touch(tableExample);
+      const tableFields = _.sortBy(Object.keys(tableExample));
+      assert.strictEqual(tableFields.join(','), 'legs,shape');
     });
   });
 });

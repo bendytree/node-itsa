@@ -42,8 +42,9 @@ export function itsaSchema (schema?:Itsa) {
 export function itsaField (schema:Itsa) {
   return function (target: any, key: string) {
     const cls = target.constructor;
-    if (!cls.schema) {
-      cls.schema = itsa.object({});
+    if (!Object.getOwnPropertyDescriptor(cls, 'schema')) {
+      const parentSchema = cls.schema;
+      cls.schema = parentSchema ? parentSchema.clone() : itsa.object({});
     }
     cls.schema.addProperty(key, schema);
   };
