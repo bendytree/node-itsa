@@ -167,6 +167,7 @@ import './date';
 import './default';
 import './email';
 import './equal';
+import './extend';
 import './falsy';
 import './function';
 import './instanceof';
