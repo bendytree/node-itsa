@@ -1,7 +1,7 @@
 /*!
  * @license
- * itsa 2.1.93
- * Copyright 2021 Josh Wright <https://www.joshwright.com>
+ * itsa 2.1.95
+ * Copyright 2022 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1114,6 +1114,45 @@ itsa_1.Itsa.extend(ItsaEqual, {
 
 /***/ }),
 
+/***/ 229:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaExtend = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var ItsaExtend = /*#__PURE__*/function () {
+  function ItsaExtend() {
+    _classCallCheck(this, ItsaExtend);
+  }
+
+  _createClass(ItsaExtend, [{
+    key: "extend",
+    value: function extend(extendor) {
+      extendor(this);
+      return this;
+    }
+  }]);
+
+  return ItsaExtend;
+}();
+
+exports.ItsaExtend = ItsaExtend;
+itsa_1.Itsa.extend(ItsaExtend);
+
+/***/ }),
+
 /***/ 947:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -1646,6 +1685,8 @@ __webpack_require__(735);
 __webpack_require__(609);
 
 __webpack_require__(151);
+
+__webpack_require__(229);
 
 __webpack_require__(947);
 
