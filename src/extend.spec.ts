@@ -1,7 +1,12 @@
 
 import { describe, it } from 'mocha';
-import { itsa } from "./itsa";
+import { itsa, itsaField, ItsaSchema, itsaSchema } from "./itsa";
 import assert from "assert";
+
+
+@itsaSchema(itsa.extend((i:any) => { i.foo = 'bar'; }))
+class IThing extends ItsaSchema {
+}
 
 describe('itsa', function() {
   describe('extend', function() {
@@ -17,6 +22,10 @@ describe('itsa', function() {
       assert.strictEqual(schema.validate(1).ok, true);
       assert.strictEqual(schema.validate(0).ok, false);
       assert.strictEqual((schema as any).foo, 'bar');
+    });
+
+    it('works on itsaSchema', function() {
+      assert.strictEqual((IThing.schema as any).foo, 'bar');
     });
   });
 });

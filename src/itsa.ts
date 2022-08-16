@@ -191,5 +191,6 @@ import './typeof';
 import './unique';
 import './validate';
 import './verify';
+import './get';
 
 export * from './decorators';
