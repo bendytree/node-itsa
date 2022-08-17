@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.101
+ * itsa 2.1.104
  * Copyright 2022 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -2747,7 +2747,7 @@ itsa_1.Itsa.extend(ItsaOptional, {
     });
 
     if (!subResult.ok) {
-      return result.registerError(subResult.message, val);
+      return result.addResult(subResult);
     }
   }
 });
