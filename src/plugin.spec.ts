@@ -22,7 +22,7 @@ describe('itsa', function() {
         id: 'bird',
         validate({ val, result }:ItsaValidateContext) {
           const isBird = ['dove','bluejay','crow'].includes(val);
-          if (!isBird) result.registerError(`Not a bird`);
+          if (!isBird) result.registerError(`Not a bird`, val);
         }
       });
 
@@ -42,7 +42,7 @@ describe('itsa', function() {
         id: 'fish',
         validate({ val, result }:ItsaValidateContext) {
           const isFish = ['minnow', 'salmon', 'goldfish'].includes(val);
-          if (!isFish) result.registerError(`Not a fish`);
+          if (!isFish) result.registerError(`Not a fish`, val);
         }
       });
 

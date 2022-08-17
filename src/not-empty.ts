@@ -24,12 +24,12 @@ Itsa.extend(ItsaNotEmpty, {
         break;
       }
       if (!hasFields) {
-        result.registerError(`Object cannot be empty`);
+        result.registerError(`Object cannot be empty`, val);
       }
       return;
     }
 
-    result.registerError(`Value cannot be empty`);
+    result.registerError(`Value cannot be empty`, val);
   }
 });
 

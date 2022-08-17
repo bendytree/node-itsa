@@ -12,8 +12,8 @@ export class ItsaBoolean {
 Itsa.extend(ItsaBoolean, {
   id: 'boolean',
   validate: (context:ItsaValidateContext) => {
-    const { type, result } = context;
-    if (type !== 'boolean') result.registerError(`Expected bool but found ${type}`);
+    const { type, result, val } = context;
+    if (type !== 'boolean') result.registerError(`Expected bool but found ${type}`, val);
   }
 });
 

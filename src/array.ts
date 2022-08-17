@@ -23,7 +23,7 @@ Itsa.extend(ItsaArray, {
     const { val, validation, exists, result, type } = context;
     const { example } = settings;
 
-    if (!Array.isArray(val)) return result.registerError(`Expected array but found ${type}`);
+    if (!Array.isArray(val)) return result.registerError(`Expected array but found ${type}`, val);
 
     if (!example) return;
     if (!val.length) return;

@@ -39,10 +39,10 @@ Itsa.extend(ItsaMin, {
     const { min, inclusive } = settings;
     if (inclusive) {
       const ok = val >= min;
-      if (!ok) result.registerError(`Value must be at least ${min}`);
+      if (!ok) result.registerError(`Value must be at least ${min}`, val);
     } else {
       const ok = val > min;
-      if (!ok) result.registerError(`Value must be greater than ${min}`);
+      if (!ok) result.registerError(`Value must be greater than ${min}`, val);
     }
   }
 });

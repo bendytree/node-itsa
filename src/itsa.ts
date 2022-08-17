@@ -84,7 +84,7 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
     this.hint = hint;
   }
 
-  registerError (message:string) {
+  registerError (message:string, val: any) {
     message = this.hint ? `${this.hint}: ${message}` : message;
     const result = new ItsaValidationResult();
     const pathStr = this.path?.join?.(',');
@@ -93,6 +93,11 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
         .replace('{message}', message)
         .replace('{msg}', message)
         .replace('{path}', pathStr);
+
+      const msgDataSegments = message.split('{data}');
+      if (msgDataSegments.length > 1) {
+        message = msgDataSegments.join(JSON.stringify(val));
+      }
     }else{
       if (pathStr) {
         message = `${pathStr}: ${message}`;

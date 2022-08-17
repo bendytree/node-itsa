@@ -18,7 +18,7 @@ Itsa.extend(ItsaInstanceOf, {
     const {val, result} = context;
     const isInstance = val instanceof settings.cls;
     if (!isInstance) {
-      result.registerError(`Expected instance of ${settings.cls}`);
+      result.registerError(`Expected instance of ${settings.cls}`, val);
     }
   }
 });

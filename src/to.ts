@@ -48,7 +48,7 @@ Itsa.extend(
     validate: (context:ItsaValidateContext) => {
       const { val, setVal, result } = context;
       const date = new Date(val);
-      if (!isFinite(date.getTime())) return result.registerError(`Date conversion failed`);
+      if (!isFinite(date.getTime())) return result.registerError(`Date conversion failed`, val);
       setVal(date);
     }
   },
@@ -57,7 +57,7 @@ Itsa.extend(
     validate: (context:ItsaValidateContext) => {
       const { val, setVal, result } = context;
       const newFloat = parseFloat(val);
-      if (isNaN(newFloat)) return result.registerError(`Float conversion failed`);
+      if (isNaN(newFloat)) return result.registerError(`Float conversion failed`, val);
       setVal(newFloat);
     }
   },
@@ -67,7 +67,7 @@ Itsa.extend(
       const { val, setVal, result } = context;
       const { radix } = settings;
       const newInt = parseInt(val, radix ?? 10);
-      if (isNaN(newInt)) return result.registerError(`Int conversion failed`);
+      if (isNaN(newInt)) return result.registerError(`Int conversion failed`, val);
       setVal(newInt);
     }
   },

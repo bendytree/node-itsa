@@ -23,7 +23,7 @@ Itsa.extend(ItsaUnique, {
       let subVal = val[key];
       if (getter) subVal = getter(subVal);
       if (set.has(subVal)) {
-        return result.registerError(`${subVal} occurred multiple times`);
+        return result.registerError(`${subVal} occurred multiple times`, val);
       }
       set.add(subVal);
     }

@@ -20,7 +20,7 @@ Itsa.extend(ItsaTypeOf, {
     const { type } = settings;
     const actualType = typeof val;
     if (type !== actualType) {
-      result.registerError(`Expected ${type}`);
+      result.registerError(`Expected ${type}`, val);
     }
   }
 });

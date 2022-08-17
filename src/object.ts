@@ -74,11 +74,11 @@ Itsa.extend(ItsaObject, {
     const extras = config.extras ?? false;
 
     // Validate object
-    if (!val) return result.registerError(`Expected object but value is ${val}.`);
-    if (type !== "object") return result.registerError(`Expected object but type is ${type}.`);
-    if (val instanceof RegExp) return result.registerError(`Expected object but type is regex.`);
-    if (val instanceof Date) return result.registerError(`Expected object but type is date.`);
-    if (Array.isArray(val)) return result.registerError(`Expected object but type is array.`);
+    if (!val) return result.registerError(`Expected object but value is ${val}.`, val);
+    if (type !== "object") return result.registerError(`Expected object but type is ${type}.`, val);
+    if (val instanceof RegExp) return result.registerError(`Expected object but type is regex.`, val);
+    if (val instanceof Date) return result.registerError(`Expected object but type is date.`, val);
+    if (Array.isArray(val)) return result.registerError(`Expected object but type is array.`, val);
 
     const objectKeys = Object.keys(val);
 
@@ -107,7 +107,7 @@ Itsa.extend(ItsaObject, {
       if (!extras) {
         const extraKeys = objectKeys.filter(k => !exampleKeys.includes(k));
         if (extraKeys.length) {
-          result.registerError(`Extra unknown properties: ${extraKeys.join(', ')}`);
+          result.registerError(`Extra unknown properties: ${extraKeys.join(', ')}`, val);
         }
       }
     }

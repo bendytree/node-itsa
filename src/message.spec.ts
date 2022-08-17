@@ -33,12 +33,12 @@ describe('itsa', function() {
       assert.strictEqual(itsa.max(1).msg('Foo Bar {msg}').validate('Foo').message, 'Foo Bar Value must be at most 1');
     });
 
-    // it('can use format string to include data', function() {
-    //   const schema = itsa.max(1).msg('Foo Bar {data}');
-    //   assert.strictEqual(schema.validate('Foo').message, 'Foo Bar "Foo"');
-    //   assert.strictEqual(schema.validate(99).message, 'Foo Bar 99');
-    //   assert.strictEqual(schema.validate({ a: 1}).message, 'Foo Bar {"a":1}');
-    // });
+    it('can use format string to include data', function() {
+      const schema = itsa.max(1).msg('Foo Bar {data}');
+      assert.strictEqual(schema.validate('Foo').message, 'Foo Bar "Foo"');
+      assert.strictEqual(schema.validate(99).message, 'Foo Bar 99');
+      assert.strictEqual(schema.validate({ a: 1}).message, 'Foo Bar {"a":1}');
+    });
 
     it('can use format string to include path', function() {
       assert.strictEqual(itsa.object({ x: itsa.max(1).msg('foo {path}') }).validate({ x: 'bob' }).message, 'foo x');

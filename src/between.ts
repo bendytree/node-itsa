@@ -28,9 +28,9 @@ Itsa.extend(ItsaBetween, {
     const { min, max } = settings;
     const inclusive = settings.inclusive ?? true;
     const isTooLow = inclusive ? (val < min) : (val <= min);
-    if (isTooLow) result.registerError(`Value cannot be under ${min}`);
+    if (isTooLow) result.registerError(`Value cannot be under ${min}`, val);
     const isTooHigh = inclusive ? (val > max) : (val >= max);
-    if (isTooHigh) result.registerError(`Value cannot be above ${max}`);
+    if (isTooHigh) result.registerError(`Value cannot be above ${max}`, val);
   }
 });
 

@@ -11,8 +11,8 @@ export class ItsaString {
 Itsa.extend(ItsaString, {
   id: 'string',
   validate: (context:ItsaValidateContext) => {
-    const { type, result } = context;
-    if (type !== 'string') return result.registerError(`Expected string`);
+    const { type, result, val } = context;
+    if (type !== 'string') return result.registerError(`Expected string`, val);
   }
 });
 

@@ -43,9 +43,9 @@ const validate:ItsaValidator = {
     }
 
     if (truthyErrors.length === 1) {
-      result.registerError(truthyErrors[0]);
+      result.registerError(truthyErrors[0], val);
     }else{
-      result.registerError(`No schemas matched.`);
+      result.registerError(`No schemas matched.`, val);
     }
   }
 };

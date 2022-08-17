@@ -19,7 +19,7 @@ Itsa.extend(ItsaConstructor, {
   validate: (context:ItsaValidateContext, settings: ItsaConstructorSettings) => {
     const { val, result } = context;
     const isMatch = val !== null && val !== undefined && val.constructor === settings.cls;
-    if (!isMatch) return result.registerError(`Expected to be ${settings.cls}`);
+    if (!isMatch) return result.registerError(`Expected to be ${settings.cls}`, val);
   }
 });
 

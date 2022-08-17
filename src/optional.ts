@@ -30,7 +30,7 @@ Itsa.extend(ItsaOptional, {
       settings: validation,
     });
     if (!subResult.ok) {
-      return result.registerError(subResult.message);
+      return result.registerError(subResult.message, val);
     }
   }
 });

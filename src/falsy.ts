@@ -12,7 +12,7 @@ Itsa.extend(ItsaFalsy, {
   id: 'falsy',
   validate: (context:ItsaValidateContext) => {
     const { val, result } = context;
-    if (val) return result.registerError(`Expected falsy value.`);
+    if (val) return result.registerError(`Expected falsy value.`, val);
   }
 });
 

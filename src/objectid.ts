@@ -14,10 +14,10 @@ Itsa.extend(ItsaObjectId, {
   id: 'objectid',
   validate: (context:ItsaValidateContext, settings?:any) => {
     const { val, result, type } = context;
-    if (!val) return result.registerError('ObjectId is required');
-    if (type !== 'string') return result.registerError('ObjectId must be a string');
-    if (val.length !== 24) return result.registerError('ObjectId must have 24 characters');
-    if (!rxObjectId.test(val)) return result.registerError('ObjectId may only contain 0-9, a-z');
+    if (!val) return result.registerError('ObjectId is required', val);
+    if (type !== 'string') return result.registerError('ObjectId must be a string', val);
+    if (val.length !== 24) return result.registerError('ObjectId must have 24 characters', val);
+    if (!rxObjectId.test(val)) return result.registerError('ObjectId may only contain 0-9, a-z', val);
   }
 });
 

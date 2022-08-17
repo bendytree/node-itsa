@@ -22,7 +22,7 @@ Itsa.extend(ItsaEqual, {
     const strict = settings.strict ?? true;
     const isEqual = strict ? (val === example) : (val == example);
     if (!isEqual) {
-      result.registerError(`Did not equal ${example}`);
+      result.registerError(`Did not equal ${example}`, val);
     }
   }
 });
