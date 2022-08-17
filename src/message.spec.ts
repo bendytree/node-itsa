@@ -10,6 +10,12 @@ describe('itsa', function() {
       assert.strictEqual(itsa.max(1).validate(1).message, undefined);
     });
 
+    it('paths are shown in objects', function() {
+      const userSchema = itsa.object({ email: itsa.email() });
+      assert.strictEqual(userSchema.validate({ email: 'foo' }).message, 'email: Email address is invalid');
+      assert.strictEqual(itsa.object({ email: itsa.optional(itsa.email()) }).validate({ email: 'foo' }).message, 'email: Email address is invalid');
+    });
+
     it('can customize error messages', function() {
       assert.strictEqual(itsa.max(1).message('foo').validate('Foo').message, 'foo');
     });
