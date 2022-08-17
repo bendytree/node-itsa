@@ -40,9 +40,11 @@ export declare class ItsaValidationResultBuilder extends ItsaValidationResult {
     private readonly exhaustive;
     private readonly key;
     private readonly path;
+    private messageFormat?;
     constructor(exhaustive: boolean, key: string | number, path: (string | number)[], hint?: string);
-    registerError(message: string): void;
+    registerError(message: string, val: any): void;
     registerResult(result: ItsaValidationResult): void;
+    withMessageFormat(messageFormat?: string): this;
 }
 export interface ItsaValidateContext {
     parent?: object | [];
@@ -97,6 +99,7 @@ import './integer';
 import './length';
 import './matches';
 import './max';
+import './message';
 import './min';
 import './not-empty';
 import './null';

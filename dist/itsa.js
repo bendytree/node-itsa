@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.97
+ * itsa 2.1.99
  * Copyright 2022 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -277,9 +277,9 @@ var validate = {
     }
 
     if (truthyErrors.length === 1) {
-      result.registerError(truthyErrors[0]);
+      result.registerError(truthyErrors[0], val);
     } else {
-      result.registerError("No schemas matched.");
+      result.registerError("No schemas matched.", val);
     }
   }
 };
@@ -399,7 +399,7 @@ itsa_1.Itsa.extend(ItsaArray, {
         result = context.result,
         type = context.type;
     var example = settings.example;
-    if (!Array.isArray(val)) return result.registerError("Expected array but found ".concat(type));
+    if (!Array.isArray(val)) return result.registerError("Expected array but found ".concat(type), val);
     if (!example) return;
     if (!val.length) return;
 
@@ -475,9 +475,9 @@ itsa_1.Itsa.extend(ItsaBetween, {
         max = settings.max;
     var inclusive = (_settings$inclusive = settings.inclusive) !== null && _settings$inclusive !== void 0 ? _settings$inclusive : true;
     var isTooLow = inclusive ? val < min : val <= min;
-    if (isTooLow) result.registerError("Value cannot be under ".concat(min));
+    if (isTooLow) result.registerError("Value cannot be under ".concat(min), val);
     var isTooHigh = inclusive ? val > max : val >= max;
-    if (isTooHigh) result.registerError("Value cannot be above ".concat(max));
+    if (isTooHigh) result.registerError("Value cannot be above ".concat(max), val);
   }
 });
 
@@ -525,8 +525,9 @@ itsa_1.Itsa.extend(ItsaBoolean, {
   id: 'boolean',
   validate: function validate(context) {
     var type = context.type,
-        result = context.result;
-    if (type !== 'boolean') result.registerError("Expected bool but found ".concat(type));
+        result = context.result,
+        val = context.val;
+    if (type !== 'boolean') result.registerError("Expected bool but found ".concat(type), val);
   }
 });
 
@@ -687,7 +688,7 @@ itsa_1.Itsa.extend(ItsaConstructor, {
     var val = context.val,
         result = context.result;
     var isMatch = val !== null && val !== undefined && val.constructor === settings.cls;
-    if (!isMatch) return result.registerError("Expected to be ".concat(settings.cls));
+    if (!isMatch) return result.registerError("Expected to be ".concat(settings.cls), val);
   }
 });
 
@@ -759,7 +760,7 @@ itsa_1.Itsa.extend(ItsaConvert, {
       var newVal = converter(val);
       setVal(newVal);
     } catch (e) {
-      result.registerError(e);
+      result.registerError(e, val);
     }
   }
 });
@@ -812,11 +813,11 @@ itsa_1.Itsa.extend(ItsaDate, {
     var type = Object.prototype.toString.call(val);
 
     if (type !== "[object Date]") {
-      return result.registerError("Expected date but found ".concat(type));
+      return result.registerError("Expected date but found ".concat(type), val);
     }
 
     if (!isFinite(val)) {
-      result.registerError("Date is not valid");
+      result.registerError("Date is not valid", val);
     }
   }
 });
@@ -1044,11 +1045,11 @@ itsa_1.Itsa.extend(ItsaEmail, {
     var val = context.val,
         type = context.type,
         result = context.result;
-    if (type !== 'string') return result.registerError("Expected email but found ".concat(type));
+    if (type !== 'string') return result.registerError("Expected email but found ".concat(type), val);
     var isValid = rx.test(val);
 
     if (!isValid) {
-      result.registerError('Email address is invalid');
+      result.registerError('Email address is invalid', val);
     }
   }
 });
@@ -1107,7 +1108,7 @@ itsa_1.Itsa.extend(ItsaEqual, {
     var isEqual = strict ? val === example : val == example;
 
     if (!isEqual) {
-      result.registerError("Did not equal ".concat(example));
+      result.registerError("Did not equal ".concat(example), val);
     }
   }
 });
@@ -1196,7 +1197,7 @@ itsa_1.Itsa.extend(ItsaFalsy, {
   validate: function validate(context) {
     var val = context.val,
         result = context.result;
-    if (val) return result.registerError("Expected falsy value.");
+    if (val) return result.registerError("Expected falsy value.", val);
   }
 });
 
@@ -1250,7 +1251,7 @@ itsa_1.Itsa.extend(ItsaFunction, {
     var val = context.val,
         type = context.type,
         result = context.result;
-    if (type !== 'function') return result.registerError('Expected function');
+    if (type !== 'function') return result.registerError('Expected function', val);
 
     if (settings.length) {
       var subResult = settings.length._validate({
@@ -1412,7 +1413,7 @@ itsa_1.Itsa.extend(ItsaInstanceOf, {
     var isInstance = val instanceof settings.cls;
 
     if (!isInstance) {
-      result.registerError("Expected instance of ".concat(settings.cls));
+      result.registerError("Expected instance of ".concat(settings.cls), val);
     }
   }
 });
@@ -1465,7 +1466,7 @@ itsa_1.Itsa.extend(ItsaInteger, {
     var valid = typeof val === "number" && isNaN(val) === false && [Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY].indexOf(val) === -1 && val % 1 === 0;
 
     if (!valid) {
-      result.registerError('Invalid integer');
+      result.registerError('Invalid integer', val);
     }
   }
 });
@@ -1598,11 +1599,9 @@ var ItsaValidationResult = /*#__PURE__*/function () {
 
       if (!this.message && this.errors.length) {
         var err = this.errors[0];
-        this.message = err.message;
-
-        if (err.path && err.path.length) {
-          this.message += " (".concat((err.path || []).join('.'), ")");
-        }
+        this.message = err.message; // if (err.path && err.path.length) {
+        //   this.message += ` (${(err.path||[]).join('.')})`;
+        // }
       }
     }
   }]);
@@ -1637,11 +1636,28 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) 
 
   _createClass(ItsaValidationResultBuilder, [{
     key: "registerError",
-    value: function registerError(message) {
+    value: function registerError(message, val) {
+      var _this$path, _this$path$join;
+
+      message = this.hint ? "".concat(this.hint, ": ").concat(message) : message;
       var result = new ItsaValidationResult();
-      var fullMessage = this.hint ? "".concat(this.hint, ": ").concat(message) : message;
+      var pathStr = (_this$path = this.path) === null || _this$path === void 0 ? void 0 : (_this$path$join = _this$path.join) === null || _this$path$join === void 0 ? void 0 : _this$path$join.call(_this$path, ',');
+
+      if (this.messageFormat) {
+        message = this.messageFormat.replace('{message}', message).replace('{msg}', message).replace('{path}', pathStr);
+        var msgDataSegments = message.split('{data}');
+
+        if (msgDataSegments.length > 1) {
+          message = msgDataSegments.join(JSON.stringify(val));
+        }
+      } else {
+        if (pathStr) {
+          message = "".concat(pathStr, ": ").concat(message);
+        }
+      }
+
       result.addError({
-        message: fullMessage,
+        message: message,
         key: this.key,
         path: this.path
       });
@@ -1655,6 +1671,12 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) 
       if (!this.exhaustive && this.errors.length) {
         throw 'STOP_ON_FIRST_ERROR';
       }
+    }
+  }, {
+    key: "withMessageFormat",
+    value: function withMessageFormat(messageFormat) {
+      this.messageFormat = messageFormat;
+      return this;
     }
   }]);
 
@@ -1770,6 +1792,8 @@ __webpack_require__(292);
 
 __webpack_require__(365);
 
+__webpack_require__(377);
+
 __webpack_require__(442);
 
 __webpack_require__(42);
@@ -1871,19 +1895,19 @@ itsa_1.Itsa.extend(ItsaLength, {
     var len = val ? val.length : null;
 
     if (typeof len !== 'number') {
-      return result.registerError('Invalid length');
+      return result.registerError('Invalid length', val);
     }
 
     if (typeof settings.exactly === 'number' && settings.exactly !== len) {
-      return result.registerError("Expected length to be ".concat(settings.exactly));
+      return result.registerError("Expected length to be ".concat(settings.exactly), val);
     }
 
     if (typeof settings.min === 'number' && settings.min > len) {
-      return result.registerError("Expected length to be at least ".concat(settings.min));
+      return result.registerError("Expected length to be at least ".concat(settings.min), val);
     }
 
     if (typeof settings.max === 'number' && settings.max < len) {
-      return result.registerError("Expected length to be at most ".concat(settings.max));
+      return result.registerError("Expected length to be at most ".concat(settings.max), val);
     }
   }
 });
@@ -1939,7 +1963,7 @@ itsa_1.Itsa.extend(ItsaMatches, {
     var valid = settings.regex.test(String(val));
 
     if (!valid) {
-      result.registerError("Does not match ".concat(settings.regex));
+      result.registerError("Does not match ".concat(settings.regex), val);
     }
   }
 });
@@ -2049,14 +2073,34 @@ itsa_1.Itsa.extend(ItsaMax, {
 
     if (inclusive) {
       var ok = val <= max;
-      if (!ok) result.registerError("Value must be at most ".concat(max));
+      if (!ok) result.registerError("Value must be at most ".concat(max), val);
     } else {
       var _ok = val < max;
 
-      if (!_ok) result.registerError("Value must be less than ".concat(max));
+      if (!_ok) result.registerError("Value must be less than ".concat(max), val);
     }
   }
 });
+
+/***/ }),
+
+/***/ 377:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+
+var itsa_1 = __webpack_require__(589);
+
+itsa_1.Itsa.prototype.message = itsa_1.Itsa.prototype.msg = function (message) {
+  var predicate = this.predicates[this.predicates.length - 1];
+  predicate.settings = predicate.settings || {};
+  predicate.settings._message = message;
+  return this;
+};
 
 /***/ }),
 
@@ -2163,11 +2207,11 @@ itsa_1.Itsa.extend(ItsaMin, {
 
     if (inclusive) {
       var ok = val >= min;
-      if (!ok) result.registerError("Value must be at least ".concat(min));
+      if (!ok) result.registerError("Value must be at least ".concat(min), val);
     } else {
       var _ok = val > min;
 
-      if (!_ok) result.registerError("Value must be greater than ".concat(min));
+      if (!_ok) result.registerError("Value must be greater than ".concat(min), val);
     }
   }
 });
@@ -2236,13 +2280,13 @@ itsa_1.Itsa.extend(ItsaNotEmpty, {
       }
 
       if (!hasFields) {
-        result.registerError("Object cannot be empty");
+        result.registerError("Object cannot be empty", val);
       }
 
       return;
     }
 
-    result.registerError("Value cannot be empty");
+    result.registerError("Value cannot be empty", val);
   }
 });
 
@@ -2350,9 +2394,9 @@ itsa_1.Itsa.extend(ItsaNumber, {
     var val = context.val,
         type = context.type,
         result = context.result;
-    if (type !== 'number') return result.registerError("Expected number but type is ".concat(type, "."));
-    if (isNaN(val)) return result.registerError("Expected number but found NaN.");
-    if (!isFinite(val)) return result.registerError("Expected number but found infinity.");
+    if (type !== 'number') return result.registerError("Expected number but type is ".concat(type, "."), val);
+    if (isNaN(val)) return result.registerError("Expected number but found NaN.", val);
+    if (!isFinite(val)) return result.registerError("Expected number but found infinity.", val);
   }
 });
 
@@ -2480,11 +2524,11 @@ itsa_1.Itsa.extend(ItsaObject, {
         config = settings.config;
     var extras = (_config$extras = config.extras) !== null && _config$extras !== void 0 ? _config$extras : false; // Validate object
 
-    if (!val) return result.registerError("Expected object but value is ".concat(val, "."));
-    if (type !== "object") return result.registerError("Expected object but type is ".concat(type, "."));
-    if (val instanceof RegExp) return result.registerError("Expected object but type is regex.");
-    if (val instanceof Date) return result.registerError("Expected object but type is date.");
-    if (Array.isArray(val)) return result.registerError("Expected object but type is array.");
+    if (!val) return result.registerError("Expected object but value is ".concat(val, "."), val);
+    if (type !== "object") return result.registerError("Expected object but type is ".concat(type, "."), val);
+    if (val instanceof RegExp) return result.registerError("Expected object but type is regex.", val);
+    if (val instanceof Date) return result.registerError("Expected object but type is date.", val);
+    if (Array.isArray(val)) return result.registerError("Expected object but type is array.", val);
     var objectKeys = Object.keys(val);
 
     if (example) {
@@ -2520,7 +2564,7 @@ itsa_1.Itsa.extend(ItsaObject, {
         });
 
         if (extraKeys.length) {
-          result.registerError("Extra unknown properties: ".concat(extraKeys.join(', ')));
+          result.registerError("Extra unknown properties: ".concat(extraKeys.join(', ')), val);
         }
       }
     }
@@ -2628,10 +2672,10 @@ itsa_1.Itsa.extend(ItsaObjectId, {
     var val = context.val,
         result = context.result,
         type = context.type;
-    if (!val) return result.registerError('ObjectId is required');
-    if (type !== 'string') return result.registerError('ObjectId must be a string');
-    if (val.length !== 24) return result.registerError('ObjectId must have 24 characters');
-    if (!rxObjectId.test(val)) return result.registerError('ObjectId may only contain 0-9, a-z');
+    if (!val) return result.registerError('ObjectId is required', val);
+    if (type !== 'string') return result.registerError('ObjectId must be a string', val);
+    if (val.length !== 24) return result.registerError('ObjectId must have 24 characters', val);
+    if (!rxObjectId.test(val)) return result.registerError('ObjectId may only contain 0-9, a-z', val);
   }
 });
 
@@ -2703,7 +2747,7 @@ itsa_1.Itsa.extend(ItsaOptional, {
     });
 
     if (!subResult.ok) {
-      return result.registerError(subResult.message);
+      return result.registerError(subResult.message, val);
     }
   }
 });
@@ -2814,8 +2858,9 @@ itsa_1.Itsa.extend(ItsaString, {
   id: 'string',
   validate: function validate(context) {
     var type = context.type,
-        result = context.result;
-    if (type !== 'string') return result.registerError("Expected string");
+        result = context.result,
+        val = context.val;
+    if (type !== 'string') return result.registerError("Expected string", val);
   }
 });
 
@@ -2927,7 +2972,7 @@ itsa_1.Itsa.extend(ItsaTo, {
         setVal = context.setVal,
         result = context.result;
     var date = new Date(val);
-    if (!isFinite(date.getTime())) return result.registerError("Date conversion failed");
+    if (!isFinite(date.getTime())) return result.registerError("Date conversion failed", val);
     setVal(date);
   }
 }, {
@@ -2937,7 +2982,7 @@ itsa_1.Itsa.extend(ItsaTo, {
         setVal = context.setVal,
         result = context.result;
     var newFloat = parseFloat(val);
-    if (isNaN(newFloat)) return result.registerError("Float conversion failed");
+    if (isNaN(newFloat)) return result.registerError("Float conversion failed", val);
     setVal(newFloat);
   }
 }, {
@@ -2948,7 +2993,7 @@ itsa_1.Itsa.extend(ItsaTo, {
         result = context.result;
     var radix = settings.radix;
     var newInt = parseInt(val, radix !== null && radix !== void 0 ? radix : 10);
-    if (isNaN(newInt)) return result.registerError("Int conversion failed");
+    if (isNaN(newInt)) return result.registerError("Int conversion failed", val);
     setVal(newInt);
   }
 }, {
@@ -3109,7 +3154,7 @@ itsa_1.Itsa.extend(ItsaTruthy, {
   validate: function validate(context) {
     var val = context.val,
         result = context.result;
-    if (!val) return result.registerError("Expected truthy value.");
+    if (!val) return result.registerError("Expected truthy value.", val);
   }
 });
 
@@ -3168,7 +3213,7 @@ itsa_1.Itsa.extend(ItsaTypeOf, {
     var actualType = _typeof2(val);
 
     if (type !== actualType) {
-      result.registerError("Expected ".concat(type));
+      result.registerError("Expected ".concat(type), val);
     }
   }
 });
@@ -3229,7 +3274,7 @@ itsa_1.Itsa.extend(ItsaUnique, {
       if (getter) subVal = getter(subVal);
 
       if (set.has(subVal)) {
-        return result.registerError("".concat(subVal, " occurred multiple times"));
+        return result.registerError("".concat(subVal, " occurred multiple times"), val);
       }
 
       set.add(subVal);
@@ -3291,6 +3336,8 @@ var ItsaValidation = /*#__PURE__*/function () {
 
         try {
           for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var _predicate$settings;
+
             var predicate = _step.value;
             var validator = itsa_1.Itsa.validators[predicate.id];
             /* istanbul ignore next */
@@ -3298,7 +3345,7 @@ var ItsaValidation = /*#__PURE__*/function () {
             if (!validator) throw new Error("Validator not found: ".concat(predicate.id));
             var context = {
               setVal: setVal,
-              result: result,
+              result: result.withMessageFormat((_predicate$settings = predicate.settings) === null || _predicate$settings === void 0 ? void 0 : _predicate$settings._message),
               val: settings.val,
               key: settings.key,
               parent: settings.parent,
@@ -3402,18 +3449,18 @@ itsa_1.Itsa.extend(ItsaVerify, {
 
       if (typeof response === 'boolean') {
         if (response === false) {
-          result.registerError("Value is invalid");
+          result.registerError("Value is invalid", val);
         }
 
         return;
       }
 
       if (typeof response === 'string') {
-        return result.registerError(response);
+        return result.registerError(response, val);
       }
     } catch (e) {
       if (e === 'STOP_ON_FIRST_ERROR') throw e;
-      return result.registerError(e);
+      return result.registerError(e, val);
     }
   }
 });
