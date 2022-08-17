@@ -57,9 +57,9 @@ export class ItsaValidationResult {
     if (!this.message && this.errors.length) {
       const err = this.errors[0];
       this.message = err.message;
-      if (err.path && err.path.length) {
-        this.message += ` (${(err.path||[]).join('.')})`;
-      }
+      // if (err.path && err.path.length) {
+      //   this.message += ` (${(err.path||[]).join('.')})`;
+      // }
     }
   }
 }
@@ -74,6 +74,7 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
   private readonly exhaustive: boolean;
   private readonly key: string | number;
   private readonly path: (string | number)[];
+  private messageFormat?: string;
 
   constructor(exhaustive: boolean, key: string | number, path: (string | number)[], hint?: string) {
     super();
@@ -84,9 +85,20 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
   }
 
   registerError (message:string) {
+    message = this.hint ? `${this.hint}: ${message}` : message;
     const result = new ItsaValidationResult();
-    const fullMessage = this.hint ? `${this.hint}: ${message}` : message;
-    result.addError({ message: fullMessage, key: this.key, path: this.path });
+    const pathStr = this.path?.join?.(',');
+    if (this.messageFormat) {
+      message = this.messageFormat
+        .replace('{message}', message)
+        .replace('{msg}', message)
+        .replace('{path}', pathStr);
+    }else{
+      if (pathStr) {
+        message = `${pathStr}: ${message}`;
+      }
+    }
+    result.addError({ message, key: this.key, path: this.path });
     this.addResult(result);
   }
 
@@ -95,6 +107,11 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
     if (!this.exhaustive && this.errors.length) {
       throw 'STOP_ON_FIRST_ERROR';
     }
+  }
+
+  withMessageFormat(messageFormat?: string):this {
+    this.messageFormat = messageFormat;
+    return this;
   }
 }
 
@@ -175,6 +192,7 @@ import './integer';
 import './length';
 import './matches';
 import './max';
+import './message';
 import './min';
 import './not-empty';
 import './null';

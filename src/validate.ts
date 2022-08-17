@@ -31,7 +31,7 @@ class ItsaValidation {
 
         const context:ItsaValidateContext = {
           setVal,
-          result,
+          result: result.withMessageFormat(predicate.settings?._message),
           val: settings.val,
           key: settings.key,
           parent: settings.parent,
