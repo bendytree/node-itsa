@@ -14,6 +14,12 @@ describe('itsa', function() {
       assert.strictEqual(itsa.max(1).message('foo').validate('Foo').message, 'foo');
     });
 
+    it('customize error message is applied to errors object too', function() {
+      const result = itsa.max(1).message('foo').validate('Foo');
+      assert.strictEqual(result.errors.length, 1, 'Should have 1 error');
+      assert.strictEqual(result.errors[0].message, 'foo', 'Message should be foo.');
+    });
+
     it('can customize error messages per validation', function() {
       const schema = itsa.string().message('foo').matches(/cat/).message('bar');
       assert.strictEqual(schema.validate(7).message, 'foo');
