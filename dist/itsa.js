@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.104
+ * itsa 2.1.106
  * Copyright 2022 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1641,7 +1641,7 @@ var ItsaValidationResultBuilder = /*#__PURE__*/function (_ItsaValidationResult) 
 
       message = this.hint ? "".concat(this.hint, ": ").concat(message) : message;
       var result = new ItsaValidationResult();
-      var pathStr = (_this$path = this.path) === null || _this$path === void 0 ? void 0 : (_this$path$join = _this$path.join) === null || _this$path$join === void 0 ? void 0 : _this$path$join.call(_this$path, ',');
+      var pathStr = (_this$path = this.path) === null || _this$path === void 0 ? void 0 : (_this$path$join = _this$path.join) === null || _this$path$join === void 0 ? void 0 : _this$path$join.call(_this$path, '.');
 
       if (this.messageFormat) {
         message = this.messageFormat.replace('{message}', message).replace('{msg}', message).replace('{path}', pathStr);
