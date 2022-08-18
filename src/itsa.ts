@@ -87,7 +87,7 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
   registerError (message:string, val: any) {
     message = this.hint ? `${this.hint}: ${message}` : message;
     const result = new ItsaValidationResult();
-    const pathStr = this.path?.join?.(',');
+    const pathStr = this.path?.join?.('.');
     if (this.messageFormat) {
       message = this.messageFormat
         .replace('{message}', message)

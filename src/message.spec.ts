@@ -55,5 +55,14 @@ describe('itsa', function() {
     it('can use format string to include path', function() {
       assert.strictEqual(itsa.object({ x: itsa.max(1).msg('foo {path}') }).validate({ x: 'bob' }).message, 'foo x');
     });
+
+    it('multi-level paths are separated by dots', function() {
+      const schema = itsa.object({
+        user: itsa.object({
+          email: itsa.email(),
+        }),
+      });
+      assert.strictEqual(schema.validate({ user: { email: 'foo' } }).message, 'user.email: Email address is invalid');
+    });
   });
 });
