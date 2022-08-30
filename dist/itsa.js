@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.107
+ * itsa 2.1.108
  * Copyright 2022 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -864,11 +864,26 @@ var combineSchemas = function combineSchemas(target, source) {
       } else {
         target.predicates.push(p);
       }
-    }
+    } // If any allow extras, all should
+
   } catch (err) {
     _iterator.e(err);
   } finally {
     _iterator.f();
+  }
+
+  var allowExtras = !!source.predicates.find(function (p) {
+    var _p$settings, _p$settings$config;
+
+    return p.id === 'object' && ((_p$settings = p.settings) === null || _p$settings === void 0 ? void 0 : (_p$settings$config = _p$settings.config) === null || _p$settings$config === void 0 ? void 0 : _p$settings$config.extras) === true;
+  });
+
+  if (allowExtras) {
+    target.predicates.filter(function (p) {
+      return p.id === 'object';
+    }).forEach(function (p) {
+      return p.settings.config.extras = true;
+    });
   }
 };
 
