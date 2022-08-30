@@ -12,6 +12,7 @@
   "scripts": {
     "coverage": "rm -rf .coverage/* && nyc mocha",
     "test": "mocha --reporter utils/reporter.js --parallel --exit",
+    "test-one": "mocha --reporter utils/reporter.js src -g",
     "build": "node utils/build",
     "bump-patch": "rake bumppatch",
     "release": "rake release"

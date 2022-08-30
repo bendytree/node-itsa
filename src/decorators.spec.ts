@@ -32,6 +32,17 @@ class ITable extends IFurniture {
   shape:string;
 }
 
+@itsaSchema(itsa.object({ }, { extras: true }))
+class IAllowExtras extends ItsaSchema {
+  @itsaField(itsa.string().notEmpty())
+  name:string;
+}
+
+class INoExtras extends ItsaSchema {
+  @itsaField(itsa.string().notEmpty())
+  name:string;
+}
+
 describe('itsa', function() {
   describe('decorators', function() {
     it('works', function() {
@@ -80,6 +91,15 @@ describe('itsa', function() {
       ITable.schema.touch(tableExample);
       const tableFields = _.sortBy(Object.keys(tableExample));
       assert.strictEqual(tableFields.join(','), 'legs,shape');
+    });
+
+    it('can allow extras', function() {
+      const userWithoutExtras = { name: 'Sam' };
+      const userWithExtras = { name: 'Sam', age: 21 };
+      assert.strictEqual(INoExtras.schema.validate(userWithExtras).ok, false, 'Extras shouldnt be allowed');
+      assert.strictEqual(INoExtras.schema.validate(userWithoutExtras).ok, true, 'No extras should be valid on no extras schema');
+      assert.strictEqual(IAllowExtras.schema.validate(userWithoutExtras).ok, true, 'No extras should be valid on allow extras schema');
+      assert.strictEqual(IAllowExtras.schema.validate(userWithExtras).ok, true, 'Extras should be valid on allow extras schema');
     });
   });
 });

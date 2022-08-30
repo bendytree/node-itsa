@@ -15,6 +15,12 @@ const combineSchemas = (target:Itsa, source:Itsa) => {
       target.predicates.push(p);
     }
   }
+
+  // If any allow extras, all should
+  const allowExtras = !!source.predicates.find(p => p.id === 'object' && p.settings?.config?.extras === true);
+  if (allowExtras) {
+    target.predicates.filter(p => p.id === 'object').forEach(p => p.settings.config.extras = true);
+  }
 };
 
 export class ItsaSchema {
