@@ -43,6 +43,11 @@ class INoExtras extends ItsaSchema {
   name:string;
 }
 
+class IReuseFields extends ItsaSchema {
+  @itsaField(itsa.optional(IUser.schema.get('name')))
+  name?:string;
+}
+
 describe('itsa', function() {
   describe('decorators', function() {
     it('works', function() {
@@ -100,6 +105,12 @@ describe('itsa', function() {
       assert.strictEqual(INoExtras.schema.validate(userWithoutExtras).ok, true, 'No extras should be valid on no extras schema');
       assert.strictEqual(IAllowExtras.schema.validate(userWithoutExtras).ok, true, 'No extras should be valid on allow extras schema');
       assert.strictEqual(IAllowExtras.schema.validate(userWithExtras).ok, true, 'Extras should be valid on allow extras schema');
+    });
+
+    it('can reuse field schemas', function() {
+      assert.strictEqual(IReuseFields.schema.validate({ name: 'Sam' }).ok, true, 'Reuse: name with length is ok');
+      assert.strictEqual(IReuseFields.schema.validate({ }).ok, true, 'Reuse: blank name is ok');
+      assert.strictEqual(IReuseFields.schema.validate({ name: 5 }).ok, false, 'Reuse: number name not ok');
     });
   });
 });
