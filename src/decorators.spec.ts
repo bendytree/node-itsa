@@ -109,6 +109,7 @@ describe('itsa', function() {
 
     it('can reuse field schemas', function() {
       assert.strictEqual(IReuseFields.schema.validate({ name: 'Sam' }).ok, true, 'Reuse: name with length is ok');
+      assert.strictEqual(IReuseFields.schema.validate({ name: '' }).ok, true, 'Reuse: blank name is ok');
       assert.strictEqual(IReuseFields.schema.validate({ }).ok, true, 'Reuse: blank name is ok');
       assert.strictEqual(IReuseFields.schema.validate({ name: 5 }).ok, false, 'Reuse: number name not ok');
     });

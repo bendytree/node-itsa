@@ -21,6 +21,16 @@ Itsa.extend(ItsaOptional, {
     if (val === null) return;
     if (val === undefined) return;
 
+    const allowedTypes = [];
+    for (const p of settings.allowedSchema.predicates) {
+      if (p.id === 'string') allowedTypes.push('string');
+      if (p.id === 'number') allowedTypes.push('number');
+      if (p.id === 'integer') allowedTypes.push('number');
+    }
+    if (!val && allowedTypes.includes(typeof val)) {
+      return;
+    }
+
     const subResult = settings.allowedSchema._validate({
       key,
       parent,
