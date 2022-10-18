@@ -24,6 +24,21 @@ class ItsaTouch {
     }
     return obj;
   }
+
+  keys(this:Itsa):string[] {
+    const touched = this.touch({});
+    return Object.keys(touched);
+  }
+
+  pick<TObj>(this:Itsa, source:TObj):Partial<TObj> {
+    const obj = {};
+    for (const k of this.keys()) {
+      if (k in source) {
+        obj[k] = source[k];
+      }
+    }
+    return obj;
+  }
 }
 
 Itsa.extend(ItsaTouch);

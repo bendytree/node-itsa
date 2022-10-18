@@ -92,6 +92,32 @@ describe('itsa', function() {
       assert.strictEqual(obj.z, 'bar');
     });
 
+    it('keys can be pulled directly', function() {
+      const schema = itsa.object({
+        x: itsa.string(),
+        y: itsa.optional(itsa.any(Number, String)),
+        z: itsa.anything(),
+      });
+      assert.strictEqual(schema.keys().join(','), 'x,y,z');
+    });
+
+    it('another object can be picked directly', function() {
+      const schema = itsa.object({
+        x: itsa.string(),
+        y: itsa.optional(itsa.any(Number, String)),
+        z: itsa.anything(),
+      });
+      const picked = schema.pick({
+        a: 1,
+        x: 2,
+        y: undefined,
+      });
+      assert.strictEqual(Object.keys(picked).length, 2);
+      assert.strictEqual(Object.keys(picked).join(','), 'x,y');
+      assert.strictEqual(picked.x, 2);
+      assert.strictEqual(picked.y, undefined);
+    });
+
   });
 
 });
