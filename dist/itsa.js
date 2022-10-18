@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.111
+ * itsa 2.1.112
  * Copyright 2022 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3142,6 +3142,36 @@ var ItsaTouch = /*#__PURE__*/function () {
         _iterator.e(err);
       } finally {
         _iterator.f();
+      }
+
+      return obj;
+    }
+  }, {
+    key: "keys",
+    value: function keys() {
+      var touched = this.touch({});
+      return Object.keys(touched);
+    }
+  }, {
+    key: "pick",
+    value: function pick(source) {
+      var obj = {};
+
+      var _iterator2 = _createForOfIteratorHelper(this.keys()),
+          _step2;
+
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var k = _step2.value;
+
+          if (k in source) {
+            obj[k] = source[k];
+          }
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
       }
 
       return obj;
