@@ -88,8 +88,8 @@ Itsa.extend(ItsaObject, {
       for (const key of exampleKeys) {
         // For root object, we might skip missing fields
         const v = val[key];
-        const isMissing = !objectKeys.includes(key) || v === null || v === undefined;
-        if (!parent && validation.partial && isMissing) {
+        const isMissing = v === null || v === undefined;
+        if (validation.partial && isMissing) {
           continue;
         }
 
