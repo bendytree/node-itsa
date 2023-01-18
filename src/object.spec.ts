@@ -70,6 +70,11 @@ describe('itsa', function() {
       assert.strictEqual(ok, false);
     });
 
+    it('objects can be partialed through settings', function() {
+      const schema = itsa.object({ a: itsa.number(), b: itsa.number() }, { partial: true });
+      assert.strictEqual(schema.validate({ a:1 }).ok, true);
+    });
+
     it('keys can be validated', function() {
       const schema = itsa.object(null, { key: itsa.email() });
       assert.strictEqual(schema.validate({ a:1 }).ok, false);

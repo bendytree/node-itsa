@@ -14,6 +14,7 @@ interface ItsaObjectConfig {
   extras?: boolean;
   key?: Itsa;
   value?: Itsa;
+  partial?: boolean;
 }
 
 export interface ItsaObjectSettings {
@@ -89,7 +90,8 @@ Itsa.extend(ItsaObject, {
         // For root object, we might skip missing fields
         const v = val[key];
         const isMissing = v === null || v === undefined;
-        if (validation.partial && isMissing) {
+        const isPartial = validation.partial || config.partial;
+        if (isPartial && isMissing) {
           continue;
         }
 
