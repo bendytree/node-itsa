@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.116
+ * itsa 2.1.118
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1823,6 +1823,8 @@ __webpack_require__(76);
 
 __webpack_require__(635);
 
+__webpack_require__(499);
+
 __webpack_require__(700);
 
 __webpack_require__(744);
@@ -2555,8 +2557,9 @@ itsa_1.Itsa.extend(ItsaObject, {
         // For root object, we might skip missing fields
         var v = val[key];
         var isMissing = v === null || v === undefined;
+        var isPartial = validation.partial || config.partial;
 
-        if (validation.partial && isMissing) {
+        if (isPartial && isMissing) {
           continue;
         }
 
@@ -2797,6 +2800,91 @@ itsa_1.Itsa.extend(ItsaOptional, {
     }
   }
 });
+
+/***/ }),
+
+/***/ 499:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaPartialed = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var forEachValue = function forEachValue(obj, handler) {
+  Object.keys(obj).forEach(function (key) {
+    var val = obj[key];
+    handler(val);
+
+    if (val && _typeof(obj[key]) === 'object') {
+      forEachValue(val, handler);
+    }
+  });
+};
+
+var partialize = function partialize(schema) {
+  var _iterator = _createForOfIteratorHelper(schema.predicates),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var p = _step.value;
+
+      if (p.id === 'object') {
+        var settings = p.settings;
+        settings.config.partial = true;
+      }
+
+      forEachValue(p, function (val) {
+        if (val instanceof itsa_1.Itsa) {
+          partialize(val);
+        }
+      });
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+};
+
+var ItsaPartialed = /*#__PURE__*/function () {
+  function ItsaPartialed() {
+    _classCallCheck(this, ItsaPartialed);
+  }
+
+  _createClass(ItsaPartialed, [{
+    key: "partialed",
+    value: function partialed() {
+      var schema = this.clone();
+      partialize(schema);
+      return schema;
+    }
+  }]);
+
+  return ItsaPartialed;
+}();
+
+exports.ItsaPartialed = ItsaPartialed;
+itsa_1.Itsa.extend(ItsaPartialed);
 
 /***/ }),
 
