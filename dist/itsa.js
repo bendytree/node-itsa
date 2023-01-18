@@ -1,7 +1,7 @@
 /*!
  * @license
- * itsa 2.1.112
- * Copyright 2022 Josh Wright <https://www.joshwright.com>
+ * itsa 2.1.114
+ * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -2552,9 +2552,11 @@ itsa_1.Itsa.extend(ItsaObject, {
 
       for (var _i2 = 0, _exampleKeys = exampleKeys; _i2 < _exampleKeys.length; _i2++) {
         var key = _exampleKeys[_i2];
-
         // For root object, we might skip missing fields
-        if (!parent && validation.partial && !objectKeys.includes(key)) {
+        var v = val[key];
+        var isMissing = !objectKeys.includes(key) || v === null || v === undefined;
+
+        if (!parent && validation.partial && isMissing) {
           continue;
         }
 
