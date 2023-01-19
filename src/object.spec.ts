@@ -46,10 +46,16 @@ describe('itsa', function() {
       assert.strictEqual(schema.validate({ a:1, b:2 }).ok, true);
     });
 
-    it('partial=true allows missing fields', function() {
-      const schema = itsa.object({ a: itsa.number(), b: itsa.number(), c: itsa.number(), d: itsa.number() });
-      const { ok } = schema.validate({ a:1, b:null, c:undefined }, { partial: true });
+    it('partial=true allows missing or undefined fields', function() {
+      const schema = itsa.object({ a: itsa.number(), b: itsa.number(), c: itsa.number() });
+      const { ok } = schema.validate({ a:1, b:undefined }, { partial: true });
       assert.strictEqual(ok, true);
+    });
+
+    it('partial=true still requires null fields', function() {
+      const schema = itsa.object({ a: itsa.number(), b: itsa.number(), c: itsa.number() });
+      const { ok } = schema.validate({ a:1, b:null }, { partial: true });
+      assert.strictEqual(ok, false);
     });
 
     it('partial=true allows missing on subtree as well', function() {

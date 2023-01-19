@@ -14,12 +14,12 @@ describe('itsa', function() {
     it('partialed applies to subtrees', function() {
       const schema = itsa.object({ x: itsa.object({ a: itsa.number(), b: itsa.number() })});
       const partialedSchema = schema.partialed();
-      assert.strictEqual(partialedSchema.validate({ x: { a:null, b: 3 } }).ok, true);
+      assert.strictEqual(partialedSchema.validate({ x: { a:undefined, b: 3 } }).ok, true);
     });
 
     it('partialed does not mutate original schema', function() {
       const schema = itsa.object({ x: itsa.object({ a: itsa.number(), b: itsa.number() })});
-      assert.strictEqual(schema.validate({ x: { a:null, b: 3 } }).ok, false);
+      assert.strictEqual(schema.validate({ x: { a:undefined, b: 3 } }).ok, false);
     });
   });
 });
