@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.121
+ * itsa 2.1.123
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -2789,7 +2789,7 @@ itsa_1.Itsa.extend(ItsaObject, {
         var key = _exampleKeys[_i2];
         // For root object, we might skip missing fields
         var v = val[key];
-        var isMissing = v === null || v === undefined;
+        var isMissing = v === undefined;
         var isPartial = validation.partial || config.partial;
 
         if (isPartial && isMissing) {
