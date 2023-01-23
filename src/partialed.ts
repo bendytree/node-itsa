@@ -23,7 +23,7 @@ const partialize = (schema:Itsa, fields?:string[]):void => {
           if (restOfKeys.length) {
             partialize(ex, [restOfKeys.join('.')]);
           }else{
-            for (const [i, pred] of ex.predicates.entries()) {
+            for (const [i, pred] of ex.predicates?.entries()) {
               if (pred.id === 'optional') continue;
               const allowedSchema = new Itsa();
               allowedSchema.predicates = [pred];

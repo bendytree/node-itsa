@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.129
+ * itsa 2.1.130
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3274,7 +3274,9 @@ var partialize = function partialize(schema, fields) {
               if (restOfKeys.length) {
                 partialize(ex, [restOfKeys.join('.')]);
               } else {
-                var _iterator3 = _createForOfIteratorHelper(ex.predicates.entries()),
+                var _ex$predicates;
+
+                var _iterator3 = _createForOfIteratorHelper((_ex$predicates = ex.predicates) === null || _ex$predicates === void 0 ? void 0 : _ex$predicates.entries()),
                     _step3;
 
                 try {
