@@ -13,14 +13,17 @@ describe('itsa', function() {
       assert.strictEqual(itsa.optional(itsa.string().notEmpty()).validate('').ok, true);
       assert.strictEqual(itsa.optional(itsa.string()).validate(0).ok, false);
     });
-  });
 
-  describe('optional', function() {
     it('allows falsy version of type', function() {
       assert.strictEqual(itsa.optional(itsa.string()).validate('').ok, true);
       assert.strictEqual(itsa.optional(itsa.string()).validate(0).ok, false);
       assert.strictEqual(itsa.optional(itsa.number()).validate(0).ok, true);
       assert.strictEqual(itsa.optional(itsa.number()).validate('').ok, false);
     });
+
+    it('optional sub object must be valid if provided', function() {
+      assert.strictEqual(itsa.optional(itsa.object({x: 1})).validate({}).ok, false);
+    });
   });
+
 });
