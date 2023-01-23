@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.127
+ * itsa 2.1.129
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -2034,6 +2034,8 @@ __webpack_require__(593);
 
 __webpack_require__(273);
 
+__webpack_require__(873);
+
 __webpack_require__(206);
 
 __webpack_require__(292);
@@ -2079,6 +2081,164 @@ __webpack_require__(446);
 __webpack_require__(164);
 
 __exportStar(__webpack_require__(263), exports);
+
+/***/ }),
+
+/***/ 873:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaKeep = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var _keep = function keep(schema, fields, config) {
+  var parsedFields = fields.map(function (f) {
+    var _f$split = f.split('.'),
+        _f$split2 = _toArray(_f$split),
+        key = _f$split2[0],
+        rest = _f$split2.slice(1);
+
+    return {
+      key: key,
+      rest: rest
+    };
+  });
+
+  var _iterator = _createForOfIteratorHelper(schema.predicates),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var p = _step.value;
+
+      if (p.id === 'object') {
+        var settings = p.settings;
+        var keysToDelete = [];
+
+        var _loop = function _loop() {
+          var key = _Object$keys[_i];
+          var exampleForKey = settings.example[key];
+          var matchingFields = parsedFields.filter(function (pf) {
+            return pf.key === key;
+          });
+
+          if (matchingFields.length) {
+            var _iterator2 = _createForOfIteratorHelper(matchingFields),
+                _step2;
+
+            try {
+              for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                var field = _step2.value;
+
+                if (field.rest.length) {
+                  _keep(exampleForKey, field.rest, config);
+                } else {// nothing to do
+                }
+              }
+            } catch (err) {
+              _iterator2.e(err);
+            } finally {
+              _iterator2.f();
+            }
+          } else if (config.partial) {
+            var _iterator3 = _createForOfIteratorHelper(exampleForKey.predicates.entries()),
+                _step3;
+
+            try {
+              for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                var _step3$value = _slicedToArray(_step3.value, 2),
+                    i = _step3$value[0],
+                    pred = _step3$value[1];
+
+                if (pred.id === 'optional') continue;
+                var allowedSchema = new itsa_1.Itsa();
+                allowedSchema.predicates = [pred];
+                exampleForKey.predicates[i] = {
+                  id: 'optional',
+                  settings: {
+                    allowedSchema: allowedSchema
+                  }
+                };
+              }
+            } catch (err) {
+              _iterator3.e(err);
+            } finally {
+              _iterator3.f();
+            }
+          } else {
+            keysToDelete.push(key);
+          }
+        };
+
+        for (var _i = 0, _Object$keys = Object.keys(settings.example); _i < _Object$keys.length; _i++) {
+          _loop();
+        }
+
+        for (var _i2 = 0, _keysToDelete = keysToDelete; _i2 < _keysToDelete.length; _i2++) {
+          var key = _keysToDelete[_i2];
+          delete settings.example[key];
+        }
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+};
+
+var ItsaKeep = /*#__PURE__*/function () {
+  function ItsaKeep() {
+    _classCallCheck(this, ItsaKeep);
+  }
+
+  _createClass(ItsaKeep, [{
+    key: "keep",
+    value: function keep(fields) {
+      var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      if (!fields) throw new Error('fields parameter is required');
+      var schema = this.clone();
+
+      _keep(schema, fields, config);
+
+      return schema;
+    }
+  }]);
+
+  return ItsaKeep;
+}();
+
+exports.ItsaKeep = ItsaKeep;
+itsa_1.Itsa.extend(ItsaKeep);
 
 /***/ }),
 
