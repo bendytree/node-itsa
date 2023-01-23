@@ -205,6 +205,7 @@ import './number';
 import './object';
 import './objectid';
 import './optional';
+import './partialed';
 import './serialize';
 import './string';
 import './to';

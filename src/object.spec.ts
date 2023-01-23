@@ -46,9 +46,21 @@ describe('itsa', function() {
       assert.strictEqual(schema.validate({ a:1, b:2 }).ok, true);
     });
 
-    it('partial=true allows missing fields', function() {
-      const schema = itsa.object({ a: itsa.number(), b: itsa.number() });
-      const { ok } = schema.validate({ a:1 }, { partial: true });
+    it('partial=true allows missing or undefined fields', function() {
+      const schema = itsa.object({ a: itsa.number(), b: itsa.number(), c: itsa.number() });
+      const { ok } = schema.validate({ a:1, b:undefined }, { partial: true });
+      assert.strictEqual(ok, true);
+    });
+
+    it('partial=true still requires null fields', function() {
+      const schema = itsa.object({ a: itsa.number(), b: itsa.number(), c: itsa.number() });
+      const { ok } = schema.validate({ a:1, b:null }, { partial: true });
+      assert.strictEqual(ok, false);
+    });
+
+    it('partial=true allows missing on subtree as well', function() {
+      const schema = itsa.object({ a: itsa.object({ b: itsa.number(), c: itsa.number() }) });
+      const { ok } = schema.validate({ a:{ b: 1 } }, { partial: true });
       assert.strictEqual(ok, true);
     });
 
@@ -62,6 +74,11 @@ describe('itsa', function() {
       const schema = itsa.object({ a: itsa.number(), b: itsa.number() });
       const { ok } = schema.validate({ a:1 });
       assert.strictEqual(ok, false);
+    });
+
+    it('objects can be partialed through settings', function() {
+      const schema = itsa.object({ a: itsa.number(), b: itsa.number() }, { partial: true });
+      assert.strictEqual(schema.validate({ a:1 }).ok, true);
     });
 
     it('keys can be validated', function() {

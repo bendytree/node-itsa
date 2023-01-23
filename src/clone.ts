@@ -1,9 +1,10 @@
 
 import {itsa, Itsa} from "./itsa";
+import { deepClone } from './clone-rfdc';
 
 export class ItsaClone {
   clone(this:Itsa):Itsa{
-    const raw = JSON.parse(JSON.stringify(this));
+    const raw = deepClone(this);
     return itsa.load(raw);
   }
 }

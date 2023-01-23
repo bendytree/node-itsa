@@ -1,7 +1,7 @@
 /*!
  * @license
- * itsa 2.1.112
- * Copyright 2022 Josh Wright <https://www.joshwright.com>
+ * itsa 2.1.123
+ * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -602,6 +602,237 @@ itsa_1.Itsa.extend(ItsaBuild);
 
 /***/ }),
 
+/***/ 499:
+/***/ ((__unused_webpack_module, exports) => {
+
+
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.deepClone = void 0;
+/**
+ * License: MIT
+ * https://github.com/davidmarkclements/rfdc/tree/6232d1d82247d239306b9c4e00820eca2a5d6efe
+ */
+
+function copyBuffer(cur) {
+  if (cur instanceof Buffer) {
+    return Buffer.from(cur);
+  }
+
+  return new cur.constructor(cur.buffer.slice(), cur.byteOffset, cur.length);
+}
+
+function rfdc(opts) {
+  opts = opts || {};
+  if (opts.circles) return rfdcCircles(opts);
+  return opts.proto ? cloneProto : clone;
+
+  function cloneArray(a, fn) {
+    var keys = Object.keys(a);
+    var a2 = new Array(keys.length);
+
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var cur = a[k];
+
+      if (_typeof(cur) !== 'object' || cur === null) {
+        a2[k] = cur;
+      } else if (cur instanceof Date) {
+        a2[k] = new Date(cur);
+      } else if (ArrayBuffer.isView(cur)) {
+        a2[k] = copyBuffer(cur);
+      } else {
+        a2[k] = fn(cur);
+      }
+    }
+
+    return a2;
+  }
+
+  function clone(o) {
+    if (_typeof(o) !== 'object' || o === null) return o;
+    if (o instanceof Date) return new Date(o);
+    if (Array.isArray(o)) return cloneArray(o, clone);
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone));
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone));
+    var o2 = {};
+
+    for (var k in o) {
+      if (Object.hasOwnProperty.call(o, k) === false) continue;
+      var cur = o[k];
+
+      if (_typeof(cur) !== 'object' || cur === null) {
+        o2[k] = cur;
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur);
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), clone));
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), clone));
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur);
+      } else {
+        o2[k] = clone(cur);
+      }
+    }
+
+    return o2;
+  }
+
+  function cloneProto(o) {
+    if (_typeof(o) !== 'object' || o === null) return o;
+    if (o instanceof Date) return new Date(o);
+    if (Array.isArray(o)) return cloneArray(o, cloneProto);
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto));
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto));
+    var o2 = {};
+
+    for (var k in o) {
+      var cur = o[k];
+
+      if (_typeof(cur) !== 'object' || cur === null) {
+        o2[k] = cur;
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur);
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto));
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto));
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur);
+      } else {
+        o2[k] = cloneProto(cur);
+      }
+    }
+
+    return o2;
+  }
+}
+
+function rfdcCircles(opts) {
+  var refs = [];
+  var refsNew = [];
+  return opts.proto ? cloneProto : clone;
+
+  function cloneArray(a, fn) {
+    var keys = Object.keys(a);
+    var a2 = new Array(keys.length);
+
+    for (var i = 0; i < keys.length; i++) {
+      var k = keys[i];
+      var cur = a[k];
+
+      if (_typeof(cur) !== 'object' || cur === null) {
+        a2[k] = cur;
+      } else if (cur instanceof Date) {
+        a2[k] = new Date(cur);
+      } else if (ArrayBuffer.isView(cur)) {
+        a2[k] = copyBuffer(cur);
+      } else {
+        var index = refs.indexOf(cur);
+
+        if (index !== -1) {
+          a2[k] = refsNew[index];
+        } else {
+          a2[k] = fn(cur);
+        }
+      }
+    }
+
+    return a2;
+  }
+
+  function clone(o) {
+    if (_typeof(o) !== 'object' || o === null) return o;
+    if (o instanceof Date) return new Date(o);
+    if (Array.isArray(o)) return cloneArray(o, clone);
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone));
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone));
+    var o2 = {};
+    refs.push(o);
+    refsNew.push(o2);
+
+    for (var k in o) {
+      if (Object.hasOwnProperty.call(o, k) === false) continue;
+      var cur = o[k];
+
+      if (_typeof(cur) !== 'object' || cur === null) {
+        o2[k] = cur;
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur);
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), clone));
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), clone));
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur);
+      } else {
+        var i = refs.indexOf(cur);
+
+        if (i !== -1) {
+          o2[k] = refsNew[i];
+        } else {
+          o2[k] = clone(cur);
+        }
+      }
+    }
+
+    refs.pop();
+    refsNew.pop();
+    return o2;
+  }
+
+  function cloneProto(o) {
+    if (_typeof(o) !== 'object' || o === null) return o;
+    if (o instanceof Date) return new Date(o);
+    if (Array.isArray(o)) return cloneArray(o, cloneProto);
+    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto));
+    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto));
+    var o2 = {};
+    refs.push(o);
+    refsNew.push(o2);
+
+    for (var k in o) {
+      var cur = o[k];
+
+      if (_typeof(cur) !== 'object' || cur === null) {
+        o2[k] = cur;
+      } else if (cur instanceof Date) {
+        o2[k] = new Date(cur);
+      } else if (cur instanceof Map) {
+        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto));
+      } else if (cur instanceof Set) {
+        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto));
+      } else if (ArrayBuffer.isView(cur)) {
+        o2[k] = copyBuffer(cur);
+      } else {
+        var i = refs.indexOf(cur);
+
+        if (i !== -1) {
+          o2[k] = refsNew[i];
+        } else {
+          o2[k] = cloneProto(cur);
+        }
+      }
+    }
+
+    refs.pop();
+    refsNew.pop();
+    return o2;
+  }
+}
+
+exports.deepClone = rfdc({
+  proto: false,
+  circles: false
+});
+
+/***/ }),
+
 /***/ 758:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -620,6 +851,8 @@ exports.ItsaClone = void 0;
 
 var itsa_1 = __webpack_require__(589);
 
+var clone_rfdc_1 = __webpack_require__(499);
+
 var ItsaClone = /*#__PURE__*/function () {
   function ItsaClone() {
     _classCallCheck(this, ItsaClone);
@@ -628,7 +861,7 @@ var ItsaClone = /*#__PURE__*/function () {
   _createClass(ItsaClone, [{
     key: "clone",
     value: function clone() {
-      var raw = JSON.parse(JSON.stringify(this));
+      var raw = clone_rfdc_1.deepClone(this);
       return itsa_1.itsa.load(raw);
     }
   }]);
@@ -1823,6 +2056,8 @@ __webpack_require__(76);
 
 __webpack_require__(635);
 
+__webpack_require__(354);
+
 __webpack_require__(700);
 
 __webpack_require__(744);
@@ -2552,9 +2787,12 @@ itsa_1.Itsa.extend(ItsaObject, {
 
       for (var _i2 = 0, _exampleKeys = exampleKeys; _i2 < _exampleKeys.length; _i2++) {
         var key = _exampleKeys[_i2];
-
         // For root object, we might skip missing fields
-        if (!parent && validation.partial && !objectKeys.includes(key)) {
+        var v = val[key];
+        var isMissing = v === undefined;
+        var isPartial = validation.partial || config.partial;
+
+        if (isPartial && isMissing) {
           continue;
         }
 
@@ -2795,6 +3033,91 @@ itsa_1.Itsa.extend(ItsaOptional, {
     }
   }
 });
+
+/***/ }),
+
+/***/ 354:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaPartialed = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var forEachValue = function forEachValue(obj, handler) {
+  Object.keys(obj).forEach(function (key) {
+    var val = obj[key];
+    handler(val);
+
+    if (val && _typeof(obj[key]) === 'object') {
+      forEachValue(val, handler);
+    }
+  });
+};
+
+var partialize = function partialize(schema) {
+  var _iterator = _createForOfIteratorHelper(schema.predicates),
+      _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var p = _step.value;
+
+      if (p.id === 'object') {
+        var settings = p.settings;
+        settings.config.partial = true;
+      }
+
+      forEachValue(p, function (val) {
+        if (val instanceof itsa_1.Itsa) {
+          partialize(val);
+        }
+      });
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+};
+
+var ItsaPartialed = /*#__PURE__*/function () {
+  function ItsaPartialed() {
+    _classCallCheck(this, ItsaPartialed);
+  }
+
+  _createClass(ItsaPartialed, [{
+    key: "partialed",
+    value: function partialed() {
+      var schema = this.clone();
+      partialize(schema);
+      return schema;
+    }
+  }]);
+
+  return ItsaPartialed;
+}();
+
+exports.ItsaPartialed = ItsaPartialed;
+itsa_1.Itsa.extend(ItsaPartialed);
 
 /***/ }),
 

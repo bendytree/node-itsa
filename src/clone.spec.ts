@@ -25,5 +25,10 @@ describe('itsa', function() {
       assert.strictEqual(itsa.min(5).clone().number().validate(6).ok, true);
     });
 
+    it('clone preserves custom functions', function() {
+      assert.strictEqual(itsa.verify(v => v > 5 ? null : 'error').clone().validate(3).ok, false);
+      assert.strictEqual(itsa.verify(v => v > 5 ? null : 'error').clone().validate(8).ok, true);
+    });
+
   });
 });

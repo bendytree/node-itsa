@@ -10,6 +10,7 @@ interface ItsaObjectConfig {
     extras?: boolean;
     key?: Itsa;
     value?: Itsa;
+    partial?: boolean;
 }
 export interface ItsaObjectSettings {
     example?: ItsaObjectExample;
