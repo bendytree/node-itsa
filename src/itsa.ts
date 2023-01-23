@@ -194,6 +194,7 @@ import './falsy';
 import './function';
 import './instanceof';
 import './integer';
+import './keep';
 import './length';
 import './matches';
 import './max';
