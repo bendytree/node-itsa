@@ -1,6 +1,6 @@
 import { Itsa } from "./itsa";
 export declare class ItsaPartialed {
-    partialed(this: Itsa): Itsa;
+    partialed(this: Itsa, fields?: string[]): Itsa;
 }
 declare module './itsa' {
     interface Itsa extends ItsaPartialed {

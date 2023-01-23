@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.123
+ * itsa 2.1.125
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3047,7 +3047,19 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
@@ -3073,7 +3085,7 @@ var forEachValue = function forEachValue(obj, handler) {
   });
 };
 
-var partialize = function partialize(schema) {
+var partialize = function partialize(schema, fields) {
   var _iterator = _createForOfIteratorHelper(schema.predicates),
       _step;
 
@@ -3083,14 +3095,68 @@ var partialize = function partialize(schema) {
 
       if (p.id === 'object') {
         var settings = p.settings;
-        settings.config.partial = true;
+
+        if (fields) {
+          var _iterator2 = _createForOfIteratorHelper(fields),
+              _step2;
+
+          try {
+            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+              var field = _step2.value;
+
+              var _field$split = field.split('.'),
+                  _field$split2 = _toArray(_field$split),
+                  key = _field$split2[0],
+                  restOfKeys = _field$split2.slice(1);
+
+              var ex = settings.example[key];
+
+              if (restOfKeys.length) {
+                partialize(ex, [restOfKeys.join('.')]);
+              } else {
+                var _iterator3 = _createForOfIteratorHelper(ex.predicates.entries()),
+                    _step3;
+
+                try {
+                  for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                    var _step3$value = _slicedToArray(_step3.value, 2),
+                        i = _step3$value[0],
+                        pred = _step3$value[1];
+
+                    if (pred.id === 'optional') continue;
+                    var allowedSchema = new itsa_1.Itsa();
+                    allowedSchema.predicates = [pred];
+                    ex.predicates[i] = {
+                      id: 'optional',
+                      settings: {
+                        allowedSchema: allowedSchema
+                      }
+                    };
+                  }
+                } catch (err) {
+                  _iterator3.e(err);
+                } finally {
+                  _iterator3.f();
+                }
+              }
+            }
+          } catch (err) {
+            _iterator2.e(err);
+          } finally {
+            _iterator2.f();
+          }
+        } else {
+          settings.config.partial = true;
+        }
       }
 
-      forEachValue(p, function (val) {
-        if (val instanceof itsa_1.Itsa) {
-          partialize(val);
-        }
-      });
+      if (!fields) {
+        forEachValue(p, function (val) {
+          if (val instanceof itsa_1.Itsa) {
+            partialize(val);
+          }
+        });
+      }
     }
   } catch (err) {
     _iterator.e(err);
@@ -3106,9 +3172,9 @@ var ItsaPartialed = /*#__PURE__*/function () {
 
   _createClass(ItsaPartialed, [{
     key: "partialed",
-    value: function partialed() {
+    value: function partialed(fields) {
       var schema = this.clone();
-      partialize(schema);
+      partialize(schema, fields);
       return schema;
     }
   }]);
