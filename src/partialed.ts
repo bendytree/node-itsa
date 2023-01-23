@@ -20,7 +20,9 @@ const partialize = (schema:Itsa, fields?:string[]):void => {
         for (const field of fields) {
           const [key, ...restOfKeys] = field.split('.');
           const ex:Itsa = settings.example[key];
-          if (restOfKeys.length) {
+          if (!ex) {
+            continue;
+          }else if (restOfKeys.length) {
             partialize(ex, [restOfKeys.join('.')]);
           }else{
             for (const [i, pred] of ex.predicates?.entries()) {
