@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.130
+ * itsa 2.1.133
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3271,7 +3271,9 @@ var partialize = function partialize(schema, fields) {
 
               var ex = settings.example[key];
 
-              if (restOfKeys.length) {
+              if (!ex) {
+                continue;
+              } else if (restOfKeys.length) {
                 partialize(ex, [restOfKeys.join('.')]);
               } else {
                 var _ex$predicates;
