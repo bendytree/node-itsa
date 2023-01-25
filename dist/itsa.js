@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.142
+ * itsa 2.1.144
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -2061,6 +2061,8 @@ __webpack_require__(635);
 
 __webpack_require__(354);
 
+__webpack_require__(185);
+
 __webpack_require__(700);
 
 __webpack_require__(744);
@@ -3349,6 +3351,64 @@ var ItsaPartialed = /*#__PURE__*/function () {
 
 exports.ItsaPartialed = ItsaPartialed;
 itsa_1.Itsa.extend(ItsaPartialed);
+
+/***/ }),
+
+/***/ 185:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports.ItsaSchema = void 0;
+
+var itsa_1 = __webpack_require__(589);
+
+var ItsaSchema = /*#__PURE__*/function () {
+  function ItsaSchema() {
+    _classCallCheck(this, ItsaSchema);
+  }
+
+  _createClass(ItsaSchema, [{
+    key: "schema",
+    value: function schema(_schema) {
+      var _iterator = _createForOfIteratorHelper(_schema.predicates),
+          _step;
+
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var p = _step.value;
+          this.predicates.push(p);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+
+      return this;
+    }
+  }]);
+
+  return ItsaSchema;
+}();
+
+exports.ItsaSchema = ItsaSchema;
+itsa_1.Itsa.extend(ItsaSchema);
 
 /***/ }),
 
