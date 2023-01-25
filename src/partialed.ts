@@ -6,7 +6,7 @@ const forEachValue = (obj, handler) => {
   Object.keys(obj).forEach(key => {
     const val = obj[key];
     handler(val);
-    if (val && typeof obj[key] === 'object') {
+    if (val && typeof val === 'object') {
       forEachValue(val, handler);
     }
   })

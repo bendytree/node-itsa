@@ -1,6 +1,6 @@
 
 import { describe, it } from 'mocha';
-import { itsa, itsaSchema, itsaField, ItsaSchema } from "./itsa";
+import { itsa, itsaSchema, itsaField, ItsaSchema, Itsa } from "./itsa";
 import assert from "assert";
 import _ from "lodash";
 
@@ -64,6 +64,18 @@ describe('itsa', function() {
       run({ name: 'Sam', age: 'old', fingers: 10 }, false);
       run({ fingers: 10 }, false);
       run({ }, false);
+    });
+
+    it('does not allowed undefined', function() {
+      try {
+        class Foo extends ItsaSchema {
+          @itsaField(undefined)
+          bar: string;
+        }
+        assert.fail('exception was expected')
+      }catch (e){
+
+      }
     });
 
     it('supports multiple schemas', function() {

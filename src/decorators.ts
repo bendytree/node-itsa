@@ -46,6 +46,7 @@ export function itsaSchema (schema?:Itsa) {
 }
 
 export function itsaField (schema:Itsa) {
+  if (schema === undefined) throw new Error(`itsaField schema may not be undefined`);
   return function (target: any, key: string) {
     const cls = target.constructor;
     if (!Object.getOwnPropertyDescriptor(cls, 'schema')) {
