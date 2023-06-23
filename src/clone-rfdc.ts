@@ -56,6 +56,8 @@ function rfdc (opts) {
         o2[k] = new Map(cloneArray(Array.from(cur), clone))
       } else if (cur instanceof Set) {
         o2[k] = new Set(cloneArray(Array.from(cur), clone))
+      } else if (cur instanceof RegExp) {
+        o2[k] = cur
       } else if (ArrayBuffer.isView(cur)) {
         o2[k] = copyBuffer(cur)
       } else {

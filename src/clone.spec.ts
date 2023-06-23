@@ -30,5 +30,10 @@ describe('itsa', function() {
       assert.strictEqual(itsa.verify(v => v > 5 ? null : 'error').clone().validate(8).ok, true);
     });
 
+    it('clone regex works', function() {
+      assert.strictEqual(itsa.matches(/^foo$/).clone().validate('bar').ok, false);
+      assert.strictEqual(itsa.matches(/^foo$/).clone().validate('foo').ok, true);
+    });
+
   });
 });
