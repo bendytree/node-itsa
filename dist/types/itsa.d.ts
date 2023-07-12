@@ -47,7 +47,7 @@ export declare class ItsaValidationResultBuilder extends ItsaValidationResult {
     withMessageFormat(messageFormat?: string): this;
 }
 export interface ItsaValidateContext {
-    parent?: object | [];
+    parent?: any;
     key?: string | number;
     path: (string | number)[];
     exists: boolean;

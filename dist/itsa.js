@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.148
+ * itsa 2.1.150
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -4135,7 +4135,7 @@ itsa_1.Itsa.extend(ItsaVerify, {
     var verifier = settings.verifier;
 
     try {
-      var response = verifier(val);
+      var response = verifier(val, context);
 
       if (typeof response === 'boolean') {
         if (response === false) {
