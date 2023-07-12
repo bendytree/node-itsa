@@ -40,5 +40,18 @@ describe('itsa', function() {
       assert.strictEqual(itsa.verify(v => { throw 'foo'; }).validate(8).ok, false);
     });
 
+    it('can verify based on parent object', function() {
+      const itsaUser = itsa.object({
+        username: itsa.optional(itsa.string()),
+        email: itsa.optional(itsa.string()).verify((val, { parent }) => {
+          return !!(parent?.email || parent?.username);
+        }),
+      });
+      assert.strictEqual(itsaUser.validate({ email: 'foo' }).ok, true);
+      assert.strictEqual(itsaUser.validate({ username: 'bar' }).ok, true);
+      assert.strictEqual(itsaUser.validate({ email: 'foo', username: 'bar' }).ok, true);
+      assert.strictEqual(itsaUser.validate({ name: 'John' }).ok, false);
+    });
+
   });
 });

@@ -121,7 +121,7 @@ export class ItsaValidationResultBuilder extends ItsaValidationResult {
 }
 
 export interface ItsaValidateContext {
-  parent?:object | [];
+  parent?:any;
   key?:string | number;
   path:(string | number)[];
   exists: boolean;

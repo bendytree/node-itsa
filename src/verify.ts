@@ -1,12 +1,14 @@
 
 import {Itsa, ItsaValidateContext} from "./itsa";
 
+export declare type ItsaVerifyFunction = (val:any, context:ItsaValidateContext) => boolean | string | any;
+
 interface ItsaVerifySettings {
-  verifier: Function;
+  verifier: ItsaVerifyFunction;
 }
 
 export class ItsaVerify {
-  verify(this:Itsa, verifier:Function):Itsa{
+  verify(this:Itsa, verifier:ItsaVerifyFunction):Itsa{
     const settings: ItsaVerifySettings = { verifier };
     this.predicates.push({ id: 'verify', settings });
     return this as any as Itsa;
@@ -19,7 +21,7 @@ Itsa.extend(ItsaVerify, {
     const { val, result } = context;
     const { verifier } = settings;
     try {
-      const response = verifier(val);
+      const response = verifier(val, context);
       if (typeof response === 'boolean') {
         if (response === false) {
           result.registerError(`Value is invalid`, val);
