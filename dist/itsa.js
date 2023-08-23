@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.169
+ * itsa 2.1.171
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -4076,7 +4076,7 @@ var ItsaTouch = /*#__PURE__*/function () {
           var predicate = _step.value;
           var settings = predicate.settings;
           var example = settings.example;
-          if (!example) throw new Error("A schema example is required.");
+          if (!example) return obj;
           var keys = Object.keys(example);
 
           for (var _i = 0, _keys = keys; _i < _keys.length; _i++) {
