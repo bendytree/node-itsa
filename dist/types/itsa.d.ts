@@ -120,5 +120,6 @@ import './unique';
 import './validate';
 import './verify';
 import './get';
+import './openapi';
 export * from './decorators';
 //# sourceMappingURL=itsa.d.ts.map

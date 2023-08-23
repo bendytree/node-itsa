@@ -1,0 +1,1 @@
+{"version":3,"file":"openapi.d.ts","sourceRoot":"","sources":["../../src/openapi.ts"],"names":[],"mappings":"AACA,OAAO,EAAC,IAAI,EAAgB,MAAM,QAAQ,CAAC;AAW3C,cAAM,iBAAiB;IACrB,eAAe,CAAC,CAAC,EAAE,IAAI,EAAC,IAAI,GAAE,GAAG;CAuJlC;AAID,OAAO,QAAQ,QAAQ,CAAC;IACtB,UAAU,IAAK,SAAQ,iBAAiB;KAAI;CAC7C"}
