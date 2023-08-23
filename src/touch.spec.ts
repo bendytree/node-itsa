@@ -14,11 +14,9 @@ describe('itsa', function() {
     });
 
     it('does nothing if root is not an object schema with an example', function() {
-      try {
-        const obj = {};
-        itsa.object().touch(obj);
-        assert.strictEqual(Object.keys(obj).length, 0);
-      }catch (e){}
+      const obj = {};
+      itsa.object().touch(obj);
+      assert.strictEqual(Object.keys(obj).length, 0);
     });
 
     it('does nothing if given value is not an object', function() {

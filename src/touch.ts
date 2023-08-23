@@ -12,7 +12,7 @@ class ItsaTouch {
     for (const predicate of objectPredicates) {
       const settings = predicate.settings as ItsaObjectSettings;
       const example = settings.example as any;
-      if (!example) throw new Error(`A schema example is required.`);
+      if (!example) return obj;
       const keys = Object.keys(example);
       for (const key of keys) {
         if (!(key in obj)) {
