@@ -1,7 +1,7 @@
 
 import {Itsa, ItsaPredicate} from "./itsa";
 
-type RawItsa = {predicates:ItsaPredicate[]};
+export type RawItsa = {predicates:ItsaPredicate[]};
 
 const convert = (el:any) => {
   const proto = Object.prototype.toString.call(el);
