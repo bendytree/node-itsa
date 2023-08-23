@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.165
+ * itsa 2.1.167
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3786,6 +3786,18 @@ var ItsaSerialize = /*#__PURE__*/function () {
     value: function load(raw) {
       this.predicates = convert(raw).predicates;
       return this;
+    }
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      return {
+        predicates: this.predicates
+      };
+    }
+  }, {
+    key: "toRaw",
+    value: function toRaw() {
+      return this.toJSON();
     }
   }]);
 

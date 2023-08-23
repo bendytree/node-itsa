@@ -4,6 +4,8 @@ export declare type RawItsa = {
 };
 export declare class ItsaSerialize {
     load(this: Itsa, raw: RawItsa): Itsa;
+    toJSON(this: Itsa): RawItsa;
+    toRaw(this: Itsa): RawItsa;
 }
 declare module './itsa' {
     interface Itsa extends ItsaSerialize {
