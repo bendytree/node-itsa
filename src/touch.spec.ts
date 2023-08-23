@@ -101,6 +101,11 @@ describe('itsa', function() {
       assert.strictEqual(schema.keys().join(','), 'x,y,z');
     });
 
+    it('ignores optional root object', function() {
+      const schema = itsa.optional(itsa.object({ x: itsa.string() }));
+      assert.strictEqual(schema.keys().join(','), 'x');
+    });
+
     it('another object can be picked directly', function() {
       const schema = itsa.object({
         x: itsa.string(),
