@@ -7,8 +7,8 @@ task :release do
    # Check node version
    puts "> NODE VERSION CHECK..."
    version = (runOrFail "node --version").delete!("\n")
-   if version != "16.6.1"
-     raise "Node version is #{version} but must be 16.6.1"
+   if version != "v16.6.1"
+     raise "Node version is #{version} but must be v16.6.1"
    end
 
   # Make sure you're on master
