@@ -30,6 +30,12 @@ export class ItsaSerialize {
     this.predicates = convert(raw).predicates;
     return this as any as Itsa;
   }
+  toJSON(this:Itsa):RawItsa {
+    return { predicates: this.predicates };
+  }
+  toRaw(this:Itsa):RawItsa {
+    return this.toJSON();
+  }
 }
 
 Itsa.extend(ItsaSerialize);
