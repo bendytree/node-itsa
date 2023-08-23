@@ -13,10 +13,11 @@ describe('itsa', function() {
       }catch (e){}
     });
 
-    it('throws if root is not an object schema with an example', function() {
+    it('does nothing if root is not an object schema with an example', function() {
       try {
-        itsa.object().touch({});
-        assert.fail('An exception should have been thrown');
+        const obj = {};
+        itsa.object().touch(obj);
+        assert.strictEqual(Object.keys(obj).length, 0);
       }catch (e){}
     });
 
