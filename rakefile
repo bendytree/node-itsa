@@ -4,12 +4,12 @@ require 'json'
 desc "Pushes changes to npm and GitHub."
 task :release do
 
-#   # Makes sure your git status is clean
-#   puts "> RUNNING STATUS CHECK..."
-#   status = runOrFail "git status -s" #empty string if nothing to commit
-#   unless status.empty?
-#     raise 'All changes must be commited first'
-#   end
+   # Check node version
+   puts "> NODE VERSION CHECK..."
+   version = (runOrFail "node --version").delete!("\n")
+   if version != "16.6.1"
+     raise "Node version is #{version} but must be 16.6.1"
+   end
 
   # Make sure you're on master
   puts "> RUNNING BRANCH CHECK..."
