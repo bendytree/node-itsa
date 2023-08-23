@@ -7,6 +7,9 @@ interface ItsaOptionalSettings {
 }
 
 export class ItsaOptional {
+  isRequired(this: Itsa): boolean {
+    return !this.predicates.find(p => p.id === 'optional');
+  }
   optional(this:Itsa, allowedSchema:ItsaOrPrimative):Itsa{
     const settings:ItsaOptionalSettings = { allowedSchema: primitiveToItsa(allowedSchema) };
     this.predicates.push({ id: 'optional', settings });

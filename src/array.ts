@@ -1,6 +1,5 @@
 import {Itsa, ItsaValidateContext} from "./itsa";
 import {ItsaOrPrimative, primitiveToItsa} from "./helpers";
-import { ItsaObjectSettings } from './object';
 
 interface ItsaArraySettings {
   example?: Itsa;
