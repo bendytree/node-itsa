@@ -88,4 +88,71 @@ describe('itsa', function() {
       );
     });
   });
+
+
+  describe('creates schemas with meta', function() {
+
+    it('string - everything', function() {
+      const schema = itsa.string().schema({
+        description: 'foo',
+        default: 'b',
+        example: 'c',
+        title: 'd',
+      }).toOpenApiSchema();
+      assert.deepStrictEqual(schema, {
+        type: 'string',
+        description: 'foo',
+        default: 'b',
+        example: 'c',
+        title: 'd',
+      });
+    });
+
+    it('string - last in wins', function() {
+      const schema = itsa.string()
+        .schema({ description: 'a', title: 'c' })
+        .schema({ description: 'b' })
+        .toOpenApiSchema();
+      assert.deepStrictEqual(schema, {
+        type: 'string',
+        description: 'b',
+        title: 'c',
+      });
+    });
+
+    it('object', function() {
+      const schema = itsa
+        .object({ id: itsa.string().schema({ title: 'b' }) })
+        .schema({ description: 'a' })
+        .toOpenApiSchema();
+      assert.deepStrictEqual(schema, {
+        type: 'object',
+        description: 'a',
+        required: ['id'],
+        properties: {
+          id: { type: 'string', title: 'b' },
+        },
+      });
+    });
+
+    it('array', function() {
+      const schema = itsa
+        .array(itsa.object({ id: itsa.string().schema({ title: 'b' }) }).schema({ description: 'c' }))
+        .schema({ description: 'a' })
+        .toOpenApiSchema();
+      assert.deepStrictEqual(schema, {
+        type: 'array',
+        description: 'a',
+        items: {
+          type: 'object',
+          required: ['id'],
+          description: 'c',
+          properties: {
+            id: { type: 'string', title: 'b' },
+          }
+        },
+      });
+    });
+
+  });
 });

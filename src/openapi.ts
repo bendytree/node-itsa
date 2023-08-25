@@ -10,7 +10,21 @@ function getOpenApiTypeForValue(val: any) {
   if (typeof val === 'object') return 'object';
 }
 
+export interface ItsaSchemaSettings {
+  description?: string;
+  example?: any;
+  default?: any;
+  title?: any;
+}
+
+
 class ItsaOpenApiSchema {
+
+  schema(this: Itsa, settings: ItsaSchemaSettings): Itsa {
+    this.predicates.push({ id: 'schema', settings });
+    return this;
+  }
+
   toOpenApiSchema<X>(this:Itsa):any {
     // unwarp optional
     const predicates = this.predicates.flatMap(p => {
@@ -158,6 +172,12 @@ class ItsaOpenApiSchema {
     }
     if (lookup['equal']) {
       schema.const = lookup['equal'].settings.example;
+    }
+
+    // Now apply meta
+    for (const p of predicates) {
+      if (p.id !== 'schema') continue;
+      Object.assign(schema, p.settings);
     }
 
     return schema;
