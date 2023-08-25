@@ -109,7 +109,6 @@ import './object';
 import './objectid';
 import './optional';
 import './partialed';
-import './schema';
 import './serialize';
 import './string';
 import './to';
