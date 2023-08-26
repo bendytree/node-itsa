@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.175
+ * itsa 2.1.177
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1132,7 +1132,11 @@ var ItsaSchema = function ItsaSchema(overrides) {
 exports.ItsaSchema = ItsaSchema;
 
 function itsaSchema(schema) {
-  return function (target) {
+  return function (target, key) {
+    if (key) {
+      return itsaField(schema)(target, key);
+    }
+
     if (target.schema && schema) {
       combineSchemas(target.schema, schema);
     } else if (schema) {
@@ -1147,7 +1151,7 @@ function itsaSchema(schema) {
 exports.itsaSchema = itsaSchema;
 
 function itsaField(schema) {
-  if (schema === undefined) throw new Error("itsaField schema may not be undefined");
+  if (schema === undefined) throw new Error("itsaSchema field schema may not be undefined");
   return function (target, key) {
     var cls = target.constructor;
 
