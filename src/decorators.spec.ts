@@ -1,50 +1,50 @@
 
 import { describe, it } from 'mocha';
-import { itsa, itsaSchema, itsaField, ItsaSchema, Itsa } from "./itsa";
+import {itsa, itsaSchema, Itsa, ItsaSchema} from "./itsa";
 import assert from "assert";
 import _ from "lodash";
 
 @itsaSchema(itsa.object({ fingers: itsa.number() }))
 class IUser extends ItsaSchema {
-  @itsaField(itsa.string().notEmpty())
+  @itsaSchema(itsa.string().notEmpty())
   name:string;
-  @itsaField(itsa.any(itsa.integer(), null, undefined))
+  @itsaSchema(itsa.any(itsa.integer(), null, undefined))
   age?:number;
 }
 
 class IDog extends ItsaSchema {
-  @itsaField(itsa.number())
+  @itsaSchema(itsa.number())
   legs:number;
 }
 
 class IFurniture extends ItsaSchema {
-  @itsaField(itsa.number())
+  @itsaSchema(itsa.number())
   legs:number;
 }
 
 class ICouch extends IFurniture {
-  @itsaField(itsa.number())
+  @itsaSchema(itsa.number())
   seats:number;
 }
 
 class ITable extends IFurniture {
-  @itsaField(itsa.string())
+  @itsaSchema(itsa.string())
   shape:string;
 }
 
 @itsaSchema(itsa.object({ }, { extras: true }))
 class IAllowExtras extends ItsaSchema {
-  @itsaField(itsa.string().notEmpty())
+  @itsaSchema(itsa.string().notEmpty())
   name:string;
 }
 
 class INoExtras extends ItsaSchema {
-  @itsaField(itsa.string().notEmpty())
+  @itsaSchema(itsa.string().notEmpty())
   name:string;
 }
 
 class IReuseFields extends ItsaSchema {
-  @itsaField(itsa.optional(IUser.schema.get('name')))
+  @itsaSchema(itsa.optional(IUser.schema.get('name')))
   name?:string;
 }
 
@@ -69,7 +69,7 @@ describe('itsa', function() {
     it('does not allowed undefined', function() {
       try {
         class Foo extends ItsaSchema {
-          @itsaField(undefined)
+          @itsaSchema(undefined)
           bar: string;
         }
         assert.fail('exception was expected')

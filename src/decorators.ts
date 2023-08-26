@@ -31,8 +31,11 @@ export class ItsaSchema {
   }
 }
 
-export function itsaSchema (schema?:Itsa) {
-  return function (target: any) {
+export function itsaSchema (schema?:Itsa):any {
+  return function (target: any, key?: string) {
+    if (key) {
+      return itsaField(schema)(target, key);
+    }
     if (target.schema && schema) {
       combineSchemas(target.schema, schema);
     }else if (schema) {
@@ -46,7 +49,7 @@ export function itsaSchema (schema?:Itsa) {
 }
 
 export function itsaField (schema:Itsa) {
-  if (schema === undefined) throw new Error(`itsaField schema may not be undefined`);
+  if (schema === undefined) throw new Error(`itsaSchema field schema may not be undefined`);
   return function (target: any, key: string) {
     const cls = target.constructor;
     if (!Object.getOwnPropertyDescriptor(cls, 'schema')) {
