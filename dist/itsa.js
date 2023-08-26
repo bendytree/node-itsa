@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.173
+ * itsa 2.1.175
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3417,7 +3417,23 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
         for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
           var _p = _step3.value;
           if (_p.id !== 'schema') continue;
-          Object.assign(schema, _p.settings);
+          if (!_p.settings) continue;
+
+          for (var _i = 0, _Object$keys = Object.keys(_p.settings); _i < _Object$keys.length; _i++) {
+            var key = _Object$keys[_i];
+            if (key === '_defaults') continue;
+            schema[key] = _p.settings[key];
+          }
+
+          if (!_p.settings._defaults) continue;
+
+          for (var _i2 = 0, _Object$keys2 = Object.keys(_p.settings._defaults); _i2 < _Object$keys2.length; _i2++) {
+            var _key = _Object$keys2[_i2];
+            if (_key === '_defaults') continue;
+            var hasValue = ![null, undefined].includes(schema[_key]);
+            if (hasValue) continue;
+            schema[_key] = _p.settings._defaults[_key];
+          }
         }
       } catch (err) {
         _iterator3.e(err);
