@@ -15,8 +15,8 @@ export interface ItsaSchemaSettings {
   example?: any;
   default?: any;
   title?: any;
+  _defaults?: Omit<ItsaSchemaSettings, '_defaults'>;
 }
-
 
 class ItsaOpenApiSchema {
 
@@ -177,7 +177,18 @@ class ItsaOpenApiSchema {
     // Now apply meta
     for (const p of predicates) {
       if (p.id !== 'schema') continue;
-      Object.assign(schema, p.settings);
+      if (!p.settings) continue;
+      for (const key of Object.keys(p.settings)) {
+        if (key === '_defaults') continue;
+        schema[key] = p.settings[key];
+      }
+      if (!p.settings._defaults) continue;
+      for (const key of Object.keys(p.settings._defaults)) {
+        if (key === '_defaults') continue;
+        const hasValue = ![null, undefined].includes(schema[key]);
+        if (hasValue) continue;
+        schema[key] = p.settings._defaults[key];
+      }
     }
 
     return schema;

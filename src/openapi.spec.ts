@@ -154,5 +154,73 @@ describe('itsa', function() {
       });
     });
 
+    it('string - defaults doesnt override existing value', function() {
+      assert.deepStrictEqual(
+        itsa.string()
+          .schema({ description: 'a' })
+          .schema({ _defaults: { description: 'b' }})
+          .toOpenApiSchema(), {
+        type: 'string',
+        description: 'a'
+      });
+    });
+
+    it('string - defaults overrides omitted', function() {
+      assert.deepStrictEqual(
+        itsa.string()
+          .schema({ })
+          .schema({ _defaults: { description: 'b' }})
+          .toOpenApiSchema(), {
+          type: 'string',
+          description: 'b'
+        });
+    });
+
+    it('string - defaults overrides null', function() {
+      assert.deepStrictEqual(
+        itsa.string()
+          .schema({ description: null })
+          .schema({ _defaults: { description: 'b' }})
+          .toOpenApiSchema(), {
+          type: 'string',
+          description: 'b'
+        });
+    });
+
+    it('string - defaults overrides undefined', function() {
+      assert.deepStrictEqual(
+        itsa.string()
+          .schema({ description: undefined })
+          .schema({ _defaults: { description: 'b' }})
+          .toOpenApiSchema(), {
+          type: 'string',
+          description: 'b'
+        });
+    });
+
+    it('string - first default wins', function() {
+      assert.deepStrictEqual(
+        itsa.string()
+          .schema({ description: undefined })
+          .schema({ _defaults: { description: 'a' }})
+          .schema({ _defaults: { description: 'b' }})
+          .toOpenApiSchema(), {
+          type: 'string',
+          description: 'a'
+        });
+    });
+
+    it('string - default gets overridden by normal', function() {
+      assert.deepStrictEqual(
+        itsa.string()
+          .schema({ description: null })
+          .schema({ _defaults: { description: 'a' }})
+          .schema({ description: 'c' })
+          .toOpenApiSchema(), {
+          type: 'string',
+          description: 'c'
+        });
+    });
+
   });
 });
