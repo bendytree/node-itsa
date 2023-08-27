@@ -14,6 +14,25 @@ class ItsaValidation {
     const { key } = settings;
     const result = new ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path, settings.settings.hint);
     result.value = settings.val;
+
+    if (this._isOptional) {
+      if ([null, undefined].includes(result.value)) return result;
+      const isFalsy = !result.value;
+      if (isFalsy) {
+        const type = typeof result.value;
+        const allowedTypes = this.predicates.map(p => {
+          if (p.id === 'string') return 'string';
+          if (p.id === 'email') return 'string';
+          if (p.id === 'number') return 'number';
+          if (p.id === 'integer') return 'integer';
+          if (p.id === 'boolean') return 'boolean';
+        }).filter(t => t);
+        const isAllowedType = allowedTypes.includes(type as any);
+        if (isAllowedType) {
+          return result;
+        }
+      }
+    }
     try {
       const setVal = (newVal:any) => {
         if (settings.parent) {

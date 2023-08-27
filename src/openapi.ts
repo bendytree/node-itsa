@@ -27,10 +27,7 @@ class ItsaOpenApiSchema {
 
   toOpenApiSchema<X>(this:Itsa):any {
     // unwarp optional
-    const predicates = this.predicates.flatMap(p => {
-      if (p.id === 'optional') return p.settings?.allowedSchema?.predicates || [];
-      return p;
-    });
+    const predicates = this.predicates;
 
     const lookup = {} as Record<string, ItsaPredicate>;
     for (const p of predicates) { lookup[p.id] = p; }

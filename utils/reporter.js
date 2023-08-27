@@ -20,8 +20,8 @@ module.exports = function (runner) {
     if (failedTests.length === 0) {
       console.log("\x1b[32m", `All ${passes} tests passed!`);
     } else {
-      console.log(`${failedTests.length} of ${passes+failedTests.length} failed:`);
       for (const test of failedTests) {
+        console.log();
         console.log("\x1b[31m", ` • ${test.parent.fullTitle()}: ${test.title}`);
         if (test.body.length > 200) {
           console.log("\x1b[31m", `${test.body.split(/[\n\r]/g).map(l => `    ${l}`).join('\n')}`);
@@ -30,7 +30,9 @@ module.exports = function (runner) {
           console.log("\x1b[31m", `   ${test.body.replace(/[\r\n]/g, ' ').replace(/^.*strictE/mig, '..e').substr(0, 60)}`);
           console.log("\x1b[31m", `    > ${test.error.message}`);
         }
+        console.log();
       }
+      console.log(`${failedTests.length} of ${passes+failedTests.length} failed`);
     }
     console.log();
   });

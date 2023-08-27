@@ -27,12 +27,7 @@ const keep = (schema:Itsa, fields:string[], config:ItsaKeepConfig):void => {
             }
           }
         }else if (config.partial){
-          for (const [i, pred] of exampleForKey.predicates.entries()) {
-            if (pred.id === 'optional') continue;
-            const allowedSchema = new Itsa();
-            allowedSchema.predicates = [pred];
-            exampleForKey.predicates[i] = { id: 'optional', settings: { allowedSchema } };
-          }
+          exampleForKey._isOptional = true;
         }else{
           keysToDelete.push(key);
         }

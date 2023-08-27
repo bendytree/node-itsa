@@ -1,7 +1,7 @@
 
 import {Itsa, ItsaPredicate} from "./itsa";
 
-export type RawItsa = {predicates:ItsaPredicate[]};
+export type RawItsa = {_isOptional: boolean, predicates:ItsaPredicate[]};
 
 const convert = (el:any) => {
   const proto = Object.prototype.toString.call(el);
@@ -31,7 +31,10 @@ export class ItsaSerialize {
     return this as any as Itsa;
   }
   toJSON(this:Itsa):RawItsa {
-    return { predicates: this.predicates };
+    return {
+      _isOptional: this._isOptional,
+      predicates: this.predicates,
+    };
   }
   toRaw(this:Itsa):RawItsa {
     return this.toJSON();

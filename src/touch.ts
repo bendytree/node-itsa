@@ -4,9 +4,7 @@ import { ItsaObjectSettings } from './object';
 
 class ItsaTouch {
   touch<X>(this:Itsa, obj:X, toucher?:(string, X) => void):X {
-    const objectPredicates = this.predicates
-      .flatMap(p => p.id === 'optional' ? p.settings?.allowedSchema?.predicates : p)
-      .filter(p => p?.id === 'object');
+    const objectPredicates = this.predicates.filter(p => p?.id === 'object');
     if (!objectPredicates.length) throw new Error(`This is not an object schema.`);
     if (!obj) return obj;
     for (const predicate of objectPredicates) {

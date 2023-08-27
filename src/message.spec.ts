@@ -11,8 +11,10 @@ describe('itsa', function() {
     });
 
     it('paths are shown in objects', function() {
-      const userSchema = itsa.object({ email: itsa.email() });
-      assert.strictEqual(userSchema.validate({ email: 'foo' }).message, 'email: Email address is invalid');
+      assert.strictEqual(itsa.object({ email: itsa.email() }).validate({ email: 'foo' }).message, 'email: Email address is invalid');
+    });
+
+    it('paths are shown in objects with optionals', function() {
       assert.strictEqual(itsa.object({ email: itsa.optional(itsa.email()) }).validate({ email: 'foo' }).message, 'email: Email address is invalid');
     });
 

@@ -146,6 +146,7 @@ export interface ItsaValidator {
 type ItsaSubclass = new (...args: any[]) => any;
 
 export class Itsa {
+  _isOptional: boolean = false;
   predicates:ItsaPredicate[] = [];
   static validators:{[key:string]:ItsaValidator} = {};
 

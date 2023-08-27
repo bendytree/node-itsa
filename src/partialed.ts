@@ -25,12 +25,7 @@ const partialize = (schema:Itsa, fields?:string[]):void => {
           }else if (restOfKeys.length) {
             partialize(ex, [restOfKeys.join('.')]);
           }else{
-            for (const [i, pred] of ex.predicates?.entries()) {
-              if (pred.id === 'optional') continue;
-              const allowedSchema = new Itsa();
-              allowedSchema.predicates = [pred];
-              ex.predicates[i] = { id: 'optional', settings: { allowedSchema } };
-            }
+            ex._isOptional = true;
           }
         }
       }else{
