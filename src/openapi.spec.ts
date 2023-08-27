@@ -1,6 +1,6 @@
 
 import { describe, it } from 'mocha';
-import { itsa } from "./itsa";
+import {itsa, Itsa} from "./itsa";
 import assert from "assert";
 
 describe('itsa', function() {
@@ -220,6 +220,56 @@ describe('itsa', function() {
           type: 'string',
           description: 'c'
         });
+    });
+
+    it('supports referenced schemas', function() {
+      const itsaUser = itsa.schema({ title: 'User' }).object({
+        name: itsa.string(),
+        pet: itsa.schema({ title: 'Pet' }).object({
+          type: itsa.any('dog', 'cat'),
+        }),
+      });
+      const $refs = {};
+      const userSchema = itsaUser.toOpenApiSchema({
+        toRef (schema:any):string | null {
+          if (schema.title) { $refs[`/${schema.title}`] = schema; }
+          return schema.title ? `/${schema.title}` : null;
+        }
+      });
+      assert.deepStrictEqual(
+        userSchema,
+        {
+          type: 'object',
+          title: 'User',
+          required: ['name', 'pet'],
+          properties: {
+            name: { type: 'string' },
+            pet: { $ref: '/Pet' },
+          },
+        },
+      );
+      assert.deepStrictEqual(
+        $refs,
+        {
+          '/Pet': {
+            type: 'object',
+            title: 'Pet',
+            required: ['type'],
+            properties: {
+              type: { type: 'string', enum: ['dog', 'cat'] },
+            },
+          },
+          '/User': {
+            type: 'object',
+            title: 'User',
+            required: ['name', 'pet'],
+            properties: {
+              name: { type: 'string' },
+              pet: { $ref: '/Pet' },
+            },
+          }
+        }
+      );
     });
 
   });

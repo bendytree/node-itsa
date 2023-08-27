@@ -18,6 +18,11 @@ export interface ItsaSchemaSettings {
   _defaults?: Omit<ItsaSchemaSettings, '_defaults'>;
 }
 
+export interface IToOpenApiSchemaParams {
+  toRef?(schema:any):string | null | undefined;
+  isRoot?: boolean;
+}
+
 class ItsaOpenApiSchema {
 
   schema(this: Itsa, settings: ItsaSchemaSettings): Itsa {
@@ -25,11 +30,12 @@ class ItsaOpenApiSchema {
     return this;
   }
 
-  toOpenApiSchema<X>(this:Itsa):any {
-    // unwarp optional
-    const predicates = this.predicates;
+  toOpenApiSchema<X>(this:Itsa, params?:IToOpenApiSchemaParams):any {
+    if (!params) { params = {}; }
+    if (!('isRoot' in params)) params.isRoot = true;
 
     const lookup = {} as Record<string, ItsaPredicate>;
+    const predicates = this.predicates;
     for (const p of predicates) { lookup[p.id] = p; }
 
     const schema:any = (() => {
@@ -39,7 +45,7 @@ class ItsaOpenApiSchema {
         for (const key of this.keys()) {
           const keySchema = this.get(key);
           if (keySchema.isRequired()) required.push(key);
-          properties[key] = keySchema.toOpenApiSchema();
+          properties[key] = keySchema.toOpenApiSchema({ ...params, isRoot: false });
         }
         return {
           type: 'object',
@@ -52,7 +58,7 @@ class ItsaOpenApiSchema {
         const example = lookup['array'].settings?.example;
         return {
           type: 'array',
-          ...(example ? { items: example.toOpenApiSchema() } : {}),
+          ...(example ? { items: example.toOpenApiSchema({ ...params, isRoot: false }) } : {}),
         };
       }
 
@@ -100,9 +106,9 @@ class ItsaOpenApiSchema {
       if (lookup['any']) {
         const anyPredicateSchemas:Itsa[] = lookup['any']?.settings?.schemas || [];
         if (anyPredicateSchemas.length === 1) {
-          return anyPredicateSchemas[0].toOpenApiSchema();
+          return anyPredicateSchemas[0].toOpenApiSchema({ ...params, isRoot: false });
         }else if (anyPredicateSchemas.length > 1) {
-          const subSchemas = anyPredicateSchemas.map(s => s.toOpenApiSchema());
+          const subSchemas = anyPredicateSchemas.map(s => s.toOpenApiSchema({ ...params, isRoot: false }));
           const type = subSchemas[0].type;
           const allSame = !subSchemas.find(ss => ss.type !== type);
           const allConst = !subSchemas.find(ss => !('const' in ss));
@@ -110,7 +116,7 @@ class ItsaOpenApiSchema {
           if (isEnum) {
             return { type, enum: subSchemas.map(ss => ss.const) };
           }else{
-            return { oneOf: anyPredicateSchemas.map(s => s.toOpenApiSchema()) };
+            return { oneOf: anyPredicateSchemas.map(s => s.toOpenApiSchema({ ...params, isRoot: false })) };
           }
         }
       }
@@ -186,6 +192,11 @@ class ItsaOpenApiSchema {
         if (hasValue) continue;
         schema[key] = p.settings._defaults[key];
       }
+    }
+
+    const $ref = params.toRef?.(schema);
+    if ($ref && !params.isRoot) {
+      return { $ref };
     }
 
     return schema;
