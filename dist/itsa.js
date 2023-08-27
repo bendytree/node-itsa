@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.179
+ * itsa 2.1.181
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3135,12 +3135,18 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
     }
   }, {
     key: "toOpenApiSchema",
-    value: function toOpenApiSchema() {
-      var _this = this;
+    value: function toOpenApiSchema(params) {
+      var _this = this,
+          _params$toRef,
+          _params;
 
-      // unwarp optional
-      var predicates = this.predicates;
+      if (!params) {
+        params = {};
+      }
+
+      if (!('isRoot' in params)) params.isRoot = true;
       var lookup = {};
+      var predicates = this.predicates;
 
       var _iterator = _createForOfIteratorHelper(predicates),
           _step;
@@ -3171,7 +3177,9 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
               var keySchema = _this.get(key);
 
               if (keySchema.isRequired()) required.push(key);
-              properties[key] = keySchema.toOpenApiSchema();
+              properties[key] = keySchema.toOpenApiSchema(_objectSpread(_objectSpread({}, params), {}, {
+                isRoot: false
+              }));
             }
           } catch (err) {
             _iterator2.e(err);
@@ -3193,7 +3201,9 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
           return _objectSpread({
             type: 'array'
           }, example ? {
-            items: example.toOpenApiSchema()
+            items: example.toOpenApiSchema(_objectSpread(_objectSpread({}, params), {}, {
+              isRoot: false
+            }))
           } : {});
         }
 
@@ -3272,10 +3282,14 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
           var anyPredicateSchemas = ((_lookup$any = lookup['any']) === null || _lookup$any === void 0 ? void 0 : (_lookup$any$settings = _lookup$any.settings) === null || _lookup$any$settings === void 0 ? void 0 : _lookup$any$settings.schemas) || [];
 
           if (anyPredicateSchemas.length === 1) {
-            return anyPredicateSchemas[0].toOpenApiSchema();
+            return anyPredicateSchemas[0].toOpenApiSchema(_objectSpread(_objectSpread({}, params), {}, {
+              isRoot: false
+            }));
           } else if (anyPredicateSchemas.length > 1) {
             var subSchemas = anyPredicateSchemas.map(function (s) {
-              return s.toOpenApiSchema();
+              return s.toOpenApiSchema(_objectSpread(_objectSpread({}, params), {}, {
+                isRoot: false
+              }));
             });
             var _type = subSchemas[0].type;
             var allSame = !subSchemas.find(function (ss) {
@@ -3296,7 +3310,9 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
             } else {
               return {
                 oneOf: anyPredicateSchemas.map(function (s) {
-                  return s.toOpenApiSchema();
+                  return s.toOpenApiSchema(_objectSpread(_objectSpread({}, params), {}, {
+                    isRoot: false
+                  }));
                 })
               };
             }
@@ -3413,6 +3429,14 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
         _iterator3.e(err);
       } finally {
         _iterator3.f();
+      }
+
+      var $ref = (_params$toRef = (_params = params).toRef) === null || _params$toRef === void 0 ? void 0 : _params$toRef.call(_params, schema);
+
+      if ($ref && !params.isRoot) {
+        return {
+          $ref: $ref
+        };
       }
 
       return schema;
