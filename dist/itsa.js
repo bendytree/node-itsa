@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.177
+ * itsa 2.1.179
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -1557,7 +1557,7 @@ var ItsaGet = /*#__PURE__*/function () {
   _createClass(ItsaGet, [{
     key: "get",
     value: function get(key) {
-      var schema = itsa_1.itsa.any();
+      var schema = new itsa_1.Itsa();
 
       var _iterator = _createForOfIteratorHelper(this.predicates),
           _step;
@@ -1571,6 +1571,7 @@ var ItsaGet = /*#__PURE__*/function () {
 
             if (settings.example && settings.example[key]) {
               var ex = settings.example[key];
+              schema._isOptional = schema._isOptional || ex._isOptional;
               schema.and(ex);
             }
           }
@@ -1944,6 +1945,7 @@ var Itsa = /*#__PURE__*/function () {
   function Itsa() {
     _classCallCheck(this, Itsa);
 
+    this._isOptional = false;
     this.predicates = [];
   }
 
@@ -2104,11 +2106,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
 
@@ -2179,30 +2177,7 @@ var _keep = function keep(schema, fields, config) {
               _iterator2.f();
             }
           } else if (config.partial) {
-            var _iterator3 = _createForOfIteratorHelper(exampleForKey.predicates.entries()),
-                _step3;
-
-            try {
-              for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-                var _step3$value = _slicedToArray(_step3.value, 2),
-                    i = _step3$value[0],
-                    pred = _step3$value[1];
-
-                if (pred.id === 'optional') continue;
-                var allowedSchema = new itsa_1.Itsa();
-                allowedSchema.predicates = [pred];
-                exampleForKey.predicates[i] = {
-                  id: 'optional',
-                  settings: {
-                    allowedSchema: allowedSchema
-                  }
-                };
-              }
-            } catch (err) {
-              _iterator3.e(err);
-            } finally {
-              _iterator3.f();
-            }
+            exampleForKey._isOptional = true;
           } else {
             keysToDelete.push(key);
           }
@@ -3164,12 +3139,7 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
       var _this = this;
 
       // unwarp optional
-      var predicates = this.predicates.flatMap(function (p) {
-        var _p$settings, _p$settings$allowedSc;
-
-        if (p.id === 'optional') return ((_p$settings = p.settings) === null || _p$settings === void 0 ? void 0 : (_p$settings$allowedSc = _p$settings.allowedSchema) === null || _p$settings$allowedSc === void 0 ? void 0 : _p$settings$allowedSc.predicates) || [];
-        return p;
-      });
+      var predicates = this.predicates;
       var lookup = {};
 
       var _iterator = _createForOfIteratorHelper(predicates),
@@ -3461,8 +3431,6 @@ itsa_1.Itsa.extend(ItsaOpenApiSchema);
 
 
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -3482,8 +3450,6 @@ exports.ItsaOptional = void 0;
 
 var itsa_1 = __webpack_require__(589);
 
-var helpers_1 = __webpack_require__(28);
-
 var ItsaOptional = /*#__PURE__*/function () {
   function ItsaOptional() {
     _classCallCheck(this, ItsaOptional);
@@ -3492,20 +3458,29 @@ var ItsaOptional = /*#__PURE__*/function () {
   _createClass(ItsaOptional, [{
     key: "isRequired",
     value: function isRequired() {
-      return !this.predicates.find(function (p) {
-        return p.id === 'optional';
-      });
+      return !this._isOptional;
     }
   }, {
     key: "optional",
-    value: function optional(allowedSchema) {
-      var settings = {
-        allowedSchema: helpers_1.primitiveToItsa(allowedSchema)
-      };
-      this.predicates.push({
-        id: 'optional',
-        settings: settings
-      });
+    value: function optional(schema) {
+      this._isOptional = true;
+
+      if (schema) {
+        var _iterator = _createForOfIteratorHelper(schema.predicates),
+            _step;
+
+        try {
+          for (_iterator.s(); !(_step = _iterator.n()).done;) {
+            var p = _step.value;
+            this.predicates.push(p);
+          }
+        } catch (err) {
+          _iterator.e(err);
+        } finally {
+          _iterator.f();
+        }
+      }
+
       return this;
     }
   }]);
@@ -3514,54 +3489,7 @@ var ItsaOptional = /*#__PURE__*/function () {
 }();
 
 exports.ItsaOptional = ItsaOptional;
-itsa_1.Itsa.extend(ItsaOptional, {
-  id: 'optional',
-  validate: function validate(context, settings) {
-    var key = context.key,
-        parent = context.parent,
-        exists = context.exists,
-        validation = context.validation,
-        path = context.path,
-        val = context.val,
-        result = context.result;
-    if (val === null) return;
-    if (val === undefined) return;
-    var allowedTypes = [];
-
-    var _iterator = _createForOfIteratorHelper(settings.allowedSchema.predicates),
-        _step;
-
-    try {
-      for (_iterator.s(); !(_step = _iterator.n()).done;) {
-        var p = _step.value;
-        if (p.id === 'string') allowedTypes.push('string');
-        if (p.id === 'number') allowedTypes.push('number');
-        if (p.id === 'integer') allowedTypes.push('number');
-      }
-    } catch (err) {
-      _iterator.e(err);
-    } finally {
-      _iterator.f();
-    }
-
-    if (!val && allowedTypes.includes(_typeof(val))) {
-      return;
-    }
-
-    var subResult = settings.allowedSchema._validate({
-      key: key,
-      parent: parent,
-      val: val,
-      exists: exists,
-      path: path,
-      settings: validation
-    });
-
-    if (!subResult.ok) {
-      return result.addResult(subResult);
-    }
-  }
-});
+itsa_1.Itsa.extend(ItsaOptional);
 
 /***/ }),
 
@@ -3576,10 +3504,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
-
-function _iterableToArrayLimit(arr, i) { var _i = arr && (typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]); if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
-
 function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3588,7 +3512,7 @@ function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symb
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
@@ -3645,32 +3569,7 @@ var partialize = function partialize(schema, fields) {
               } else if (restOfKeys.length) {
                 partialize(ex, [restOfKeys.join('.')]);
               } else {
-                var _ex$predicates;
-
-                var _iterator3 = _createForOfIteratorHelper((_ex$predicates = ex.predicates) === null || _ex$predicates === void 0 ? void 0 : _ex$predicates.entries()),
-                    _step3;
-
-                try {
-                  for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
-                    var _step3$value = _slicedToArray(_step3.value, 2),
-                        i = _step3$value[0],
-                        pred = _step3$value[1];
-
-                    if (pred.id === 'optional') continue;
-                    var allowedSchema = new itsa_1.Itsa();
-                    allowedSchema.predicates = [pred];
-                    ex.predicates[i] = {
-                      id: 'optional',
-                      settings: {
-                        allowedSchema: allowedSchema
-                      }
-                    };
-                  }
-                } catch (err) {
-                  _iterator3.e(err);
-                } finally {
-                  _iterator3.f();
-                }
+                ex._isOptional = true;
               }
             }
           } catch (err) {
@@ -3776,6 +3675,7 @@ var ItsaSerialize = /*#__PURE__*/function () {
     key: "toJSON",
     value: function toJSON() {
       return {
+        _isOptional: this._isOptional,
         predicates: this.predicates
       };
     }
@@ -4043,11 +3943,7 @@ var ItsaTouch = /*#__PURE__*/function () {
   _createClass(ItsaTouch, [{
     key: "touch",
     value: function touch(obj, toucher) {
-      var objectPredicates = this.predicates.flatMap(function (p) {
-        var _p$settings, _p$settings$allowedSc;
-
-        return p.id === 'optional' ? (_p$settings = p.settings) === null || _p$settings === void 0 ? void 0 : (_p$settings$allowedSc = _p$settings.allowedSchema) === null || _p$settings$allowedSc === void 0 ? void 0 : _p$settings$allowedSc.predicates : p;
-      }).filter(function (p) {
+      var objectPredicates = this.predicates.filter(function (p) {
         return (p === null || p === void 0 ? void 0 : p.id) === 'object';
       });
       if (!objectPredicates.length) throw new Error("This is not an object schema.");
@@ -4301,13 +4197,13 @@ itsa_1.Itsa.extend(ItsaUnique, {
 
 
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
 function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it.return != null) it.return(); } finally { if (didErr) throw err; } } }; }
 
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
 function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -4332,6 +4228,30 @@ var ItsaValidation = /*#__PURE__*/function () {
       var key = settings.key;
       var result = new itsa_1.ItsaValidationResultBuilder(settings.settings.exhaustive, key, settings.path, settings.settings.hint);
       result.value = settings.val;
+
+      if (this._isOptional) {
+        if ([null, undefined].includes(result.value)) return result;
+        var isFalsy = !result.value;
+
+        if (isFalsy) {
+          var type = _typeof(result.value);
+
+          var allowedTypes = this.predicates.map(function (p) {
+            if (p.id === 'string') return 'string';
+            if (p.id === 'email') return 'string';
+            if (p.id === 'number') return 'number';
+            if (p.id === 'integer') return 'integer';
+            if (p.id === 'boolean') return 'boolean';
+          }).filter(function (t) {
+            return t;
+          });
+          var isAllowedType = allowedTypes.includes(type);
+
+          if (isAllowedType) {
+            return result;
+          }
+        }
+      }
 
       try {
         var setVal = function setVal(newVal) {

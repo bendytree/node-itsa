@@ -1,5 +1,6 @@
 import { Itsa, ItsaPredicate } from "./itsa";
 export declare type RawItsa = {
+    _isOptional: boolean;
     predicates: ItsaPredicate[];
 };
 export declare class ItsaSerialize {

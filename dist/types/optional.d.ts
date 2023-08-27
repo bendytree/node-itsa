@@ -1,7 +1,7 @@
-import { Itsa, ItsaOrPrimative } from "./itsa";
+import { Itsa } from "./itsa";
 export declare class ItsaOptional {
     isRequired(this: Itsa): boolean;
-    optional(this: Itsa, allowedSchema: ItsaOrPrimative): Itsa;
+    optional(this: Itsa, schema?: Itsa): Itsa;
 }
 declare module './itsa' {
     interface Itsa extends ItsaOptional {

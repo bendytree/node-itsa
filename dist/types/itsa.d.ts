@@ -68,6 +68,7 @@ export interface ItsaValidator {
 }
 declare type ItsaSubclass = new (...args: any[]) => any;
 export declare class Itsa {
+    _isOptional: boolean;
     predicates: ItsaPredicate[];
     static validators: {
         [key: string]: ItsaValidator;
