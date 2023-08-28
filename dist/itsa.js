@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.181
+ * itsa 2.1.183
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -602,239 +602,6 @@ itsa_1.Itsa.extend(ItsaBuild);
 
 /***/ }),
 
-/***/ 499:
-/***/ ((__unused_webpack_module, exports) => {
-
-
-
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-Object.defineProperty(exports, "__esModule", ({
-  value: true
-}));
-exports.deepClone = void 0;
-/**
- * License: MIT
- * https://github.com/davidmarkclements/rfdc/tree/6232d1d82247d239306b9c4e00820eca2a5d6efe
- */
-
-function copyBuffer(cur) {
-  if (cur instanceof Buffer) {
-    return Buffer.from(cur);
-  }
-
-  return new cur.constructor(cur.buffer.slice(), cur.byteOffset, cur.length);
-}
-
-function rfdc(opts) {
-  opts = opts || {};
-  if (opts.circles) return rfdcCircles(opts);
-  return opts.proto ? cloneProto : clone;
-
-  function cloneArray(a, fn) {
-    var keys = Object.keys(a);
-    var a2 = new Array(keys.length);
-
-    for (var i = 0; i < keys.length; i++) {
-      var k = keys[i];
-      var cur = a[k];
-
-      if (_typeof(cur) !== 'object' || cur === null) {
-        a2[k] = cur;
-      } else if (cur instanceof Date) {
-        a2[k] = new Date(cur);
-      } else if (ArrayBuffer.isView(cur)) {
-        a2[k] = copyBuffer(cur);
-      } else {
-        a2[k] = fn(cur);
-      }
-    }
-
-    return a2;
-  }
-
-  function clone(o) {
-    if (_typeof(o) !== 'object' || o === null) return o;
-    if (o instanceof Date) return new Date(o);
-    if (Array.isArray(o)) return cloneArray(o, clone);
-    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone));
-    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone));
-    var o2 = {};
-
-    for (var k in o) {
-      if (Object.hasOwnProperty.call(o, k) === false) continue;
-      var cur = o[k];
-
-      if (_typeof(cur) !== 'object' || cur === null) {
-        o2[k] = cur;
-      } else if (cur instanceof Date) {
-        o2[k] = new Date(cur);
-      } else if (cur instanceof Map) {
-        o2[k] = new Map(cloneArray(Array.from(cur), clone));
-      } else if (cur instanceof Set) {
-        o2[k] = new Set(cloneArray(Array.from(cur), clone));
-      } else if (cur instanceof RegExp) {
-        o2[k] = cur;
-      } else if (ArrayBuffer.isView(cur)) {
-        o2[k] = copyBuffer(cur);
-      } else {
-        o2[k] = clone(cur);
-      }
-    }
-
-    return o2;
-  }
-
-  function cloneProto(o) {
-    if (_typeof(o) !== 'object' || o === null) return o;
-    if (o instanceof Date) return new Date(o);
-    if (Array.isArray(o)) return cloneArray(o, cloneProto);
-    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto));
-    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto));
-    var o2 = {};
-
-    for (var k in o) {
-      var cur = o[k];
-
-      if (_typeof(cur) !== 'object' || cur === null) {
-        o2[k] = cur;
-      } else if (cur instanceof Date) {
-        o2[k] = new Date(cur);
-      } else if (cur instanceof Map) {
-        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto));
-      } else if (cur instanceof Set) {
-        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto));
-      } else if (ArrayBuffer.isView(cur)) {
-        o2[k] = copyBuffer(cur);
-      } else {
-        o2[k] = cloneProto(cur);
-      }
-    }
-
-    return o2;
-  }
-}
-
-function rfdcCircles(opts) {
-  var refs = [];
-  var refsNew = [];
-  return opts.proto ? cloneProto : clone;
-
-  function cloneArray(a, fn) {
-    var keys = Object.keys(a);
-    var a2 = new Array(keys.length);
-
-    for (var i = 0; i < keys.length; i++) {
-      var k = keys[i];
-      var cur = a[k];
-
-      if (_typeof(cur) !== 'object' || cur === null) {
-        a2[k] = cur;
-      } else if (cur instanceof Date) {
-        a2[k] = new Date(cur);
-      } else if (ArrayBuffer.isView(cur)) {
-        a2[k] = copyBuffer(cur);
-      } else {
-        var index = refs.indexOf(cur);
-
-        if (index !== -1) {
-          a2[k] = refsNew[index];
-        } else {
-          a2[k] = fn(cur);
-        }
-      }
-    }
-
-    return a2;
-  }
-
-  function clone(o) {
-    if (_typeof(o) !== 'object' || o === null) return o;
-    if (o instanceof Date) return new Date(o);
-    if (Array.isArray(o)) return cloneArray(o, clone);
-    if (o instanceof Map) return new Map(cloneArray(Array.from(o), clone));
-    if (o instanceof Set) return new Set(cloneArray(Array.from(o), clone));
-    var o2 = {};
-    refs.push(o);
-    refsNew.push(o2);
-
-    for (var k in o) {
-      if (Object.hasOwnProperty.call(o, k) === false) continue;
-      var cur = o[k];
-
-      if (_typeof(cur) !== 'object' || cur === null) {
-        o2[k] = cur;
-      } else if (cur instanceof Date) {
-        o2[k] = new Date(cur);
-      } else if (cur instanceof Map) {
-        o2[k] = new Map(cloneArray(Array.from(cur), clone));
-      } else if (cur instanceof Set) {
-        o2[k] = new Set(cloneArray(Array.from(cur), clone));
-      } else if (ArrayBuffer.isView(cur)) {
-        o2[k] = copyBuffer(cur);
-      } else {
-        var i = refs.indexOf(cur);
-
-        if (i !== -1) {
-          o2[k] = refsNew[i];
-        } else {
-          o2[k] = clone(cur);
-        }
-      }
-    }
-
-    refs.pop();
-    refsNew.pop();
-    return o2;
-  }
-
-  function cloneProto(o) {
-    if (_typeof(o) !== 'object' || o === null) return o;
-    if (o instanceof Date) return new Date(o);
-    if (Array.isArray(o)) return cloneArray(o, cloneProto);
-    if (o instanceof Map) return new Map(cloneArray(Array.from(o), cloneProto));
-    if (o instanceof Set) return new Set(cloneArray(Array.from(o), cloneProto));
-    var o2 = {};
-    refs.push(o);
-    refsNew.push(o2);
-
-    for (var k in o) {
-      var cur = o[k];
-
-      if (_typeof(cur) !== 'object' || cur === null) {
-        o2[k] = cur;
-      } else if (cur instanceof Date) {
-        o2[k] = new Date(cur);
-      } else if (cur instanceof Map) {
-        o2[k] = new Map(cloneArray(Array.from(cur), cloneProto));
-      } else if (cur instanceof Set) {
-        o2[k] = new Set(cloneArray(Array.from(cur), cloneProto));
-      } else if (ArrayBuffer.isView(cur)) {
-        o2[k] = copyBuffer(cur);
-      } else {
-        var i = refs.indexOf(cur);
-
-        if (i !== -1) {
-          o2[k] = refsNew[i];
-        } else {
-          o2[k] = cloneProto(cur);
-        }
-      }
-    }
-
-    refs.pop();
-    refsNew.pop();
-    return o2;
-  }
-}
-
-exports.deepClone = rfdc({
-  proto: false,
-  circles: false
-});
-
-/***/ }),
-
 /***/ 758:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
@@ -846,14 +613,47 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-exports.ItsaClone = void 0;
+exports.ItsaClone = exports.deepClone = void 0;
 
 var itsa_1 = __webpack_require__(589);
 
-var clone_rfdc_1 = __webpack_require__(499);
+var deepClone = function deepClone(obj) {
+  function clone(val) {
+    var type = _typeof(val);
+
+    if (val === null || type !== "object") return val;
+    if (Array.isArray(val)) return val.map(function (v) {
+      return clone(v);
+    });
+
+    if (val instanceof itsa_1.Itsa) {
+      var it = new itsa_1.Itsa();
+      it._isOptional = val._isOptional;
+      it.predicates = clone(val.predicates);
+      return it;
+    }
+
+    if (val instanceof Date) return new Date(val.getTime());
+    if (val instanceof RegExp) return new RegExp(val);
+    var clonedObj = {};
+
+    for (var _i = 0, _Object$keys = Object.keys(val); _i < _Object$keys.length; _i++) {
+      var key = _Object$keys[_i];
+      clonedObj[key] = clone(val[key]);
+    }
+
+    return clonedObj;
+  }
+
+  return clone(obj);
+};
+
+exports.deepClone = deepClone;
 
 var ItsaClone = /*#__PURE__*/function () {
   function ItsaClone() {
@@ -863,8 +663,7 @@ var ItsaClone = /*#__PURE__*/function () {
   _createClass(ItsaClone, [{
     key: "clone",
     value: function clone() {
-      var raw = clone_rfdc_1.deepClone(this);
-      return itsa_1.itsa.load(raw);
+      return exports.deepClone(this);
     }
   }]);
 
@@ -2067,7 +1866,7 @@ __webpack_require__(76);
 
 __webpack_require__(635);
 
-__webpack_require__(354);
+__webpack_require__(499);
 
 __webpack_require__(700);
 
@@ -3517,7 +3316,7 @@ itsa_1.Itsa.extend(ItsaOptional);
 
 /***/ }),
 
-/***/ 354:
+/***/ 499:
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 
