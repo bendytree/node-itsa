@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.185
+ * itsa 2.1.187
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3101,10 +3101,7 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
 
             if (isEnum) {
               return {
-                type: _type,
-                enum: subSchemas.map(function (ss) {
-                  return ss.const;
-                })
+                type: _type
               };
             } else {
               return {
@@ -3196,6 +3193,31 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
 
       if (lookup['equal']) {
         schema.const = lookup['equal'].settings.example;
+      }
+
+      if (lookup['any']) {
+        var _lookup$any2, _lookup$any2$settings;
+
+        var anyPredicateSchemas = ((_lookup$any2 = lookup['any']) === null || _lookup$any2 === void 0 ? void 0 : (_lookup$any2$settings = _lookup$any2.settings) === null || _lookup$any2$settings === void 0 ? void 0 : _lookup$any2$settings.schemas) || [];
+        var subSchemas = anyPredicateSchemas.map(function (s) {
+          return s.toOpenApiSchema(_objectSpread(_objectSpread({}, params), {}, {
+            isRoot: false
+          }));
+        });
+        var type = subSchemas[0].type;
+        var allSame = !subSchemas.find(function (ss) {
+          return ss.type !== type;
+        });
+        var allConst = !subSchemas.find(function (ss) {
+          return !('const' in ss);
+        });
+        var isEnum = allSame && allConst && ['string', 'number', 'integer'].includes(type);
+
+        if (isEnum) {
+          schema.enum = subSchemas.map(function (ss) {
+            return ss.const;
+          });
+        }
       } // Now apply meta
 
 
