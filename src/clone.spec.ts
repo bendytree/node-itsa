@@ -35,5 +35,26 @@ describe('itsa', function() {
       assert.strictEqual(itsa.matches(/^foo$/).clone().validate('foo').ok, true);
     });
 
+    it('clone maintains optionals - isRequired', function() {
+      assert.deepStrictEqual(
+        itsa.optional(itsa.string()).clone().isRequired(),
+        itsa.optional(itsa.string()).isRequired(),
+      );
+    });
+
+    it('clone maintains optionals - toRaw', function() {
+      assert.deepEqual(
+        itsa.optional(itsa.string()).clone().toRaw(),
+        itsa.optional(itsa.string()).toRaw(),
+      );
+    });
+
+    it('clone maintains optionals - object - toRaw', function() {
+      assert.deepEqual(
+        itsa.object({ foo: itsa.optional(itsa.string()) }).clone().toRaw(),
+        itsa.object({ foo: itsa.optional(itsa.string()) }).toRaw(),
+      );
+    });
+
   });
 });
