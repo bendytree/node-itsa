@@ -4,6 +4,7 @@ export interface ItsaSchemaSettings {
     example?: any;
     default?: any;
     title?: any;
+    [key: string]: any;
     _defaults?: Omit<ItsaSchemaSettings, '_defaults'>;
 }
 export interface IToOpenApiSchemaParams {
