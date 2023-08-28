@@ -81,6 +81,13 @@ describe('itsa', function() {
       );
     });
 
+    it('enum - string and any', function() {
+      assert.deepStrictEqual(
+        itsa.string().any('foo', 'bar').toOpenApiSchema(),
+        { type: 'string', enum: ['foo', 'bar'] },
+      );
+    });
+
     it('enum - numbers', function() {
       assert.deepStrictEqual(
         itsa.any(5, 23).toOpenApiSchema(),

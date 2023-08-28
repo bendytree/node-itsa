@@ -115,7 +115,7 @@ class ItsaOpenApiSchema {
           const allConst = !subSchemas.find(ss => !('const' in ss));
           const isEnum = allSame && allConst && ['string', 'number', 'integer'].includes(type);
           if (isEnum) {
-            return { type, enum: subSchemas.map(ss => ss.const) };
+            return { type };
           }else{
             return { oneOf: anyPredicateSchemas.map(s => s.toOpenApiSchema({ ...params, isRoot: false })) };
           }
@@ -176,6 +176,18 @@ class ItsaOpenApiSchema {
     }
     if (lookup['equal']) {
       schema.const = lookup['equal'].settings.example;
+    }
+
+    if (lookup['any']) {
+      const anyPredicateSchemas:Itsa[] = lookup['any']?.settings?.schemas || [];
+      const subSchemas = anyPredicateSchemas.map(s => s.toOpenApiSchema({ ...params, isRoot: false }));
+      const type = subSchemas[0].type;
+      const allSame = !subSchemas.find(ss => ss.type !== type);
+      const allConst = !subSchemas.find(ss => !('const' in ss));
+      const isEnum = allSame && allConst && ['string', 'number', 'integer'].includes(type);
+      if (isEnum) {
+        schema.enum = subSchemas.map(ss => ss.const);
+      }
     }
 
     // Now apply meta
