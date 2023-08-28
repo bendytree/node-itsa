@@ -272,5 +272,13 @@ describe('itsa', function() {
       );
     });
 
+    it('allows `x-...` properties', function() {
+      assert.deepStrictEqual(
+        itsa.string().schema({ 'x-foo': 'bar' }).toOpenApiSchema(), {
+          type: 'string',
+          'x-foo': 'bar',
+        });
+    });
+
   });
 });
