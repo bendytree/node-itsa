@@ -1,5 +1,5 @@
 
-import {Itsa, ItsaPredicate} from './itsa';
+import {Itsa, ItsaPredicate, ItsaValidateContext} from './itsa';
 
 function getOpenApiTypeForValue(val: any) {
   if (typeof val === 'string') return 'string';
@@ -216,7 +216,12 @@ class ItsaOpenApiSchema {
   }
 }
 
-Itsa.extend(ItsaOpenApiSchema);
+Itsa.extend(ItsaOpenApiSchema, {
+  id: 'schema',
+  validate: (context:ItsaValidateContext) => {
+    // no impact on validation
+  }
+});
 
 declare module './itsa' {
   interface Itsa extends ItsaOpenApiSchema { }

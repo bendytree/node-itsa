@@ -6,6 +6,13 @@ import assert from "assert";
 describe('itsa', function() {
   describe('creates openapi v3 schemas', function() {
 
+    it('still validates', function() {
+      assert.deepStrictEqual(
+        itsa.string().schema({ description: 'foo' }).validate('bar').ok,
+        true,
+      );
+    });
+
     it('string', function() {
       const schema = itsa.string().toOpenApiSchema();
       assert.deepStrictEqual(schema, { type: 'string' });
