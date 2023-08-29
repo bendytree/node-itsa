@@ -1,6 +1,6 @@
 /*!
  * @license
- * itsa 2.1.187
+ * itsa 2.1.189
  * Copyright 2023 Josh Wright <https://www.joshwright.com>
  * MIT LICENSE
  */
@@ -3267,7 +3267,11 @@ var ItsaOpenApiSchema = /*#__PURE__*/function () {
   return ItsaOpenApiSchema;
 }();
 
-itsa_1.Itsa.extend(ItsaOpenApiSchema);
+itsa_1.Itsa.extend(ItsaOpenApiSchema, {
+  id: 'schema',
+  validate: function validate(context) {// no impact on validation
+  }
+});
 
 /***/ }),
 
